@@ -83,7 +83,7 @@ Column.prototype.toString = function()
     else
     {
         var sql = self.name + " " + self.type;
-        if(self.type != 'date' && self.type != 'bigint' && self.type != 'datetime')
+        if(self.type != 'date' && self.type != 'bigint' && self.type != 'datetime' && self.type != 'date')
         {
             sql += "(" + self.length + ")";
         }
