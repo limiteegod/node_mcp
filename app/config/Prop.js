@@ -28,27 +28,6 @@ var oracle;
 var mcpmg;
 if(target == 'dev' || target == 'home')
 {
-    //mysql连接
-    var mysql = {'host':'localhost', 'user':'root', 'password':'123456', 'port':3306, 'database':'node'};
-    exports.mysql = mysql;
-
-    var mcpdb = {'host':'localhost', 'user':'root', 'password':'123456', 'port':3306, 'database':'mcp'};
-    exports.mcpdb = mcpdb;
-
-    oracle = {
-        hostname: "192.168.11.118",
-        port: 1521,
-        database: "lottery", // System ID (SID)
-        user: "liming",
-        password: "0okmnhy6"
-    };
-
-    //mongodb的地址
-    var mongo = {'url':'mongodb://127.0.0.1:27017/print'};
-    exports.mongo = mongo;
-
-    mcpmg = {'url':'mongodb://127.0.0.1:27017/mcp'};
-
     //平台地址
     platform.site = {
         hostname: '127.0.0.1',
@@ -73,19 +52,9 @@ if(target == 'test')
     platform.ver = "s.1.01";
     platform.gateway = {host:'127.0.0.1', port:8080, method:'POST'};
     exports.platform = platform;
-
-    mcpmg = {'url':'mongodb://127.0.0.1:27017/mcp'};
 }
 else if(target == 'run')
 {
-    //mysql连接
-    var mysql = {'host':'192.168.222.234', 'user':'root', 'password':'0okmnhy6', 'port':3306, 'database':'node'};
-    exports.mysql = mysql;
-
-    //mongodb的地址
-    var mongo = {'url':'mongodb://192.168.222.233:27017/test'};
-    exports.mongo = mongo;
-
     //平台地址
     platform.site = {
         hostname: '127.0.0.1',
@@ -96,14 +65,7 @@ else if(target == 'run')
     platform.ver = "s.1.01";
     platform.gateway = {host:'192.168.222.233', port:8301, method:'POST'};
     exports.platform = platform;
-
-    mcpmg = {'url':'mongodb://127.0.0.1:27017/mcp'};
 }
-
-
-
-console.log(exports.platform);
-
 exports.zzc = zzc;
 exports.oracle = oracle;
 exports.mcpmg = mcpmg;
@@ -236,6 +198,12 @@ exports.getEnumById = function(name, id)
     }
 };
 
+exports.dbType = {"mysql":0, "oracle":1, "mongodb":2};
+exports.dbTypeArray = [{id:0, code:'mysql', des:"mysql"},
+    {id:1, code:'oracle', des:"oracle"},
+    {id:2, code:'mongodb', des:"mongodb"}];
+
+
 //game type
 exports.gameType = {'normal':1, 'gaopin':2, 'jingcai':3};
 
@@ -247,6 +215,38 @@ exports.stationStatus = {'open':0, 'close':1};
 
 //station game status
 exports.stationGameStatus = {'open':0, 'close':1};
+
+exports.termStatus = {'INIT':1000, 'NOT_ON_SALE':1100, 'PRE_ON_SALE':1150, 'ON_SALE':1200};
+
+exports.termStatusArray = [{id:1000, code:'INIT', des:'初始状态'},
+    {id:1100, code:'NOT_ON_SALE', des:'未开售'},
+    {id:1150, code:'PRE_ON_SALE', des:'准备开售中'},
+    {id:1200, code:'ON_SALE', des:'正在销售'}];
+
+//config db basic type
+var dbs = [{
+    config:{
+        'host':'localhost',
+        'user':'root',
+        'password':'123456',
+        'port':3306,
+        'database':'mcp'
+    },
+    type:exports.dbType.mysql
+}, {
+    config:{
+        hostname: "192.168.11.118",
+        port: 1521,
+        database: "lottery", // System ID (SID)
+        user: "liming",
+        password: "0okmnhy6"
+    },
+    type:exports.dbType.oracle
+}, {
+    config:{'url':'mongodb://127.0.0.1:27017/mcp'},
+    type:exports.dbType.mongodb
+}];
+exports.dbs = dbs;
 
 module.exports = exports;
 

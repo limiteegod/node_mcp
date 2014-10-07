@@ -1,22 +1,38 @@
 var dbPool = require('./DbPool.js');
 var DbCursor = require('./DbCursor.js');
+var prop = require('./Prop.js');
 var dateUtil = require('../util/DateUtil.js');
 var log = require('../util/McpLog.js');
 
-var Table = function(db, name, engine, colList){
+var Table = function(db, name, colList){
     var self = this;
     self.db = db;
     self.name = name;
-    self.engine = engine;
     self.colList = new Array();
     for(var key in colList)
     {
         var col = colList[key];
-        self.colList[col.getName()] = col;
-        self.colList[col.getName().toUpperCase()] = col;
+        if(self.db.type == prop.dbType.oracle)
+        {
+            self.colList[col.getName().toUpperCase()] = col;
+        }
+        else
+        {
+            self.colList[col.getName()] = col;
+        }
     }
 };
 
+Table.prototype.traverse = function()
+{
+    var self = this;
+    log.info("----------------table:" + self.name + "----------------");
+    for(var key in self.colList)
+    {
+        var col = self.colList[key];
+        col.traverse();
+    }
+};
 
 Table.prototype.getDb = function()
 {
@@ -58,78 +74,139 @@ Table.prototype.getName = function()
 };
 
 /**
+ * 删除表
+ */
+Table.prototype.drop = function(cb)
+{
+    var self = this;
+    if(self.db.type == prop.dbType.mysql || self.db.type == prop.dbType.oracle)
+    {
+        var dropSql = "drop table " + self.name;
+        log.info(dropSql);
+        var conn = self.db.pool.getConn();
+        conn.execute(dropSql, [], cb);
+    }
+    else if(self.db.type == prop.dbType.mongodb)
+    {
+        var conn = self.db.pool.getConn().conn;
+        conn.dropCollection(self.name, cb);
+    }
+};
+
+/**
+ * 创建表
+ * @param cb
+ */
+Table.prototype.create = function(cb)
+{
+    var self = this;
+    if(self.db.type == prop.dbType.mysql || self.db.type == prop.dbType.oracle)
+    {
+        var sql = self.getDdl();
+        var conn = self.db.pool.getConn();
+        conn.execute(sql, [], cb);
+    }
+    else if(self.db.type == prop.dbType.mongodb)
+    {
+        var conn = self.db.pool.getConn().conn;
+        conn.createCollection(self.name, [], cb);
+    }
+};
+
+/**
+ * 查找单条记录
+ * @param condition
+ * @param options
+ * @param cb
+ */
+Table.prototype.findOne = function(condition, options, cb)
+{
+    var self = this;
+    if(self.db.type == prop.dbType.mongodb)
+    {
+        self.col.findOne(condition, options, cb);
+    }
+};
+
+Table.prototype.findAndModify = function(query, sort, doc, options, cb)
+{
+    var self = this;
+    if(self.db.type == prop.dbType.mongodb)
+    {
+        self.col.findAndModify(query, sort, doc, options, cb);
+    }
+};
+
+/**
  * 保存对象
  * @param cb
  */
-Table.prototype.save = function(data, cb)
+Table.prototype.save = function(data, options, cb)
 {
     var self = this;
-    var sql = "insert into " + self.name + "(";
-    var keyStr = '';
-    var valueStr = '';
-    var i = 0;
-    for(var key in data)
+    if(self.db.type == prop.dbType.mongodb)
     {
-        //如果没有相关的列，则直接忽略
-        var col = self.colList[key];
-        if(col == undefined)
-        {
-            continue;
-        }
-        if(i > 0)
-        {
-            keyStr += ",";
-            valueStr += ",";
-        }
-        keyStr += key;
-        var value = data[key];
-        if(typeof value == "string")
-        {
-            if(col.type == 'date')
-            {
-                valueStr += "to_date('" + value + "', 'yyyy-MM-dd HH24:mi:ss')";
-            }
-            else
-            {
-                valueStr += "'" + value + "'";
-            }
-        }
-        else
-        {
-            valueStr += value;
-        }
-        i++;
-    }
-    sql += keyStr + ") values(" + valueStr + ")";
-    log.info(sql);
-
-    var conn = self.db.getConn();
-    if(self.engine == 'mysql')
-    {
-        conn.query(sql, function(err, rows, fields) {
-            cb(err, rows);
-        });
-    }
-    else if(self.engine == 'oracle')
-    {
-        conn.execute(sql, [], function(err, results) {
-            if(err)
-            {
-                cb(err, results);
-            }
-            else
-            {
-                for(var key in results)
-                {
-                    dateUtil.oracleObj(results[key]);
-                }
-                cb(err, results);
-            }
-        });
+        self.col.save(data, options, cb);
     }
     else
     {
-        cb(new Error("unsurpoted engine."), undefined);
+        var sql = "insert into " + self.name + "(";
+        var keyStr = '';
+        var valueStr = '';
+        var i = 0;
+        for(var key in data)
+        {
+            //如果没有相关的列，则直接忽略
+            var col = self.colList[key];
+            if(col == undefined)
+            {
+                continue;
+            }
+            if(i > 0)
+            {
+                keyStr += ",";
+                valueStr += ",";
+            }
+            keyStr += key;
+            var value = data[key];
+            if(typeof value == "string")
+            {
+                valueStr += "'" + value + "'";
+            }
+            else if(typeof value == 'object')
+            {
+                if(col.type == 'date')
+                {
+                    if(self.db.type == prop.dbType.oracle)
+                    {
+                        valueStr += "to_date('" + dateUtil.toString(value) + "', 'yyyy-MM-dd HH24:mi:ss')";
+                    }
+                    else if(self.db.type == prop.dbType.mysql)
+                    {
+                        valueStr += "'" + dateUtil.toString(value) + "'";
+                    }
+                    else
+                    {
+                        valueStr += "'" + value + "'";
+                    }
+                }
+                else
+                {
+                    valueStr += "'" + value + "'";
+                }
+            }
+            else
+            {
+                valueStr += value;
+            }
+            i++;
+        }
+        sql += keyStr + ") values(" + valueStr + ")";
+        log.info(sql);
+        var conn = self.db.pool.getConn();
+        conn.execute(sql, options, function(err, data){
+            cb(err, data);
+        });
     }
 };
 
@@ -207,34 +284,31 @@ Table.prototype.getUpdateStr = function(data)
 Table.prototype.update = function(condition, data, option, cb)
 {
     var self = this;
-    var sql = "update " + self.name + " set ";
-    sql += self.getUpdateStr(data);
-    var conditionStr = self.condition(condition);
-    if(conditionStr.length > 0)
+    if(self.db.type == prop.dbType.mongodb)
     {
-        sql += " where " + conditionStr;
-    }
-    log.info(sql);
-    var conn = self.db.getConn();
-    if(self.engine == 'mysql')
-    {
-        conn.query(sql, function(err, rows, fields) {
-            if (err) throw err;
-            if(cb != undefined)
-            {
-                cb(err, rows);
-            }
-        });
-    }
-    else if(self.engine == 'oracle')
-    {
-        conn.execute(sql, [], function(err, results) {
-            cb(err, results);
-        });
+        self.col.update(condition, data, option, cb);
     }
     else
     {
-        throw new Error("unsurpoted engine.");
+        var sql = "update " + self.name + " set ";
+        sql += self.getUpdateStr(data);
+        var conditionStr = self.condition(condition);
+        if(conditionStr.length > 0)
+        {
+            sql += " where " + conditionStr;
+        }
+        log.info(sql);
+        var conn = self.db.pool.getConn();
+        conn.execute(sql, option, function(err, data){
+            if(data)
+            {
+                if(self.db.type == prop.dbType.oracle)
+                {
+                    data.affectedRows = data.updateCount;
+                }
+            }
+            cb(err, data);
+        });
     }
 };
 
@@ -357,9 +431,18 @@ Table.prototype.getKvPair = function(colName, op, value)
         {
             exp += value;
         }
-        else if(col.getType() == 'date' && self.engine == 'oracle')
+        else if(col.getType() == 'date')
         {
-            exp += "to_date('" + value + "', 'yyyy-MM-dd HH24:mi:ss')";
+            var str = '';
+            if(self.db.type == prop.dbType.mysql)
+            {
+                str += "'" + dateUtil.toString(value) + "'";
+            }
+            else if(self.db.type == prop.dbType.oracle)
+            {
+                str += "to_date('" + value + "', 'yyyy-MM-dd HH24:mi:ss')";
+            }
+            exp += str;
         }
         else
         {
@@ -374,51 +457,62 @@ Table.prototype.getKvPair = function(colName, op, value)
  * @param data
  * @param cb
  */
-Table.prototype.find = function(data, columns)
+Table.prototype.find = function(data, columns, options)
 {
     var self = this;
-    var sql = "select ";
-    var keyStr = '';
-    var i = 0;
-    if(columns._id == undefined)
+    if(self.db.type == prop.dbType.mongodb)
     {
-        columns._id = 1;
+        return self.col.find(data, columns);
     }
-    if(columns.id == undefined)
+    else
     {
-        columns.id = 1;
-    }
-    for(var key in columns)
-    {
-        //如果没有相关的列，则直接忽略
-        var tCol = self.colList[key];
-        if(tCol == undefined)
+        var sql = "select ";
+        var keyStr = '';
+        var i = 0;
+        if(columns._id == undefined)
         {
-            continue;
+            columns._id = 1;
         }
-        if(i > 0)
+        if(columns.id == undefined)
         {
-            keyStr += ",";
+            columns.id = 1;
         }
-        if(columns[key] == 1)
+        for(var key in columns)
         {
-            keyStr += key;
+            //如果没有相关的列，则直接忽略
+            var tCol = self.colList[key];
+            if(tCol == undefined)
+            {
+                continue;
+            }
+            if(i > 0)
+            {
+                keyStr += ",";
+            }
+            if(columns[key] == 1)
+            {
+                keyStr += key;
+            }
+            i++;
         }
-        i++;
-    }
-    if(i == 1)  //用户未指定列，则选择所有的列
-    {
-        keyStr = "*";
-    }
-    sql += keyStr;
-    sql += " from " + self.name;
+        if(i == 1)  //用户未指定列，则选择所有的列
+        {
+            keyStr = "*";
+        }
+        sql += keyStr;
+        sql += " from " + self.name;
 
-    var conditionStr = self.condition(data);
-    if(conditionStr.length > 0)
-    {
-        sql += " where " + conditionStr;
+        var conditionStr = self.condition(data);
+        if(conditionStr.length > 0)
+        {
+            sql += " where " + conditionStr;
+        }
+        if(options == undefined)
+        {
+            options = [];
+        }
+        return new DbCursor(self, options, sql);
     }
-    return new DbCursor(self, sql);
 };
 
 /**
@@ -427,37 +521,26 @@ Table.prototype.find = function(data, columns)
  * @param option
  * @param cb
  */
-Table.prototype.remove = function(condtion, option, cb)
+Table.prototype.remove = function(condtion, options, cb)
 {
     var self = this;
-    var sql = "delete from " + self.name;
-    var conditionStr = self.condition(condtion);
-    if(conditionStr.length > 0)
+    if(self.db.type == prop.dbType.mongodb)
     {
-        sql += " where " + conditionStr;
-    }
-    log.info(sql);
-
-    var conn = self.db.getConn();
-    if(self.engine == 'mysql')
-    {
-        conn.query(sql, function(err, rows, fields) {
-            if (err) throw err;
-            if(cb != undefined)
-            {
-                cb(err, rows);
-            }
-        });
-    }
-    else if(self.engine == 'oracle')
-    {
-        conn.execute(sql, [], function(err, results) {
-            cb(err, results);
-        });
+        self.col.remove(condtion, options, cb);
     }
     else
     {
-        throw new Error("unsurpoted engine.");
+        var sql = "delete from " + self.name;
+        var conditionStr = self.condition(condtion);
+        if(conditionStr.length > 0)
+        {
+            sql += " where " + conditionStr;
+        }
+        log.info(sql);
+        var conn = self.db.pool.getConn();
+        conn.execute(sql, options, function(err, data){
+            cb(err, data);
+        });
     }
 };
 
