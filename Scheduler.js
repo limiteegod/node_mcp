@@ -6,7 +6,9 @@ var prop = require('mcp_config').prop;
 var esut = require("easy_util");
 var log = esut.log;
 var digestUtil = esut.digestUtil;
-var termSer = require("mcp_service").termSer;
+var service = require("mcp_service");
+var termSer = service.termSer;
+var msgSer = service.msgSer;
 
 var Scheduler = function(){};
 
@@ -49,14 +51,19 @@ Scheduler.prototype.checkOpen = function()
     var self = this;
     self.openJob = new CronJob('*/10 * * * * *', function () {
         log.info("open job..................");
-        termSer.findToOpen(function(err, data){
+        termSer.findToOpen(function(err, term){
             if(err)
             {
                 log.info(err);
             }
             else
             {
-                log.info(data);
+                msgSer.saveTerm(term, function(err, data){
+                    if(err)
+                    {
+                        log.info(err);
+                    }
+                });
             }
         });
     });
