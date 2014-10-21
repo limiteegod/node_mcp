@@ -29,7 +29,7 @@ var initTerm = function()
         {
             var table = dc.main.get("term");
             var now = new Date().getTime();
-            var term = {gameCode:"T05", code:"2014001", nextCode:"2014002",
+            var term = {gameCode:"T06", code:"2014001", nextCode:"2014002",
                 openTime:now, closeTime:now + 60*60*1000,
                 status:constants.termStatus.NOT_ON_SALE};
             term.id = term.gameCode + "_" + term.code;

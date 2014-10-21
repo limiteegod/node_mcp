@@ -2,11 +2,11 @@ var express = require('express'), app = express();
 var http = require('http');
 var async = require('async');
 var httpServer = http.createServer(app);
-var prop = require('./app/config/Prop.js');
-var errCode = require('./app/config/ErrCode.js');
-var cmdFactory = require("./app/control/CmdFactory.js");
-var dc = require('./app/config/DbCenter.js');
-var pageControl = require("./app/control/PageControl.js");
+var config = require("mcp_config");
+var errCode = config.ec;
+var cmdFac = require("mcp_factory").cmdFac;
+var dc = require('mcp_db').dc;
+var pageCtl = require("mcp_control").pageCtl;
 
 var esut = require("easy_util");
 var log = esut.log;
@@ -98,7 +98,7 @@ Gateway.prototype.startWeb = function()
             var jadePathArray = path[1].split("_");
             var jadePath = jadePathArray.join("/");
             var headNode = {cmd:jadePathArray};
-            pageControl.handle(headNode, req.query, function(err, data){
+            pageCtl.handle(headNode, req.query, function(err, data){
                 if(err) throw err;
                 //console.log(data);
                 res.render(jadePath, data);
@@ -121,7 +121,7 @@ Gateway.prototype.handle = function(message, cb)
         var msgNode = JSON.parse(message);
         var headNode = msgNode.head;
         var bodyStr = msgNode.body;
-        cmdFactory.handle(headNode, bodyStr, function(err, bodyNode) {
+        cmdFac.handle(headNode, bodyStr, function(err, bodyNode) {
             var key = headNode.key;
             headNode.key = undefined;
             if(key == undefined)

@@ -54,7 +54,11 @@ var addOperation = function()
                 });
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_TERM', parent:'ADMIN_GAME', name:'期次列表', url:'term_list.html', hasChildren:0}, [], function(err, data){
                 });
-                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_DB_GAME', parent:'ADMIN_GAME', name:'游戏(DB)', url:'game_dblist.html', hasChildren:0}, [], function(err, data){
+            });
+            operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_MSG', name:'消息管理', url:'', hasChildren:1}, [], function(err, data){
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_MSG', parent:'ADMIN_MSG', name:'消息列表', url:'msg_list.html', hasChildren:0}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_TERM_MSG', parent:'ADMIN_MSG', name:'期次消息', url:'term_msgList.html', hasChildren:0}, [], function(err, data){
                 });
             });
             operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_SALE', name:'销售管理', url:'', hasChildren:1}, [], function(err, data){

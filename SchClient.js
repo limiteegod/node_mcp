@@ -8,6 +8,11 @@ var log = esut.log;
 var digestUtil = esut.digestUtil;
 var termSer = require("mcp_service").termSer;
 
+var cons = require('mcp_constants');
+var termStatus = cons.termStatus;
+var msgStatus = cons.msgStatus;
+var msgType = cons.msgType;
+
 var SchClient = function(){};
 
 /**
@@ -26,7 +31,7 @@ SchClient.prototype.start = function()
         //start web
         function(cb)
         {
-            self.checkOpen();
+            self.handle();
             cb(null, "success");
         }
     ], function (err, result) {
@@ -42,12 +47,75 @@ SchClient.prototype.start = function()
 }
 
 /**
- * 校验客户端是否注册
+ * 处理消息
  */
-SchClient.prototype.check = function()
+SchClient.prototype.handle = function()
 {
     var self = this;
-    var table = dc.mg_msg.get("client");
+    self.openJob = new CronJob('*/10 * * * * *', function () {
+        log.info("get mst to consumer..................");
+        var msg = dc.mg_msg.getConn().collection("msg");
+        msg.findAndModify({status:msgStatus.INIT}, {},
+        {$set:{status:msgStatus.HANDLING}}, [], function(err, data){
+            if(data)
+            {
+                self.handleMsg(data, function(err){
+                    if(err)
+                    {
+                        log.info(err);
+                    }
+                });
+            }
+        });
+    });
+    self.openJob.start();
+}
+
+/**
+ * 处理消息
+ */
+SchClient.prototype.handleTermMsg = function(msg, dTerm, cb)
+{
+    log.info(dTerm);
+    if(dTerm.status == termStatus.PRE_ON_SALE)
+    {
+        var table = dc.mg_msg.get("msg");
+        table.findAndModify({_id:msg._id}, {},
+        {$set:{status:msgStatus.HANDLED}}, [], function(err, data){
+            cb(err);
+        });
+    }
+    else if(dTerm.status == termStatus.END)
+    {
+        var table = dc.mg_msg.get("msg");
+        table.findAndModify({_id:msg._id}, {},
+        {$set:{status:msgStatus.HANDLED}}, [], function(err, data){
+            cb(err);
+        });
+    }
+}
+
+/**
+ * 处理消息
+ */
+SchClient.prototype.handleMsg = function(msg, cb)
+{
+    var self = this;
+    log.info(msg);
+    if(msg.type == msgType.TERM)
+    {
+        var table = dc.mg_msg.get("detail_term");
+        table.findOne({msgId:msg._id}, {}, [], function(err, dTerm){
+            if(err)
+            {
+                cb(err);
+            }
+            else
+            {
+                self.handleTermMsg(msg, dTerm, cb);
+            }
+        });
+    }
 }
 
 var schClient = new SchClient();
