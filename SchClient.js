@@ -12,6 +12,8 @@ var cons = require('mcp_constants');
 var termStatus = cons.termStatus;
 var msgStatus = cons.msgStatus;
 var msgType = cons.msgType;
+var msgFac = require("mcp_msg");
+var clientHandle = msgFac.clientHandle;
 
 var SchClient = function(){};
 
@@ -52,70 +54,15 @@ SchClient.prototype.start = function()
 SchClient.prototype.handle = function()
 {
     var self = this;
-    self.openJob = new CronJob('*/10 * * * * *', function () {
+    self.handleJob = new CronJob('*/10 * * * * *', function () {
         log.info("get mst to consumer..................");
-        var msg = dc.mg_msg.getConn().collection("msg");
-        msg.findAndModify({status:msgStatus.INIT}, {},
-        {$set:{status:msgStatus.HANDLING}}, [], function(err, data){
-            if(data)
-            {
-                self.handleMsg(data, function(err){
-                    if(err)
-                    {
-                        log.info(err);
-                    }
-                });
+        clientHandle.getFromPool(function(err, msg){
+            if(msg) {
+                clientHandle.handle(msg, function(err, data){});
             }
         });
     });
-    self.openJob.start();
-}
-
-/**
- * 处理消息
- */
-SchClient.prototype.handleTermMsg = function(msg, dTerm, cb)
-{
-    log.info(dTerm);
-    if(dTerm.status == termStatus.PRE_ON_SALE)
-    {
-        var table = dc.mg_msg.get("msg");
-        table.findAndModify({_id:msg._id}, {},
-        {$set:{status:msgStatus.HANDLED}}, [], function(err, data){
-            cb(err);
-        });
-    }
-    else if(dTerm.status == termStatus.END)
-    {
-        var table = dc.mg_msg.get("msg");
-        table.findAndModify({_id:msg._id}, {},
-        {$set:{status:msgStatus.HANDLED}}, [], function(err, data){
-            cb(err);
-        });
-    }
-}
-
-/**
- * 处理消息
- */
-SchClient.prototype.handleMsg = function(msg, cb)
-{
-    var self = this;
-    log.info(msg);
-    if(msg.type == msgType.TERM)
-    {
-        var table = dc.mg_msg.get("detail_term");
-        table.findOne({msgId:msg._id}, {}, [], function(err, dTerm){
-            if(err)
-            {
-                cb(err);
-            }
-            else
-            {
-                self.handleTermMsg(msg, dTerm, cb);
-            }
-        });
-    }
+    self.handleJob.start();
 }
 
 var schClient = new SchClient();

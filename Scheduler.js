@@ -15,6 +15,9 @@ var termStatus = cons.termStatus;
 var msgStatus = cons.msgStatus;
 var msgType = cons.msgType;
 
+var issueModel = require("mcp_scheduler").issueModel;
+var master = require("mcp_msg").masterHandle;
+
 var Scheduler = function(){};
 
 /**
@@ -33,8 +36,7 @@ Scheduler.prototype.start = function()
         //start web
         function(cb)
         {
-            self.checkOpen();
-            self.checkClose();
+            self.issue();
             cb(null);
         },
         //start msg hanled
@@ -55,59 +57,19 @@ Scheduler.prototype.start = function()
     });
 };
 
-/**
- * 校验是否有需要开售的期次
- */
-Scheduler.prototype.checkOpen = function()
+Scheduler.prototype.issue = function()
 {
     var self = this;
-    self.openJob = new CronJob('*/10 * * * * *', function () {
-        log.info("open job..................");
-        termSer.findToOpen(function(err, term){
+    self.issueJob = new CronJob('*/10 * * * * *', function () {
+        issueModel.findToHandle(function(err, data){
             if(err)
             {
                 log.info(err);
             }
-            else
-            {
-                msgSer.saveTerm(term, function(err, data){
-                    if(err)
-                    {
-                        log.info(err);
-                    }
-                });
-            }
         });
     });
-    self.openJob.start();
-};
-
-/**
- * 校验停售期次
- **/
-Scheduler.prototype.checkClose = function()
-{
-    var self = this;
-    self.closeJob = new CronJob('*/10 * * * * *', function () {
-        log.info("open job..................");
-        termSer.findToClose(function(err, term){
-            if(err)
-            {
-                log.info(err);
-            }
-            else
-            {
-                msgSer.saveTerm(term, function(err, data){
-                    if(err)
-                    {
-                        log.info(err);
-                    }
-                });
-            }
-        });
-    });
-    self.closeJob.start();
-};
+    self.issueJob.start();
+}
 
 /**
  * 处理已经处理的消息
@@ -116,75 +78,15 @@ Scheduler.prototype.checkHandled = function()
 {
     var self = this;
     self.checkHandledJob = new CronJob('*/5 * * * * *', function () {
-        log.info("handling handled msg..................");
-        var table = dc.mg_msg.get("msg");
-        table.findAndModify({status:msgStatus.HANDLED}, {},
-        {$set:{status:msgStatus.PRE_FINISH}}, [], function(err, data){
-            if(err)
-            {
-                cb(err);
-            }
-            else
-            {
-                self.handleMsg(data, function(err){
-                    log.info(err);
-                });
+        master.getFromPool(function(err, msg){
+            log.info(err);
+            log.info(msg);
+            if(msg) {
+                master.handle(msg, function(err, data){});
             }
         });
     });
     self.checkHandledJob.start();
-}
-
-/**
- * 处理期次消息
- */
-Scheduler.prototype.handleTermMsg = function(msg, dTerm, cb)
-{
-    log.info(dTerm);
-    if(dTerm.status == termStatus.PRE_ON_SALE)
-    {
-        termSer.open(dTerm.termId, function(err){
-            if(err)
-            {
-                log.info(err);
-            }
-            else
-            {
-                msgSer.updateStatus(msg._id, msgStatus.FINISHED, cb);
-            }
-        });
-    }
-    else if(dTerm.status == termStatus.END)
-    {
-        msgSer.updateStatus(msg._id, msgStatus.FINISHED, cb);
-    }
-}
-
-/**
- * 处理消息
- */
-Scheduler.prototype.handleMsg = function(msg, cb)
-{
-    var self = this;
-    if(!msg)
-    {
-        cb(null);
-        return;
-    }
-    if(msg.type == msgType.TERM)
-    {
-        var table = dc.mg_msg.get("detail_term");
-        table.findOne({msgId:msg._id}, {}, [], function(err, dTerm){
-            if(err)
-            {
-                cb(err);
-            }
-            else
-            {
-                self.handleTermMsg(msg, dTerm, cb);
-            }
-        });
-    }
 }
 
 var sch = new Scheduler();

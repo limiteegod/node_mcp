@@ -82,5 +82,7 @@ html(lang="en")
                                     td=val.closeTime
                                     td
                                         input(type="button", value="详情", class="detail", tId=val.id)
+                                        if val.status.id == termStatus.WAITING_DRAW_NUMBER
+                                            input(type="button", value="开奖", class="draw", tId=val.id)
             .clearfix(style="margin-top:8px")
                 #bar.vs_grid_plain(style="width:600px;")

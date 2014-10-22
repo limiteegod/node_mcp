@@ -55,6 +55,8 @@ Gateway.prototype.startWeb = function()
     app.use(express.bodyParser());
     //是Connect內建的，可以协助处理POST请求伪装PUT、DELETE和其他HTTP methods
     app.use(express.methodOverride());
+    //cookie
+    app.use(express.cookieParser());
     //route requests
     app.use(app.router);
     //public文件夹下面的文件，都暴露出来，客户端访问的时候，不需要使用public路径
@@ -98,10 +100,18 @@ Gateway.prototype.startWeb = function()
             var jadePathArray = path[1].split("_");
             var jadePath = jadePathArray.join("/");
             var headNode = {cmd:jadePathArray};
+            headNode.userId = req.cookies.userId;
+            headNode.userType = req.cookies.userType;
+            headNode.key = req.cookies.st;
             pageCtl.handle(headNode, req.query, function(err, data){
-                if(err) throw err;
-                //console.log(data);
-                res.render(jadePath, data);
+                if(err)
+                {
+                    res.render("sys/error", err);
+                }
+                else
+                {
+                    res.render(jadePath, data);
+                }
             });
         }
         else

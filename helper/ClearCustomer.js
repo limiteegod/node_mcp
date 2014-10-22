@@ -48,20 +48,11 @@ var addOperation = function()
         },
         function(cb)
         {
-            var table = dc.main.get("customer");
-            table.save({id:"Q0001", password:"123", type:userType.CHANNEL}, [], function(err, data){
-                cb(err);
-            });
-        },
-        function(cb)
-        {
             var operationTable = dc.main.get("operation");
             operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_GAME', name:'游戏管理', url:'', hasChildren:1}, [], function(err, data){
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_GAME', parent:'ADMIN_GAME', name:'游戏列表', url:'game_list.html', hasChildren:0}, [], function(err, data){
                 });
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_TERM', parent:'ADMIN_GAME', name:'期次列表', url:'term_list.html', hasChildren:0}, [], function(err, data){
-                });
-                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_GAMEGRADE', parent:'ADMIN_GAME', name:'奖级列表', url:'gamegrade_list.html', hasChildren:0}, [], function(err, data){
                 });
             });
             operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_MSG', name:'消息管理', url:'', hasChildren:1}, [], function(err, data){
@@ -86,12 +77,6 @@ var addOperation = function()
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_ACCOUNTCFG', parent:'ADMIN_ACCOUNT', name:'系统科目', url:'moneylog_subjectList.html', hasChildren:0}, [], function(err, data){
                 });
             });
-
-            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT', name:'账户管理', url:'', hasChildren:1}, [], function(err, data){
-                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT_MYINFO', parent:'CHANNEL_ACCOUNT', name:'账户详情', url:'channel_myinfo.html', hasChildren:0}, [], function(err, data){
-                });
-            });
-
             cb(null, "success");
         }
     ], function (err, result) {

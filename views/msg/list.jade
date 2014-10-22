@@ -69,6 +69,7 @@ html(lang="en")
                                 td(w="76") 已经完成数
                                 td(w="76") 状态
                                 td(w="176") 创建时间
+                                td(w="176") 完成时间
                                 td(w="134") 操作
                         tbody
                             - each val in rst
@@ -78,6 +79,7 @@ html(lang="en")
                                     td=val.finishCount
                                     td=val.status.des
                                     td=val.createTime
+                                    td=val.finishTime
                                     td
                                         input(type="button", value="详情", class="detail", tId=val._id)
             .clearfix(style="margin-top:8px")
