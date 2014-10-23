@@ -10,7 +10,6 @@ var LotTest = function(){
     self.key = 'cad6011f5f174a359d9a36e06aada07e';
     self.cmd = 'CT03';
     self.digestType = "3des";
-    self.jcCmd = 'T06';
 };
 
 LotTest.prototype.lot = function(bodyNode, cb)
@@ -23,8 +22,9 @@ LotTest.prototype.lotT06 = function()
 {
     var self = this;
     var bodyNode = {};
-    var orderNode = {amount:2000};
-    var ticketsNode = [{bType:'00', amount:200, pType:'01', multiple:1, number:''}];
+    var orderNode = {amount:200};
+    var ticketsNode = [{gameCode:'T06', termCode:"2014001", bType:'00', amount:200, pType:'01',
+        multiple:1, number:'', outerId:digestUtil.createUUID()}];
     orderNode.tickets = ticketsNode;
     bodyNode.order = orderNode;
     self.lot(bodyNode, function(err, backMsgNode){

@@ -34,7 +34,7 @@ html(lang="en")
                     item.on("click", function(){
                         var tId = Node.one(this).attr("tId");
                         var url = "customer_detail.html?id=" + tId;
-                        var win = new VsWindow("#tWin", {title:"期次详情", width:500, height:400, url:url, controlBt:[
+                        var win = new VsWindow("#tWin", {title:"用户详情", width:500, height:400, url:url, controlBt:[
                             {name:'关闭', cb:null}
                         ]});
                     });
