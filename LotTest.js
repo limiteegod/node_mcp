@@ -22,9 +22,11 @@ LotTest.prototype.lotT06 = function()
 {
     var self = this;
     var bodyNode = {};
-    var orderNode = {amount:200};
+    var orderNode = {amount:400};
     var ticketsNode = [{gameCode:'T06', termCode:"2014001", bType:'00', amount:200, pType:'01',
-        multiple:1, number:'', outerId:digestUtil.createUUID()}];
+        multiple:1, number:'1,2,3,4', outerId:digestUtil.createUUID()},
+    {gameCode:'T06', termCode:"2014001", bType:'00', amount:200, pType:'01',
+            multiple:1, number:'1,2,3,4', outerId:digestUtil.createUUID()}];
     orderNode.tickets = ticketsNode;
     bodyNode.order = orderNode;
     self.lot(bodyNode, function(err, backMsgNode){
@@ -42,7 +44,7 @@ LotTest.prototype.lotT06 = function()
 
 var lotTest = new LotTest();
 var count = 0;
-while(count < 1)
+while(count < 1000)
 {
     lotTest.lotT06();
     count++;

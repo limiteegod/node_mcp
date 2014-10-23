@@ -26,6 +26,13 @@ Gateway.prototype.start = function(){
                 cb(err);
             });
         },
+        //校验基础数据的可用性
+        function(cb)
+        {
+            dc.check(function(err){
+                cb(err);
+            });
+        },
         //start web
         function(cb)
         {
