@@ -5,9 +5,11 @@ var digestUtil = esut.digestUtil;
 
 var LotTest = function(){
     var self = this;
-    self.userId = 'Q0001';
+    //self.userId = 'Q0001';
+    self.userId = 'wangyi';
     self.userType = "CHANNEL";
-    self.key = 'cad6011f5f174a359d9a36e06aada07e';
+    //self.key = 'cad6011f5f174a359d9a36e06aada07e';
+    self.key = 'ce7b4b00379744c781f0544440be3978';
     self.cmd = 'CT03';
     self.digestType = "3des";
 };
@@ -44,7 +46,7 @@ LotTest.prototype.lotT06 = function()
 
 var lotTest = new LotTest();
 var count = 0;
-while(count < 1000)
+while(count < 10000)
 {
     lotTest.lotT06();
     count++;

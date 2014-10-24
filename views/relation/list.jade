@@ -9,7 +9,7 @@ html(lang="en")
                 var skip = parseInt(Node.one('#skip').val());
                 var limit = parseInt(Node.one('#limit').val());
                 var cur = parseInt(skip/limit) + 1;
-                var table = new VsGridTable('#terms', {});
+                var table = new VsGridTable('#rst', {});
                 var pageBar = new VsPagebar('#bar', {count:count, limit:limit, cur:cur, toPage:function(index){
                     toPage(index);
                 }});
@@ -26,28 +26,17 @@ html(lang="en")
                     var skip = (index - 1)*limit;
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
                     console.log(cond);
-                    CurSite.redirectTo(null, "term_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
+                    CurSite.redirectTo(null, "relation_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
                 };
 
                 //绑定事件
                 Node.all("input.detail").each(function(item){
                     item.on("click", function(){
                         var tId = Node.one(this).attr("tId");
-                        var url = "term_detail.html?id=" + tId;
+                        var url = "relation_detail.html?id=" + tId;
                         var win = new VsWindow("#tWin", {title:"期次详情", width:500, height:400, url:url, controlBt:[
                             {name:'关闭', cb:null}
                         ]});
-                    });
-                });
-
-                //开奖
-                Node.all("input.draw").each(function(item){
-                    item.on("click", function(){
-                        var tId = Node.one(this).attr("tId");
-                        var bodyNode = {termId:tId};
-                        CurSite.sendDigest(Io, Json, "AD10", null, bodyNode, function(err, backBodyNode){
-                            alert(backBodyNode.description);
-                        });
                     });
                 });
 
@@ -56,7 +45,7 @@ html(lang="en")
                 });
 
                 Node.one("#add").on("click", function(){
-                    var url = "term_add.html?time=" + new Date().getTime();
+                    var url = "relation_add.html?time=" + new Date().getTime();
                     CurSite.redirectTo(null, url);
                 });
             });
@@ -71,29 +60,23 @@ html(lang="en")
                     input(type="button", id="search", value="查询")
                     input(type="button", id="add", value="新增")
             .clearfix(style="margin-top:8px")
-                #terms.container
+                #rst.container
                     table
                         thead
                             tr
-                                td(w="100") 游戏
-                                td(w="76") 期次
-                                td(w="76") 下一期
-                                td(w="100") 状态
-                                td(w="200") 开售时间
-                                td(w="200") 停售时间
+                                td(w="100") id
+                                td(w="76") 用户
+                                td(w="176") 游戏
+                                td(w="176") 出票
                                 td(w="134") 操作
                         tbody
                             - each val in rst
                                 tr
-                                    td=val.game.name
-                                    td=val.code
-                                    td=val.nextCode
-                                    td=val.status.des
-                                    td=val.openTime
-                                    td=val.closeTime
+                                    td=val._id
+                                    td=val.customerId
+                                    td=val.gameCode
+                                    td=val.relayTo
                                     td
                                         input(type="button", value="详情", class="detail", tId=val.id)
-                                        if val.status.id == termStatus.WAITING_DRAW_NUMBER
-                                            input(type="button", value="开奖", class="draw", tId=val.id)
             .clearfix(style="margin-top:8px")
                 #bar.vs_grid_plain(style="width:600px;")

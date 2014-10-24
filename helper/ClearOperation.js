@@ -26,33 +26,6 @@ var addOperation = function()
                 cb(err);
             });
         },
-        function(cb){
-            var table = dc.main.get("customer");
-            table.drop(function(err, data){
-                cb(null);
-            });
-        },
-        function(cb)
-        {
-            var table = dc.main.get("customer");
-            table.create(function(err, data){
-                cb(err);
-            });
-        },
-        function(cb)
-        {
-            var table = dc.main.get("customer");
-            table.save({id:"admin", password:"123456", type:userType.ADMINISTRATOR}, [], function(err, data){
-                cb(err);
-            });
-        },
-        function(cb)
-        {
-            var table = dc.main.get("customer");
-            table.save({id:"Q0001", password:"123", type:userType.CHANNEL}, [], function(err, data){
-                cb(err);
-            });
-        },
         function(cb)
         {
             var operationTable = dc.main.get("operation");
@@ -62,6 +35,12 @@ var addOperation = function()
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_TERM', parent:'ADMIN_GAME', name:'期次列表', url:'term_list.html', hasChildren:0}, [], function(err, data){
                 });
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_GAMEGRADE', parent:'ADMIN_GAME', name:'奖级列表', url:'gamegrade_list.html', hasChildren:0}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_RELATION', parent:'ADMIN_GAME', name:'出票转发', url:'relation_list.html', hasChildren:0}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_PRINT_QUEEN', parent:'ADMIN_GAME', name:'出票队列', url:'print_queenList.html', hasChildren:0}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_DRAW_QUEEN', parent:'ADMIN_GAME', name:'算奖队列', url:'ticket_drawList.html', hasChildren:0}, [], function(err, data){
                 });
             });
             operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_MSG', name:'消息管理', url:'', hasChildren:1}, [], function(err, data){
