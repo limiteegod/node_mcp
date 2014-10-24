@@ -62,37 +62,58 @@ PrintTest.prototype.printP02 = function(bodyNode, cb)
     });
 };
 
-var printTest = new PrintTest();
+PrintTest.prototype.printUtilEmpty = function()
+{
+    var self = this;
+    async.waterfall([
+        //取票
+        function(cb)
+        {
+            printTest.printP01(function(err, backBodyNode){
+                log.info(backBodyNode);
+                if(backBodyNode)
+                {
+                    var tickets = backBodyNode.rst;
+                    if(tickets.length == 0)
+                    {
+                        cb("no tickets to print........");
+                        return;
+                    }
+                    var rst = [];
+                    async.each(tickets, function(ticket, callback) {
+                        rst[rst.length] = {id:ticket.id,
+                            status:ticketPrintStatus.PRINT_SUCCESS};
+                        callback();
+                    }, function(err){
+                        cb(err, rst);
+                    });
+                }
+            });
+        },
+        //返回出票结果
+        function(rst, cb)
+        {
+            var bodyNode = {};
+            bodyNode.rst = rst;
+            printTest.printP02(bodyNode, function(err, backBodyNode){
+                log.info(backBodyNode);
+                cb(err);
+            });
+        }
+    ], function (err, rst) {
+        if(err)
+        {
+            log.info(err);
+        }
+        else
+        {
+            self.printUtilEmpty();
+        }
+    });
+}
 
-async.waterfall([
-    //取票
-    function(cb)
-    {
-        printTest.printP01(function(err, backBodyNode){
-            log.info(backBodyNode);
-            if(backBodyNode)
-            {
-                var tickets = backBodyNode.rst;
-                var rst = [];
-                async.each(tickets, function(ticket, callback) {
-                    rst[rst.length] = {id:ticket.id,
-                        status:ticketPrintStatus.PRINT_SUCCESS};
-                    callback();
-                }, function(err){
-                    cb(err, rst);
-                });
-            }
-        });
-    },
-    //返回出票结果
-    function(rst, cb)
-    {
-        var bodyNode = {};
-        bodyNode.rst = rst;
-        printTest.printP02(bodyNode, function(err, backBodyNode){
-            log.info(backBodyNode);
-            cb(err);
-        });
-    }
-], function (err, rst) {
-});
+
+var printTest = new PrintTest();
+printTest.printUtilEmpty();
+
+
