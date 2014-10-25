@@ -64,10 +64,15 @@ html(lang="en")
                     table
                         thead
                             tr
-                                td(w="76") 期次id
+                                td(w="126") 期次id
                                 td(w="100") 游戏
                                 td(w="76") 期次
                                 td(w="76") 期次状态
+                                td(w="76") 开奖号码
+                                td(w="76") 子消息数
+                                td(w="76") 已经完成数
+                                td(w="176") 父消息id
+                                td(w="46") 序号
                                 td(w="176") 创建时间
                                 td(w="176") 完成时间
                                 td(w="76") 消息状态
@@ -79,6 +84,11 @@ html(lang="en")
                                     td=val.game.name
                                     td=val.code
                                     td=val.status.des
+                                    td=val.wNum
+                                    td=val.msg.subCount
+                                    td=val.msg.finishCount
+                                    td=val.msg.parentId
+                                    td=val.msg.sep
                                     td=val.msg.createTime
                                     td=val.msg.finishTime
                                     td=val.msg.status.des

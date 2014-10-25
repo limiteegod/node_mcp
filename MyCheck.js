@@ -41,9 +41,9 @@ console.log(feo.getNumType("4,2,2,4"));
 console.log(feo.getNumType("1,2,3,4"));
 
 var start = new Date().getTime();
-for(var i = 0; i < 1000000; i++)
+for(var i = 0; i < 1; i++)
 {
-    check.count0100({number:"1,4,3,2;1,2,3,4;2,3,4,5"});
+    console.log(check.count0100({number:"1,2,3,4"}));
 }
 var end = new Date().getTime();
 console.log(end - start);

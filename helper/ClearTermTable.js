@@ -31,7 +31,7 @@ var initTerm = function()
             var now = new Date().getTime();
             var term = {gameCode:"T06", code:"2014001", nextCode:"2014002",
                 openTime:now, closeTime:now + 60*60*1000,
-                status:constants.termStatus.NOT_ON_SALE};
+                status:constants.termStatus.NOT_ON_SALE, wNum:"1,2,3,4"};
             term.id = term.gameCode + "_" + term.code;
             table.save(term, [], function(err, data){
                 cb(err);

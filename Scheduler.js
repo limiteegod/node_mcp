@@ -15,7 +15,7 @@ var termStatus = cons.termStatus;
 var msgStatus = cons.msgStatus;
 var msgType = cons.msgType;
 
-var issueModel = require("mcp_scheduler").issueModel;
+var issueModel = require("mcp_issue").issueModel;
 var master = require("mcp_msg").masterHandle;
 
 var Scheduler = function(){};

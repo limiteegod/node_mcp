@@ -12,6 +12,7 @@ var cons = require('mcp_constants');
 var termStatus = cons.termStatus;
 var msgStatus = cons.msgStatus;
 var msgType = cons.msgType;
+
 var msgFac = require("mcp_msg");
 var clientHandle = msgFac.clientHandle;
 
