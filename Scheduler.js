@@ -3,9 +3,13 @@ var async = require('async');
 var moment = require("moment");
 var dc = require('mcp_db').dc;
 var prop = require('mcp_config').prop;
+
+
 var esut = require("easy_util");
 var log = esut.log;
 var digestUtil = esut.digestUtil;
+
+
 var service = require("mcp_service");
 var termSer = service.termSer;
 var msgSer = service.msgSer;
