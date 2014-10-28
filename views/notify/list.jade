@@ -26,14 +26,14 @@ html(lang="en")
                     var skip = (index - 1)*limit;
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
                     console.log(cond);
-                    CurSite.redirectTo(null, "msg_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
+                    CurSite.redirectTo(null, "notify_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
                 };
 
                 //绑定事件
                 Node.all("input.detail").each(function(item){
                     item.on("click", function(){
                         var tId = Node.one(this).attr("tId");
-                        var url = "msg_detail.html?id=" + tId;
+                        var url = "notify_detail.html?id=" + tId;
                         var win = new VsWindow("#tWin", {title:"消息详情", width:500, height:400, url:url, controlBt:[
                             {name:'关闭', cb:null}
                         ]});
@@ -45,7 +45,7 @@ html(lang="en")
                 });
 
                 Node.one("#add").on("click", function(){
-                    var url = "msg_add.html?time=" + new Date().getTime();
+                    var url = "notify_add.html?time=" + new Date().getTime();
                     CurSite.redirectTo(null, url);
                 });
             });
@@ -66,20 +66,24 @@ html(lang="en")
                             tr
                                 td(w="76") id
                                 td(w="76") 用户
+                                td(w="76") 类型
+                                td(w="76") 状态
                                 td(w="176") 内容
                                 td(w="176") 创建时间
+                                td(w="176") 地址
                                 td(w="176") 取走时间
-                                td(w="176") 类型
                                 td(w="134") 操作
                         tbody
                             - each val in rst
                                 tr
                                     td=val._id
                                     td=val.customerId
-                                    td=val.content.gameCode + ',' + val.content.code + ',' + val.content.status
+                                    td=val.type.des
+                                    td=val.status.des
+                                    td=val.des
                                     td=val.createTime
+                                    td=val.url
                                     td=val.takeTime
-                                    td=val.type
                                     td
                                         input(type="button", value="详情", class="detail", tId=val._id)
             .clearfix(style="margin-top:8px")

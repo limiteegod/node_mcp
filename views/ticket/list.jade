@@ -90,6 +90,9 @@ html(lang="en")
                                 td(w="176") 创建时间
                                 td(w="76") 状态
                                 td(w="76") 出票状态
+                                td(w="76") 省份
+                                td(w="76") 实体票序列
+                                td(w="76") 终端机
                                 td(w="134") 操作
                         tbody
                             - each val in rst
@@ -105,6 +108,9 @@ html(lang="en")
                                     td=val.createTime
                                     td=val.status.des
                                     td=val.printStatus.des
+                                    td=val.province
+                                    td=val.seq
+                                    td=val.terminal
                                     td
                                         input(type="button", value="详情", class="detail", tId=val.id)
             .clearfix(style="margin-top:8px")

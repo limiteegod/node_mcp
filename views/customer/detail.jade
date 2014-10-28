@@ -31,6 +31,19 @@ html(lang="en")
                         alert(backBodyNode.description);
                     });
                 });
+
+                Node.one("#urlBt").on("click", function(){
+                    var customerId = Node.one("#customerId").val();
+                    var cond = {_id:customerId};
+                    var notifyUrl = Node.one("#notifyUrl").val();
+                    var data = {notifyUrl:notifyUrl};
+                    var bodyNode = {cond:cond, data:{$set:data}};
+                    CurSite.sendDigest(Io, Json, "AD11", null, bodyNode, function(err, backBodyNode){
+                        alert(backBodyNode.description);
+                    });
+                });
+
+
             });
     body
         input(id="customerId", type="hidden", value=customer.id)
@@ -49,6 +62,6 @@ html(lang="en")
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:100px;text-align:right;margin-top:4px") 通知地址:
                 .vs_grid_plain(style="margin-left:8px;")
-                    textarea(cols="25", rows="6")='1234'
+                    textarea(id="notifyUrl", cols="25", rows="6")=customer.notifyUrl
                 .vs_grid_plain(style="margin-left:8px;")
                     input(id="urlBt", type="button", value="修改")

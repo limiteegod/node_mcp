@@ -82,7 +82,8 @@ PrintTest.prototype.printUtilEmpty = function()
                     var rst = [];
                     async.each(tickets, function(ticket, callback) {
                         rst[rst.length] = {id:ticket.id,
-                            status:ticketPrintStatus.PRINT_SUCCESS};
+                            status:ticketPrintStatus.PRINT_SUCCESS, province:'bj',
+                        seq:digestUtil.createUUID(), terminal:'123456', rNumber:ticket.number};
                         callback();
                     }, function(err){
                         cb(err, rst);
