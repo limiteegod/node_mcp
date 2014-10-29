@@ -98,8 +98,8 @@ Notify.prototype.sendUntilEmpty = function()
             var key = data.key;
 
             log.info(msg);
-            notifyUtil.send(options, "3des", key, "N01", msg, function(err, data){
-                cb(null);
+            self.sendMsg(options, key, msg, 0, function(err, data){
+                cb(err, data);
             });
         }
     ], function (err, result) {
@@ -110,6 +110,32 @@ Notify.prototype.sendUntilEmpty = function()
         else
         {
             self.sendUntilEmpty();
+        }
+    });
+}
+
+/**
+ * 发送单个消息
+ */
+Notify.prototype.sendMsg = function(options, key, msg, tryCount, cb)
+{
+    var self = this;
+    notifyUtil.send(options, "3des", key, "N01", msg, function(err, data){
+        if(err)
+        {
+            tryCount++;
+            if(tryCount >= 3)
+            {
+                cb(err, data);
+            }
+            else
+            {
+                self.sendMsg(options, key, msg, tryCount, cb);
+            }
+        }
+        else
+        {
+            cb(err, data);
         }
     });
 }
