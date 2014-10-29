@@ -50,7 +50,7 @@ LotTest.prototype.lotT06 = function()
 
 var lotTest = new LotTest();
 var count = 0;
-while(count < 10)
+while(count < 1)
 {
     lotTest.lotT06();
     count++;
