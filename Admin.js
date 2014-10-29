@@ -92,6 +92,12 @@ Gateway.prototype.startWeb = function()
         });
     });
 
+    app.post("/main/notify.htm", function(req, res){
+        var message = req.body.message;
+        log.info(message);
+        res.json({});
+    });
+
     app.get("/mcp-filter/main/interface.htm", function(req, res){
         var message = req.query.message;
         self.handle(message, function(backMsgNode){

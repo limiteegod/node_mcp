@@ -35,8 +35,11 @@ html(lang="en")
                 Node.one("#urlBt").on("click", function(){
                     var customerId = Node.one("#customerId").val();
                     var cond = {_id:customerId};
-                    var notifyUrl = Node.one("#notifyUrl").val();
-                    var data = {notifyUrl:notifyUrl};
+                    var notifyIp = Node.one("#notifyIp").val();
+                    var notifyPort = parseInt(Node.one("#notifyPort").val());
+                    var notifyPath = Node.one("#notifyPath").val();
+                    var notifyKey = Node.one("#notifyKey").val();
+                    var data = {notifyIp:notifyIp, notifyPort:notifyPort, notifyPath:notifyPath, notifyKey:notifyKey};
                     var bodyNode = {cond:cond, data:{$set:data}};
                     CurSite.sendDigest(Io, Json, "AD11", null, bodyNode, function(err, backBodyNode){
                         alert(backBodyNode.description);
@@ -60,8 +63,20 @@ html(lang="en")
                 .vs_grid_plain(style="margin-left:8px;")
                     input(id="fixStBt", type="button", value="修改")
             .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:100px;text-align:right;margin-top:4px") 通知密钥:
+                .vs_grid_plain(style="margin-left:8px;")
+                    input(id="notifyKey", type="text", value=customer.notifyKey)
+            .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:100px;text-align:right;margin-top:4px") 通知地址:
                 .vs_grid_plain(style="margin-left:8px;")
-                    textarea(id="notifyUrl", cols="25", rows="6")=customer.notifyUrl
+                    input(id="notifyIp", type="text", value=customer.notifyIp)
+            .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:100px;text-align:right;margin-top:4px") 端口:
+                .vs_grid_plain(style="margin-left:8px;")
+                    input(id="notifyPort", type="text", value=customer.notifyPort)
+            .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:100px;text-align:right;margin-top:4px") 路径:
+                .vs_grid_plain(style="margin-left:8px;")
+                    textarea(id="notifyPath", cols="25", rows="6")=customer.notifyPath
                 .vs_grid_plain(style="margin-left:8px;")
                     input(id="urlBt", type="button", value="修改")
