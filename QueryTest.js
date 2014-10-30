@@ -1,0 +1,82 @@
+var platInterUtil = require('mcp_util').platInterUtil;
+var esut = require("easy_util");
+var log = esut.log;
+var digestUtil = esut.digestUtil;
+
+var QueryTest = function(){
+    var self = this;
+    self.userId = 'Q0001';
+    self.userType = "CHANNEL";
+    self.key = 'cad6011f5f174a359d9a36e06aada07e';
+    self.digestType = "3des";
+};
+
+QueryTest.prototype.query = function(cmd, bodyNode, cb)
+{
+    var self = this;
+    platInterUtil.get(self.userId, self.userType, self.digestType, self.key, cmd, bodyNode, cb);
+};
+
+/**
+ * 期次查询
+ */
+QueryTest.prototype.queryCQ01 = function()
+{
+    var self = this;
+    var bodyNode = {cond:{gameCode:'T06'}, sort:{}, skip:0, limit:20};
+    log.info(bodyNode);
+    self.query("CQ01", bodyNode, function(err, backMsgNode){
+        if(err)
+        {
+            log.info('err:' + err);
+        }
+        else
+        {
+            log.info('back:');
+            log.info(backMsgNode);
+        }
+    });
+};
+
+/**
+ * 期次查询
+ */
+QueryTest.prototype.queryCQ02 = function()
+{
+    var self = this;
+    var bodyNode = {cond:{}, sort:{}, skip:0, limit:20};
+    self.query("CQ02", bodyNode, function(err, backMsgNode){
+        if(err)
+        {
+            log.info('err:' + err);
+        }
+        else
+        {
+            log.info('back:');
+            log.info(backMsgNode);
+        }
+    });
+}
+
+/**
+ * 期次查询
+ */
+QueryTest.prototype.queryCQ03 = function()
+{
+    var self = this;
+    var bodyNode = {cond:{gameCode:'T06'}, sort:{}, skip:0, limit:20};
+    self.query("CQ03", bodyNode, function(err, backMsgNode){
+        if(err)
+        {
+            log.info('err:' + err);
+        }
+        else
+        {
+            log.info('back:');
+            log.info(backMsgNode);
+        }
+    });
+}
+
+var queryTest = new QueryTest();
+queryTest.queryCQ02();

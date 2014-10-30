@@ -120,6 +120,11 @@ Notify.prototype.sendUntilEmpty = function()
 Notify.prototype.sendMsg = function(options, key, msg, tryCount, cb)
 {
     var self = this;
+    if(!options.hostname || !key || key.length == 0)
+    {
+        cb("no notify config.....");
+        return;
+    }
     notifyUtil.send(options, "3des", key, "N01", msg, function(err, data){
         if(err)
         {

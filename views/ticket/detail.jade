@@ -66,6 +66,12 @@ html(lang="en")
                 .vs_grid_plain(style="width:100px;text-align:right;") 投注号码:
                 .vs_grid_plain(style="margin-left:8px;")=entity.number
             .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:100px;text-align:right;") (出票)返回号码:
+                .vs_grid_plain(style="margin-left:8px;")=entity.rNumber
+            .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:100px;text-align:right;") 开奖号码:
+                .vs_grid_plain(style="margin-left:8px;")=entity.dNumber
+            .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:100px;text-align:right;") 税前奖金:
                 .vs_grid_plain(style="margin-left:8px;")=entity.bonusBeforeTax/100 + '(元)'
             .clearfix(style="margin-top:8px")
