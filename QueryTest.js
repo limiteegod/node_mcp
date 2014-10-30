@@ -78,5 +78,25 @@ QueryTest.prototype.queryCQ03 = function()
     });
 }
 
+/**
+ * 奖级查询
+ */
+QueryTest.prototype.queryCQ04 = function()
+{
+    var self = this;
+    var bodyNode = {cond:{gameCode:'T06', termCode:'2014001'}, sort:{}, skip:0, limit:20};
+    self.query("CQ04", bodyNode, function(err, backMsgNode){
+        if(err)
+        {
+            log.info('err:' + err);
+        }
+        else
+        {
+            log.info('back:');
+            log.info(backMsgNode);
+        }
+    });
+}
+
 var queryTest = new QueryTest();
-queryTest.queryCQ02();
+queryTest.queryCQ04();
