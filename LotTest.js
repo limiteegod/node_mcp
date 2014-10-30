@@ -24,14 +24,14 @@ LotTest.prototype.lotT06 = function()
 {
     var self = this;
     var bodyNode = {};
-    var orderNode = {amount:1200};
+    var orderNode = {outerId:digestUtil.createUUID(), amount:1100};
     var ticketsNode = [{gameCode:'T06', termCode:"2014001", bType:'00', amount:400, pType:'01',
         multiple:1, number:'1,2,3,4;1,2,3,4', outerId:digestUtil.createUUID()},
     {gameCode:'T06', termCode:"2014001", bType:'00', amount:200, pType:'01',
             multiple:1, number:'1,3,3,4', outerId:digestUtil.createUUID()},
     {gameCode:'T06', termCode:"2014001", bType:'00', amount:400, pType:'01',
         multiple:1, number:'1,2,3,4;1,2,3,4', outerId:digestUtil.createUUID()},
-    {gameCode:'T06', termCode:"2014001", bType:'00', amount:200, pType:'01',
+    {gameCode:'T06', termCode:"2014001", bType:'00', amount:100, pType:'01',
         multiple:1, number:'1,3,3,4', outerId:digestUtil.createUUID()}];
     orderNode.tickets = ticketsNode;
     bodyNode.order = orderNode;
@@ -43,7 +43,8 @@ LotTest.prototype.lotT06 = function()
         else
         {
             log.info('back:');
-            log.info(backMsgNode);
+            var decodedBodyStr = digestUtil.check(backMsgNode.head, self.key, backMsgNode.body);
+            log.info(decodedBodyStr);
         }
     });
 };
