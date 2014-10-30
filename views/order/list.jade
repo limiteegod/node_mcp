@@ -65,14 +65,18 @@ html(lang="en")
                         thead
                             tr
                                 td(w="100") id
+                                td(w="176") 外部id
                                 td(w="76") 金额
+                                td(w="76") 成功金额
                                 td(w="176") 创建时间
                                 td(w="134") 操作
                         tbody
                             - each val in rst
                                 tr
                                     td=val.id
+                                    td=val.outerId
                                     td=val.amount/100 + '(元)'
+                                    td=val.trueAmount/100 + '(元)'
                                     td=val.createTime
                                     td
                                         input(type="button", value="详情", class="detail", tId=val.id)

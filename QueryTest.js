@@ -99,4 +99,4 @@ QueryTest.prototype.queryCQ04 = function()
 }
 
 var queryTest = new QueryTest();
-queryTest.queryCQ04();
+queryTest.queryCQ02();
