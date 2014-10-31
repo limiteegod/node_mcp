@@ -24,15 +24,15 @@ LotTest.prototype.lotT06 = function()
 {
     var self = this;
     var bodyNode = {};
-    var orderNode = {outerId:digestUtil.createUUID(), amount:1200};
+    var orderNode = {outerId:digestUtil.createUUID(), amount:2200};
     var ticketsNode = [{gameCode:'T06', termCode:"2014001", bType:'00', amount:400, pType:'01',
         multiple:1, number:'1,2,3,4;1,2,3,4', outerId:digestUtil.createUUID()},
     {gameCode:'T06', termCode:"2014001", bType:'00', amount:200, pType:'01',
             multiple:1, number:'1,3,4,5', outerId:digestUtil.createUUID()},
-    {gameCode:'T06', termCode:"2014001", bType:'00', amount:400, pType:'01',
-        multiple:1, number:'1,2,3,4;1,2,3,4', outerId:digestUtil.createUUID()},
-    {gameCode:'T06', termCode:"2014001", bType:'00', amount:200, pType:'01',
-        multiple:1, number:'1,3,4,6', outerId:digestUtil.createUUID()}];
+    {gameCode:'T06', termCode:"2014001", bType:'01', amount:1000, pType:'01',
+        multiple:1, number:'1,2,3,4,5', outerId:digestUtil.createUUID()},
+    {gameCode:'T06', termCode:"2014001", bType:'02', amount:600, pType:'01',
+        multiple:1, number:'1,2$3,4,5', outerId:digestUtil.createUUID()}];
     orderNode.tickets = ticketsNode;
     bodyNode.order = orderNode;
     self.lot(bodyNode, function(err, backMsgNode){
