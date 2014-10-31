@@ -40,10 +40,20 @@ console.log(feo.getNumType("4,2,2,4"));
 
 console.log(feo.getNumType("1,2,3,4"));
 
-var start = new Date().getTime();
+console.log(check.count0100({number:"1,2,3,4"}));
+
+console.log(check.count0101({number:"1,2,3,4,5,6"}));
+
+console.log(check.count0101({number:"2,3,4,5,6"}));
+
+console.log(check.count0102({number:"2,3,4$5,6"}));
+
+console.log(check.count0102({number:"1,2,3$4,5,6"}));
+
+/*var start = new Date().getTime();
 for(var i = 0; i < 1; i++)
 {
     console.log(check.count0100({number:"1,2,3,4"}));
 }
 var end = new Date().getTime();
-console.log(end - start);
+console.log(end - start);*/
