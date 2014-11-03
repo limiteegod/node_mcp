@@ -42,6 +42,8 @@ console.log(feo.getNumType("1,2,3,4"));
 
 console.log(check.count0100({number:"1,2,3,4"}));
 
+console.log(check.count0100({number:"1,2,3,4;1,2,3,4"}));
+
 console.log(check.count0101({number:"1,2,3,4,5,6"}));
 
 console.log(check.count0101({number:"2,3,4,5,6"}));
