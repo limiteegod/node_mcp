@@ -50,6 +50,14 @@ console.log(check.count0102({number:"2,3,4$5,6"}));
 
 console.log(check.count0102({number:"1,2,3$4,5,6"}));
 
+
+var check02 = feo.check();
+check02.setDrawNum("1,2,4,4");
+check02.setGl(gl);
+console.log(check02.count0200({number:"1,2,4,4"}));
+console.log(check02.count0201({number:"1,2,4"}));
+console.log(check02.count0202({number:"1,2$4,5"}));
+
 /*var start = new Date().getTime();
 for(var i = 0; i < 1; i++)
 {
