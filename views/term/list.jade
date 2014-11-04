@@ -44,10 +44,10 @@ html(lang="en")
                 Node.all("input.draw").each(function(item){
                     item.on("click", function(){
                         var tId = Node.one(this).attr("tId");
-                        var bodyNode = {termId:tId};
-                        CurSite.sendDigest(Io, Json, "AD10", null, bodyNode, function(err, backBodyNode){
-                            alert(backBodyNode.description);
-                        });
+                        var url = "term_draw.html?id=" + tId;
+                        var win = new VsWindow("#tWin", {title:"期次开奖", width:600, height:500, url:url, controlBt:[
+                            {name:'关闭', cb:null}
+                        ]});
                     });
                 });
 
