@@ -32,7 +32,7 @@ html(lang="en")
                     if(checkParam(data))
                     {
                         var bodyNode = {term:data};
-                        CurSite.sendDigest(Io, Json, "AD05", null, bodyNode, function(err, backBodyNode){
+                        CurSite.sendDigest(Io, Json, "AD12", null, bodyNode, function(err, backBodyNode){
                             alert(backBodyNode.description);
                         });
                     }
