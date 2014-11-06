@@ -76,6 +76,13 @@ console.log(check04.count0400({number:"2,4,4,4;2,4,4,4"}));
 console.log(check04.count0401({number:"1,2,4"}));
 console.log(check04.count0402({number:"1$2,4,5"}));
 console.log(check04.count0402({number:"2$4,5"}));
+
+
+var check05 = feo.check();
+check05.setDrawNum("2,4,4,4");
+check05.setGl(gl);
+console.log(check05.count0500({number:"2|_|_|_"}));
+
 /*var start = new Date().getTime();
 for(var i = 0; i < 1; i++)
 {
