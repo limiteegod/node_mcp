@@ -84,6 +84,24 @@ check05.setGl(gl);
 console.log(check05.count0500({number:"2|_|_|_"}));
 console.log(check05.count0501({number:"2,3|1,4|2,3|_"}));
 
+var check06 = feo.check();
+check06.setDrawNum("2,4,4,4");
+check06.setGl(gl);
+console.log(check06.count0600({number:"2|4|_|_"}));
+console.log(check06.count0601({number:"2,3|1,4|2,3|_"}));
+
+var check07 = feo.check();
+check07.setDrawNum("2,4,4,4");
+check07.setGl(gl);
+console.log(check07.count0700({number:"2|4|4|_"}));
+console.log(check07.count0701({number:"2,3|1,4|2,3,4|_"}));
+
+var check08 = feo.check();
+check08.setDrawNum("2,4,4,4");
+check08.setGl(gl);
+console.log(check08.count0800({number:"2|4|4|4"}));
+console.log(check08.count0801({number:"2,3|1,4|2,3,4|1,4"}));
+
 /*var start = new Date().getTime();
 for(var i = 0; i < 1; i++)
 {
