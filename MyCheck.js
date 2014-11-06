@@ -82,6 +82,7 @@ var check05 = feo.check();
 check05.setDrawNum("2,4,4,4");
 check05.setGl(gl);
 console.log(check05.count0500({number:"2|_|_|_"}));
+console.log(check05.count0501({number:"2,3|1,4|2,3|_"}));
 
 /*var start = new Date().getTime();
 for(var i = 0; i < 1; i++)
