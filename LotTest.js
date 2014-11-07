@@ -26,7 +26,7 @@ LotTest.prototype.lotT06 = function(cb)
 {
     var self = this;
     var bodyNode = {};
-    var orderNode = {outerId:digestUtil.createUUID(), amount:27400};
+    var orderNode = {outerId:digestUtil.createUUID(), amount:28000};
     var ticketsNode = [
     {gameCode:'T06', termCode:"2014001", bType:'00', amount:600, pType:'00',
         multiple:1, number:'1,2,3,4;1,2,3,3;1,2,3,4', outerId:digestUtil.createUUID()},
@@ -44,6 +44,8 @@ LotTest.prototype.lotT06 = function(cb)
         multiple:1, number:'1,2,3,4', outerId:digestUtil.createUUID()},
     {gameCode:'T06', termCode:"2014001", bType:'02', amount:1200, pType:'02',
         multiple:1, number:'1,2$3,4', outerId:digestUtil.createUUID()},
+    {gameCode:'T06', termCode:"2014001", bType:'08', amount:600, pType:'02',
+        multiple:1, number:'1$3,4,5', outerId:digestUtil.createUUID()},
     {gameCode:'T06', termCode:"2014001", bType:'00', amount:400, pType:'03',
         multiple:1, number:'1,1,2,2;2,2,3,3', outerId:digestUtil.createUUID()},
     {gameCode:'T06', termCode:"2014001", bType:'01', amount:600, pType:'03',
@@ -96,7 +98,7 @@ LotTest.prototype.lotT06 = function(cb)
 var lotTest = new LotTest();
 var count = 0;
 async.whilst(
-    function() { return count < 10000},
+    function() { return count < 1},
     function(whileCb) {
         lotTest.lotT06(function(){
             count++;

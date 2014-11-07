@@ -59,6 +59,10 @@ check02.setGl(gl);
 console.log(check02.count0200({number:"1,2,4,4"}));
 console.log(check02.count0201({number:"1,2,4"}));
 console.log(check02.count0202({number:"1,2$4,5"}));
+console.log("重胆拖算奖--------------");
+console.log(check02.count0208({number:"4$1,2,3"}));
+console.log(check02.count0208({number:"4$1,3,5"}));
+console.log(check02.count0208({number:"2$1,4,5"}));
 
 
 var check03 = feo.check();
