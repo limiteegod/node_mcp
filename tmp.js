@@ -1,32 +1,19 @@
-var service = require("mcp_service");
-var termSer = service.termSer;
-var msgSer = service.msgSer;
-var kvSer = service.kvSer;
-
-var esut = require("easy_util");
-var log = esut.log;
-var digestUtil = esut.digestUtil;
-
-var dc = require('mcp_db').dc;
-
-var async = require('async');
-
-async.waterfall([
-    function(cb)
+var rst = {};
+for(var i = 0; i < 17; i++)
+{
+    rst[i] = 0;
+}
+for(var i = 1; i < 9; i++)
+{
+    for(var j = 1; j < 9; j++)
     {
-        dc.init(function(err){
-            cb(err);
-        });
-    },
-    //start web
-    function(cb)
-    {
-        kvSer.getNotifyQueenId("Q0001", function(err, data){
-            cb(err, data);
-        });
+        var value = i - j;
+        if(value < 0)
+        {
+            value = value*(-1);
+        }
+        rst[value] += 1;
     }
-], function (err, data) {
-    log.info(err);
-    log.info(data);
-});
+}
 
+console.log(rst);

@@ -95,10 +95,14 @@ check06.setDrawNum("2,4,4,4");
 check06.setGl(gl);
 console.log(check06.count0600({number:"2|4|_|_"}));
 console.log(check06.count0601({number:"2,3|1,4|2,3|_"}));
+console.log("任2，和值--------------");
+console.log(check06.count0603({number:"1,3|2,3,4,5,6,16"}));
+console.log(check06.count0603({number:"1,3|2,3,4,5,16"}));
+console.log("任2，跨度--------------");
+console.log(check06.count0606({number:"1,3|2,3,4,5,6"}));
+console.log(check06.count0606({number:"1,3|3,4,5"}));
 console.log("任2，全包算奖--------------");
 console.log(check06.count0609({number:"2,4"}));
-
-
 
 var check07 = feo.check();
 check07.setDrawNum("2,4,4,4");
