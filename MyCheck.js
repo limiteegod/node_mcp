@@ -103,6 +103,7 @@ console.log(check06.count0606({number:"1,3|2,3,4,5,6"}));
 console.log(check06.count0606({number:"1,3|3,4,5"}));
 console.log("任2，全包算奖--------------");
 console.log(check06.count0609({number:"2,4"}));
+console.log(check06.count0609({number:"4,4"}));
 
 var check07 = feo.check();
 check07.setDrawNum("2,4,4,4");
