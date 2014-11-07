@@ -110,6 +110,10 @@ check07.setDrawNum("2,4,4,4");
 check07.setGl(gl);
 console.log(check07.count0700({number:"2|4|4|_"}));
 console.log(check07.count0701({number:"2,3|1,4|2,3,4|_"}));
+console.log("任3，全包算奖--------------");
+console.log(check07.count0709({number:"1,2,4"}));
+console.log(check07.count0709({number:"2,4,4"}));
+console.log(check07.count0709({number:"4,4,4"}));
 
 var check08 = feo.check();
 check08.setDrawNum("2,4,4,4");
