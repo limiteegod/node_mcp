@@ -102,6 +102,14 @@ check08.setGl(gl);
 console.log(check08.count0800({number:"2|4|4|4"}));
 console.log(check08.count0801({number:"2,3|1,4|2,3,4|1,4"}));
 
+
+var check00 = feo.check();
+check00.setDrawNum("2,4,4,4");
+check00.setGl(gl);
+console.log(check00.count0000({number:"2,4,4,4;2,3,3,4"}));
+console.log(check00.count0000({number:"1,2,3,4;2,4,4,4"}));
+console.log(check00.count0000({number:"1,2,3,4;2,3,4,4"}));
+
 /*var start = new Date().getTime();
 for(var i = 0; i < 1; i++)
 {
