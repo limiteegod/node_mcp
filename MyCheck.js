@@ -59,7 +59,7 @@ check02.setGl(gl);
 console.log(check02.count0200({number:"1,2,4,4"}));
 console.log(check02.count0201({number:"1,2,4"}));
 console.log(check02.count0202({number:"1,2$4,5"}));
-console.log("重胆拖算奖--------------");
+console.log("组12，重胆拖算奖--------------");
 console.log(check02.count0208({number:"4$1,2,3"}));
 console.log(check02.count0208({number:"4$1,3,5"}));
 console.log(check02.count0208({number:"2$1,4,5"}));
@@ -80,7 +80,9 @@ console.log(check04.count0400({number:"2,4,4,4;2,4,4,4"}));
 console.log(check04.count0401({number:"1,2,4"}));
 console.log(check04.count0402({number:"1$2,4,5"}));
 console.log(check04.count0402({number:"2$4,5"}));
-
+console.log("组4，重胆拖算奖--------------");
+console.log(check04.count0408({number:"2$4,5"}));
+console.log(check04.count0408({number:"4$2,5"}));
 
 var check05 = feo.check();
 check05.setDrawNum("2,4,4,4");
@@ -93,6 +95,10 @@ check06.setDrawNum("2,4,4,4");
 check06.setGl(gl);
 console.log(check06.count0600({number:"2|4|_|_"}));
 console.log(check06.count0601({number:"2,3|1,4|2,3|_"}));
+console.log("任2，全包算奖--------------");
+console.log(check06.count0609({number:"2,4"}));
+
+
 
 var check07 = feo.check();
 check07.setDrawNum("2,4,4,4");
