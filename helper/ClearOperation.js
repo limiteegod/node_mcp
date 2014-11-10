@@ -74,6 +74,8 @@ var addOperation = function()
             operationTable.save({userType:userType.ADMINISTRATOR, id:'CHANNEL_ENTITY', name:'实体管理', url:'', hasChildren:1}, [], function(err, data){
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'CHANNEL_LIST_MONGO', parent:'CHANNEL_ENTITY', name:'mongodb', url:'mongo_index.html', hasChildren:0}, [], function(err, data){
                 });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'CHANNEL_LIST_MYSQL', parent:'CHANNEL_ENTITY', name:'mysql', url:'mysql_index.html', hasChildren:0}, [], function(err, data){
+                });
             });
 
             operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT', name:'账户管理', url:'', hasChildren:1}, [], function(err, data){
