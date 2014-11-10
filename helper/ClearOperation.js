@@ -71,6 +71,11 @@ var addOperation = function()
                 });
             });
 
+            operationTable.save({userType:userType.ADMINISTRATOR, id:'CHANNEL_ENTITY', name:'实体管理', url:'', hasChildren:1}, [], function(err, data){
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'CHANNEL_LIST_MONGO', parent:'CHANNEL_ENTITY', name:'mongodb', url:'mongo_index.html', hasChildren:0}, [], function(err, data){
+                });
+            });
+
             operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT', name:'账户管理', url:'', hasChildren:1}, [], function(err, data){
                 operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT_MYINFO', parent:'CHANNEL_ACCOUNT', name:'账户详情', url:'channel_myinfo.html', hasChildren:0}, [], function(err, data){
                 });
