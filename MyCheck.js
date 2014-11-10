@@ -129,6 +129,13 @@ console.log(check00.count0000({number:"2,4,4,4;2,3,3,4"}));
 console.log(check00.count0000({number:"1,2,3,4;2,4,4,4"}));
 console.log(check00.count0000({number:"1,2,3,4;2,3,4,4"}));
 
+var check09 = feo.check();
+check09.setDrawNum("2,4,4,4");
+check09.setGl(gl);
+console.log(check09.count0900({number:"2|_|4|4;2|4|_|_;2|_|_|_"}));
+console.log(check09.count0901({number:"2,3|1,4|2,3,4|1,4"}));
+console.log(check09.count0902({number:"2,3|4|2,3,4|1,4"}));
+
 /*var start = new Date().getTime();
 for(var i = 0; i < 1; i++)
 {
