@@ -34,9 +34,7 @@ html(lang="en")
                     item.on("click", function(){
                         var tId = Node.one(this).attr("tId");
                         var url = "relation_detail.html?id=" + tId;
-                        var win = new VsWindow("#tWin", {title:"期次详情", width:500, height:400, url:url, controlBt:[
-                            {name:'关闭', cb:null}
-                        ]});
+                        CurSite.redirectTo(null, url);
                     });
                 });
 
@@ -77,6 +75,6 @@ html(lang="en")
                                     td=val.gameCode
                                     td=val.relayTo
                                     td
-                                        input(type="button", value="详情", class="detail", tId=val.id)
+                                        input(type="button", value="详情", class="detail", tId=val._id)
             .clearfix(style="margin-top:8px")
                 #bar.vs_grid_plain(style="width:600px;")

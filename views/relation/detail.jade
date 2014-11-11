@@ -28,6 +28,9 @@ html(lang="en")
                     ]});
                 }});
 
+                var customerId = Node.one("#customerId").val();
+                fromC.setData({id:customerId, name:customerId});
+
                 var toC = new VsDataSelect("#to", {width:200, click:function(self){
                     var url, title;
                     var data = self.getData();
@@ -50,12 +53,21 @@ html(lang="en")
                     ]});
                 }});
 
+                var relayTo = Node.one("#relayTo").val();
+                toC.setData({id:relayTo, name:relayTo});
+
                 var getData = function(){
                     var data = {};
                     data.customerId = fromC.getData()[0].id;
                     data.relayTo = toC.getData()[0].id;
-                    data.gameCode = Node.one("#game").val();
+                    data.gameCode = Node.one("#gameCode").val();
                     return data;
+                };
+
+                var getCond = function()
+                {
+                    var relationId = Node.one("#relationId").val();
+                    return {_id:relationId};
                 };
 
                 var checkParam = function(data){
@@ -66,8 +78,8 @@ html(lang="en")
                     var data = getData();
                     if(checkParam(data))
                     {
-                        var bodyNode = data;
-                        CurSite.sendDigest(Io, Json, "AD09", null, bodyNode, function(err, backBodyNode){
+                        var bodyNode = {cond:getCond(), data:{$set:data}};
+                        CurSite.sendDigest(Io, Json, "AD17", null, bodyNode, function(err, backBodyNode){
                             alert(backBodyNode.description);
                         });
                     }
@@ -80,6 +92,9 @@ html(lang="en")
 
             });
     body
+        input(id="relationId", type="hidden", value=relation._id)
+        input(id="customerId", type="hidden", value=relation.customerId)
+        input(id="relayTo", type="hidden", value=relation.relayTo)
         .bodyAdminDiv
             #tWin.container
             .clearfix(style="margin-top:8px")
@@ -93,11 +108,14 @@ html(lang="en")
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:100px;text-align:right;margin-top:4px") 类型*:
                 .vs_grid_plain(style="margin-left:8px;")
-                    select(id="game")
+                    select(id="gameCode")
                         - each val in game
-                            option(value=val.id)=val.name
+                            if(val.id == relation.gameCode)
+                                option(value=val.id, selected="true")=val.name
+                            else
+                                option(value=val.id)=val.name
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:100px;text-align:right;") &nbsp;
                 .vs_grid_plain(style="margin-left:8px;")
-                    input(type="button", value="添加", id="success")
+                    input(type="button", value="修改", id="success")
                     input(type="button", value="返回列表", id="backToList")
