@@ -13,7 +13,7 @@ html(lang="en")
                     item.on("click", function(){
                         var tId = Node.one(this).attr("tId");
                         var bodyNode = {cond:{name:tId}};
-                        CurSite.sendDigest(Io, Json, "AD14", null, bodyNode, function(err, backBodyNode){
+                        CurSite.sendDigest(Io, Json, "AD16", null, bodyNode, function(err, backBodyNode){
                             alert(backBodyNode.description);
                         });
                     });
