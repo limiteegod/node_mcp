@@ -1,4 +1,5 @@
 var async = require('async');
+var CronJob = require("cron").CronJob;
 
 var platInterUtil = require('mcp_util').platInterUtil;
 var esut = require("easy_util");
@@ -115,6 +116,13 @@ PrintTest.prototype.printUtilEmpty = function()
 
 
 var printTest = new PrintTest();
-printTest.printUtilEmpty();
+
+
+var printJob = new CronJob('*/10 * * * * *', function () {
+    printTest.printUtilEmpty();
+});
+printJob.start();
+
+
 
 
