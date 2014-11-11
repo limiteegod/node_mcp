@@ -27,16 +27,31 @@ html(lang="en")
                     {
                         cond.printStatus = printStatus;
                     }
+                    var gameCode = Node.one('#gameCode').val();
+                    if(gameCode && gameCode.length > 0)
+                    {
+                        cond.gameCode = gameCode;
+                    }
+                    var termCode = Node.one('#termCode').val();
+                    if(termCode && termCode.length > 0)
+                    {
+                        cond.termCode = termCode;
+                    }
                     return cond;
                 };
+
+                var getSort = function()
+                {
+                    return {id:-1};
+                }
 
                 var toPage = function(index){
                     console.log(index);
                     var limit = parseInt(Node.one('#limit').val());
                     var skip = (index - 1)*limit;
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
-                    console.log(cond);
-                    CurSite.redirectTo(null, "ticket_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
+                    var sort = encodeURIComponent(Json.stringify(getSort()));
+                    CurSite.redirectTo(null, "ticket_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond + "&sort=" + sort);
                 };
 
                 //绑定事件
@@ -66,6 +81,18 @@ html(lang="en")
             input(type='hidden', id="limit", value=limit)
             #tWin.container
             .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 游戏:
+                .vs_grid_plain(style="padding-top:4px;")
+                    select(id="gameCode")
+                        option(value="") 所有
+                        - each val in game
+                            if(val.id == cond.gameCode)
+                                option(value=val.id, selected="true")=val.name
+                            else
+                                option(value=val.id)=val.name
+                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 期次:
+                .vs_grid_plain(style="padding-top:4px;")
+                    input(id="termCode", type="text", value=cond.termCode)
                 .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 状态:
                 .vs_grid_plain(style="padding-top:4px;")
                     select(id="status")
@@ -84,6 +111,7 @@ html(lang="en")
                                 option(value=val.id, selected="true")=val.des
                             else
                                 option(value=val.id)=val.des
+
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
