@@ -65,6 +65,7 @@ html(lang="en")
                         thead
                             tr
                                 td(w="100") 用户名
+                                td(w="100") 名称
                                 td(w="100") 密码
                                 td(w="100") 类型
                                 td(w="176") 当前密钥
@@ -73,6 +74,7 @@ html(lang="en")
                             - each val in rst
                                 tr
                                     td=val.id
+                                    td=val.name
                                     td=val.password
                                     td=val.type.des
                                     td=val.st
