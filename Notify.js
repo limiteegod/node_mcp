@@ -12,6 +12,9 @@ var dateUtil = esut.dateUtil;
 var mcpUtil = require("mcp_util");
 var notifyUtil = mcpUtil.notifyUtil;
 
+var config = require('mcp_config');
+var ec = config.ec;
+
 var Notify = function(){};
 
 /**
@@ -106,6 +109,10 @@ Notify.prototype.sendUntilEmpty = function()
         if(err)
         {
             log.info(err);
+            if(err == ec.E4002)
+            {
+                self.sendUntilEmpty();
+            }
         }
         else
         {
@@ -122,7 +129,7 @@ Notify.prototype.sendMsg = function(options, key, msg, tryCount, cb)
     var self = this;
     if(!options.hostname || !key || key.length == 0)
     {
-        cb("no notify config.....");
+        cb(ec.E4002);
         return;
     }
     notifyUtil.send(options, "3des", key, "N01", msg, function(err, data){
