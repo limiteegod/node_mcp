@@ -1,63 +1,60 @@
+var CronJob = require("cron").CronJob;
 var async = require('async');
+var moment = require("moment");
+var dc = require('mcp_db').dc;
+var prop = require('mcp_config').prop;
 
-var platInterUtil = require('mcp_util').platInterUtil;
+
 var esut = require("easy_util");
 var log = esut.log;
 var digestUtil = esut.digestUtil;
 
-var LotTest = function(){
-    var self = this;
-    self.userId = 'Q0001';
-    //self.userId = 'wangyi';
-    self.userType = "CHANNEL";
-    self.key = 'cad6011f5f174a359d9a36e06aada07e';
-    //self.key = 'ce7b4b00379744c781f0544440be3978';
-    self.cmd = 'CT03';
-    self.digestType = "3des";
-};
 
-LotTest.prototype.lot = function(bodyNode, cb)
+var service = require("mcp_service");
+var termSer = service.termSer;
+var msgSer = service.msgSer;
+
+var cons = require('mcp_constants');
+var termStatus = cons.termStatus;
+var msgStatus = cons.msgStatus;
+var msgType = cons.msgType;
+
+var issueModel = require("mcp_issue").issueModel;
+var master = require("mcp_msg").masterHandle;
+
+var Scheduler = function(){};
+
+/**
+ *
+ */
+Scheduler.prototype.start = function()
 {
     var self = this;
-    platInterUtil.get(self.userId, self.userType, self.digestType, self.key, self.cmd, bodyNode, cb);
-};
-
-LotTest.prototype.lotT06 = function(cb)
-{
-    var self = this;
-    var bodyNode = {};
-    var orderNode = {outerId:digestUtil.createUUID(), amount:4400};
-    var ticketsNode = [
-        {gameCode:'T06', termCode:"2014001", bType:'02', amount:4400, pType:'09',
-            multiple:1, number:'1,2,3|2|1,3,4|_', outerId:digestUtil.createUUID()}];
-    orderNode.tickets = ticketsNode;
-    bodyNode.order = orderNode;
-    self.lot(bodyNode, function(err, backMsgNode){
+    async.waterfall([
+        function(cb)
+        {
+            dc.init(function(err){
+                cb(err);
+            });
+        },
+        //start web
+        function(cb)
+        {
+            issueModel.prize(null, {gameCode:'T06', code:'2014001'}, function(err, data){
+                cb(err);
+            });
+        }
+    ], function (err, result) {
         if(err)
         {
-            log.info('err:' + err);
+            log.info(err); // -> null
         }
         else
         {
-            log.info('back:');
-            var decodedBodyStr = digestUtil.check(backMsgNode.head, self.key, backMsgNode.body);
-            log.info(decodedBodyStr);
-            cb();
+            log.info(result); // -> 16
         }
     });
 };
 
-var lotTest = new LotTest();
-var count = 0;
-async.whilst(
-    function() { return count < 1},
-    function(whileCb) {
-        lotTest.lotT06(function(){
-            count++;
-            whileCb();
-        });
-    },
-    function(err) {
-        log.info(err);
-    }
-);
+var sch = new Scheduler();
+sch.start();
