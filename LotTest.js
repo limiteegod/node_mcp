@@ -113,12 +113,35 @@ LotTest.prototype.lotT06 = function(cb)
     });
 };
 
+LotTest.prototype.lotT01 = function(cb){
+
+    var self = this;
+    var bodyNode = {};
+    var orderNode = {outerId:digestUtil.createUUID(), amount:59600};
+    var ticketsNode = [
+        {gameCode:'T01', termCode:"2014001", bType:'00', amount:600, pType:'00',
+            multiple:1, number:'1,2,3,4;1,2,3,3;1,2,3,4', outerId:digestUtil.createUUID()}]
+    orderNode.tickets = ticketsNode;
+    bodyNode.order = orderNode;
+
+    self.lot(bodyNode, function(err, backMsgNode){
+        if(err){
+            log.info('err:' + err);
+        }else{
+            log.info("backMsgNode");
+            var decodeBodyStr = digestUtil.check(backMsgNode.head, self.key, backMsgNode.body);
+            log.info(decodeBodyStr);
+            cb();
+        }
+    });
+}
+
 var lotTest = new LotTest();
 var count = 0;
 async.whilst(
     function() { return count < 500},
     function(whileCb) {
-        lotTest.lotT06(function(){
+        lotTest.lotT01(function(){
             count++;
             whileCb();
         });
