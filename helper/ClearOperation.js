@@ -54,6 +54,8 @@ var addOperation = function()
                 });
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_TICKET', parent:'ADMIN_SALE', name:'票据列表', url:'ticket_list.html', hasChildren:0}, [], function(err, data){
                 });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_TERMREPORT', parent:'ADMIN_SALE', name:'期次报表', url:'report_list.html', hasChildren:0}, [], function(err, data){
+                });
             });
             operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_CUSTOMER', name:'用户管理', url:'', hasChildren:1}, [], function(err, data){
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_CUSTOMER', parent:'ADMIN_CUSTOMER', name:'用户列表', url:'customer_list.html', hasChildren:0}, [], function(err, data){
