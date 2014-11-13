@@ -10,13 +10,7 @@ html(lang="en")
 
                 var getData = function(){
                     var data = {};
-                    data.gameCode = Node.one("#gameCode").val();
-                    data.code = parseInt(Node.one("#code").val());
-                    data.nextCode = parseInt(Node.one("#nextCode").val());
-                    data.openTime = Node.one("#openTime").val();
-                    data.closeTime = Node.one("#closeTime").val();
-                    data.status = parseInt(Node.one("#status").val());
-                    data.pool = parseInt(Node.one("#pool").val());
+                    data.wNum = Node.one("#wNum").html();
                     return data;
                 };
 
@@ -27,7 +21,11 @@ html(lang="en")
                 };
 
                 var checkParam = function(data){
-
+                    if(data.wNum.length == 0)
+                    {
+                        alert("开奖号码不能为空");
+                        return false;
+                    }
                     return true;
                 };
 
@@ -49,11 +47,15 @@ html(lang="en")
                 });
 
                 Node.one("#success").on("click", function(){
-                    var tId = Node.one("#termId").val();
-                    var bodyNode = {termId:tId};
-                    CurSite.sendDigest(Io, Json, "AD10", null, bodyNode, function(err, backBodyNode){
-                        alert(backBodyNode.description);
-                    });
+                    var data = getData();
+                    if(checkParam(data))
+                    {
+                        var tId = Node.one("#termId").val();
+                        var bodyNode = {termId:tId};
+                        CurSite.sendDigest(Io, Json, "AD10", null, bodyNode, function(err, backBodyNode){
+                            alert(backBodyNode.description);
+                        });
+                    }
                 });
 
                 Node.one("#lastStep").on("click", function(){
@@ -82,7 +84,8 @@ html(lang="en")
                 .vs_grid_plain(style="width:100px;text-align:right;") 奖池:
                 .vs_grid_plain(style="width:100px;margin-left:8px;")=term.pool
                 .vs_grid_plain(style="width:100px;text-align:right;") 开奖号码:
-                .vs_grid_plain(style="width:100px;margin-left:8px;")=term.wNum
+                .vs_grid_plain(style="width:100px;margin-left:8px;")
+                    label(id="wNum")=term.wNum
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:100px;text-align:right;") 奖级明细:
                 .vs_grid_plain(style="margin-left:8px;")

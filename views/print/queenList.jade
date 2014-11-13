@@ -20,13 +20,19 @@ html(lang="en")
                     return cond;
                 };
 
+                var getSort = function()
+                {
+                    return {_id:-1};
+                }
+
                 var toPage = function(index){
                     console.log(index);
                     var limit = parseInt(Node.one('#limit').val());
                     var skip = (index - 1)*limit;
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
+                    var sort = encodeURIComponent(Json.stringify(getSort()));
                     console.log(cond);
-                    CurSite.redirectTo(null, "print_queenList.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
+                    CurSite.redirectTo(null, "print_queenList.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond + "&sort=" + sort);
                 };
 
                 //绑定事件
