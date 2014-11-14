@@ -137,7 +137,7 @@ html(lang="en")
                                 td(w="100") 状态
                                 td(w="200") 开售时间
                                 td(w="200") 停售时间
-                                td(w="134") 操作
+                                td(w="164") 操作
                         tbody
                             - each val in rst
                                 tr
@@ -149,7 +149,7 @@ html(lang="en")
                                     td=val.closeTime
                                     td
                                         input(type="button", value="详情", class="detail", tId=val.id)
-                                        if val.status.id == termStatus.WAITING_DRAW_NUMBER
+                                        if val.status.id == termStatusObj.WAITING_DRAW_NUMBER
                                             input(type="button", value="开奖", class="draw", tId=val.id)
             .clearfix(style="margin-top:8px")
                 #bar.vs_grid_plain(style="width:600px;")
