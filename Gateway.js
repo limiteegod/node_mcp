@@ -2,11 +2,13 @@ var express = require('express'), app = express();
 var http = require('http');
 var async = require('async');
 var httpServer = http.createServer(app);
+
 var config = require("mcp_config");
 var errCode = config.ec;
+var prop = config.prop;
+
 var cmdFac = require("mcp_factory").cmdFac;
 var dc = require('mcp_db').dc;
-var pageCtl = require("mcp_control").pageCtl;
 
 var esut = require("easy_util");
 var log = esut.log;
@@ -55,19 +57,12 @@ Gateway.prototype.startWeb = function()
 {
     var self = this;
 
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'jade');
-
     //是Connect內建的middleware，设置此处可以将client提交过来的post请求放入request.body中
     app.use(express.bodyParser());
     //是Connect內建的，可以协助处理POST请求伪装PUT、DELETE和其他HTTP methods
     app.use(express.methodOverride());
-    //cookie
-    app.use(express.cookieParser());
     //route requests
     app.use(app.router);
-    //public文件夹下面的文件，都暴露出来，客户端访问的时候，不需要使用public路径
-    app.use(express.static('/data/app/node_kissy/public'));
 
     app.configure('development', function(){
         app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
@@ -75,13 +70,6 @@ Gateway.prototype.startWeb = function()
 
     app.configure('production', function(){
         app.use(express.errorHandler());
-    });
-
-    app.get('/', function(req, res){
-        res.render('index', {
-            title: 'Express',
-            youAreUsingJade:true
-        });
     });
 
     app.post("/mcp-filter/main/interface.htm", function(req, res){
@@ -92,12 +80,6 @@ Gateway.prototype.startWeb = function()
         });
     });
 
-    app.post("/main/notify.htm", function(req, res){
-        var message = req.body.message;
-        log.info(message);
-        res.json({});
-    });
-
     app.get("/mcp-filter/main/interface.htm", function(req, res){
         var message = req.query.message;
         self.handle(message, function(backMsgNode){
@@ -106,34 +88,8 @@ Gateway.prototype.startWeb = function()
         });
     });
 
-    app.get('/:name', function(req, res, next){
-        var path = req.params.name.match(/^([a-zA-Z0-9_]+)(\.html)$/);
-        if(path)
-        {
-            var jadePathArray = path[1].split("_");
-            var jadePath = jadePathArray.join("/");
-            var headNode = {cmd:jadePathArray};
-            headNode.userId = req.cookies.userId;
-            headNode.userType = req.cookies.userType;
-            headNode.key = req.cookies.st;
-            pageCtl.handle(headNode, req.query, function(err, data){
-                if(err)
-                {
-                    res.render("sys/error", err);
-                }
-                else
-                {
-                    res.render(jadePath, data);
-                }
-            });
-        }
-        else
-        {
-            next();
-        }
-    });
-
-    httpServer.listen(9988);
+    log.info("程序在端口" + prop.gtPort + "启动.........");
+    httpServer.listen(prop.gtPort);
 };
 
 Gateway.prototype.handle = function(message, cb)
