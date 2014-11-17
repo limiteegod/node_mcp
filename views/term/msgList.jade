@@ -55,6 +55,19 @@ html(lang="en")
                     });
                 });
 
+                //重新执行
+                Node.all("input.retry").each(function(item){
+                    item.on("click", function(){
+                        var tId = Node.one(this).attr("tId");
+                        var bodyNode = {};
+                        bodyNode.cond = {_id:tId};
+                        bodyNode.data = {$set:{status:1000}};
+                        CurSite.sendDigest(Io, Json, "AD18", null, bodyNode, function(err, backBodyNode){
+                            alert(backBodyNode.description);
+                        });
+                    });
+                });
+
                 Node.one("#search").on("click", function(){
                     toPage(cur);
                 });
@@ -94,7 +107,7 @@ html(lang="en")
                             tr
                                 td(w="126") 期次id
                                 td(w="100") 游戏
-                                td(w="76") 期次
+                                td(w="96") 期次
                                 td(w="76") 期次状态
                                 td(w="76") 开奖号码
                                 td(w="76") 需处理总数
@@ -107,7 +120,7 @@ html(lang="en")
                                 td(w="176") 创建时间
                                 td(w="176") 完成时间
                                 td(w="76") 消息状态
-                                td(w="134") 操作
+                                td(w="164") 操作
                         tbody
                             - each val in rst
                                 tr
@@ -127,6 +140,7 @@ html(lang="en")
                                     td=val.msg.finishTime
                                     td=val.msg.status.des
                                     td
-                                        input(type="button", value="详情", class="detail", tId=val.id)
+                                        input(type="button", value="详情", class="detail", tId=val._id)
+                                        input(type="button", value="重新执行", class="retry", tId=val.msg._id)
             .clearfix(style="margin-top:8px")
                 #bar.vs_grid_plain(style="width:600px;")
