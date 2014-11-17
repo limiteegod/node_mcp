@@ -2,41 +2,45 @@ doctype html
 html(lang="en")
     head
         include ../includes/script.jade
-        script(type='text/javascript').
-            KISSY.use("io,node,json", function(S, Io, Node, Json){
-                Node.one("#submit").on("click", function(){
-                    var name = Node.one("#name").val();
-                    var pwd = Node.one("#pwd").val();
-                    var key = hex_md5(pwd);
-                    CurSite.setCookie("userId", name, CurSite.cookieExpireTime);
-                    CurSite.setCookie("userType", "CHANNEL", CurSite.cookieExpireTime);
-                    var body = {name:name, password:pwd, uniqueId:CurSite.createUUID()};
-                    CurSite.sendDigest(Io, Json, "AD01", key, body, function(err, backBodyNode){
-                        if(backBodyNode.repCode == '0000')
-                        {
-                            CurSite.setCookie("st", backBodyNode.st, CurSite.cookieExpireTime);
-                            window.location = CurSite.getAbsolutePath("channel_index.html");
-                        }
-                        else
-                        {
-                            alert(backBodyNode.description);
-                        }
-                    });
+    link(rel='stylesheet', type='text/css', href='./css/login.css')
+    script(type='text/javascript').
+        KISSY.use("io,node,json", function(S, Io, Node, Json){
+            Node.one("#submit").on("click", function(){
+                var name = Node.one("#name").val();
+                var pwd = Node.one("#pwd").val();
+                var key = hex_md5(pwd);
+                CurSite.setCookie("userId", name, CurSite.cookieExpireTime);
+                CurSite.setCookie("userType", "CHANNEL", CurSite.cookieExpireTime);
+                var body = {name:name, password:pwd, uniqueId:CurSite.createUUID()};
+                CurSite.sendDigest(Io, Json, "AD01", key, body, function(err, backBodyNode){
+                    if(backBodyNode.repCode == '0000')
+                    {
+                        CurSite.setCookie("st", backBodyNode.st, CurSite.cookieExpireTime);
+                        window.location = CurSite.getAbsolutePath("channel_index.html");
+                    }
+                    else
+                    {
+                        alert(backBodyNode.description);
+                    }
                 });
             });
+        });
+
     body
-        .bodyDiv
-            #container.container
-                table
+        .loginwrap
+            .loginbox
+                table(  class="tab" width="85%" border="0" cellspacing="0" cellpadding="0" )
                     tr
-                        td.
-                           name:
-                        td
-                            input(type='text', id='name')
+                        td(width="25%" align="left") 用户名:
+                        td(colspan="3")
+                            input(type="text" class="Textbox" id='name')
                     tr
-                        td.
-                           password:
-                        td
-                            input(type='password', id='pwd')
-            #controlButton.container
-                input(id='submit', type="button", value='submit')
+                        td(align="left") 密   码:
+                        td(colspan="3")
+                            input(type='password'  class="Textbox" id='pwd')
+                    tr
+                        td(colspan="4" align="center")
+                            input(id='submit' type="button" class="btn" )
+
+
+

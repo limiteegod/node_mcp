@@ -29,7 +29,7 @@ var addOperation = function()
         function(cb)
         {
             var table = dc.main.get("customer");
-            table.save({id:"admin", password:"123456", type:userType.ADMINISTRATOR}, [], function(err, data){
+            table.save({id:"admin", name:"管理员",password:"123456", type:userType.ADMINISTRATOR}, [], function(err, data){
                 cb(err);
             });
         }
