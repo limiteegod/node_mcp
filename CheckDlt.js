@@ -13,8 +13,8 @@ check.setGl(gl);
 
 
 
-/*console.log(check.count0000({number:"01,02,03,04,05|04,05;01,02,04,05,07|02,04;01,03,06,08,09|04,07"}));
-console.log(check.count0000({number:"01,02,03,04,05|04,12"}));
+console.log(check.count0000({number:"01,02,03,04,05|04,05;01,02,04,05,07|02,04;01,03,06,08,09|04,07"}));
+/*console.log(check.count0000({number:"01,02,03,04,05|04,12"}));
 console.log(check.count0000({number:"01,02,03,04,05|11,12"}));
 console.log(check.count0000({number:"01,02,03,04,19|04,05"}));
 console.log(check.count0000({number:"01,02,03,18,19|04,05"}));
