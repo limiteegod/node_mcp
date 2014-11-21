@@ -12,6 +12,7 @@ var check = esf.check();
 check.setDrawNum("01|02|03|04|05");
 check.setGl(gl);
 
+/*
 console.log(check.count2101({number:'01,02,03'}));
 console.log(check.count2200({number:'01,02;02,05;06,07'}));
 console.log(check.count2201({number:'01,02,03,04,05'}));
@@ -36,4 +37,6 @@ console.log(check.count2602({number:'01,02,03$04,05,07,10,11'}));
 
 console.log(check.count2700({number:'01,02,03,04,05,06,07;02,04,05,08,09,10,11;04,06,07,08,09,10,11'}));
 console.log(check.count2701({number:'01,02,03,04,05,06,07,08,09,10'}));
-console.log(check.count2702({number:'01,02,03$04,05,07,10,11'}));
+console.log(check.count2702({number:'01,02,03$04,05,07,10,11'}));*/
+
+console.log(check.count2800({number:'01,02,03,04,05,06,07,08;01,02,04,05,08,09,10,11;03,04,06,07,08,09,10,11'}));
