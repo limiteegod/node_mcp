@@ -18,8 +18,9 @@ var initTerm = function()
         {
             var table = dc.main.get("term");
 
-            var startDate = 20141115;
+            var startDate = 20141110;
             var endDate = 20141129;
+            var gameCode = 'T05';
             var rst = [];
             for(var curDate = startDate; curDate <= endDate; curDate++)
             {
@@ -39,7 +40,7 @@ var initTerm = function()
                     {
                         nextCode += (curDate*100 + i + 1) + "";
                     }
-                    var term = {gameCode:"T01", code:code, nextCode:nextCode,
+                    var term = {gameCode:gameCode, code:code, nextCode:nextCode,
                         openTime:start, closeTime:end,
                         status:constants.termStatus.NOT_ON_SALE, wNum:""};
                     term.id = term.gameCode + "_" + term.code;
