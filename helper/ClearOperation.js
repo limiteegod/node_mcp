@@ -83,13 +83,17 @@ var addOperation = function()
             operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT', name:'账户管理', url:'', hasChildren:1}, [], function(err, data){
                 operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT_MYINFO', parent:'CHANNEL_ACCOUNT', name:'账户详情', url:'channel_myinfo.html', hasChildren:0}, [], function(err, data){
                 });
+                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT_CHANGEPSW', parent:'CHANNEL_ACCOUNT', name:'修改密码', url:'channel_changepsw.html', hasChildren:0}, [], function(err, data){
+                });
             });
+
 
 
             cb(null, "success");
         }
     ], function (err, result) {
         log.info(err);
+        log.info(result);
         log.info("end...........");
     });
 };
