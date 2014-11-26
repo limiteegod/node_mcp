@@ -1,0 +1,98 @@
+doctype html
+html(lang="en")
+    head
+        include ../includes/script.jade
+        script(type='text/javascript').
+            KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window",
+                function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow){
+                var count = parseInt(Node.one('#count').val());
+                var skip = parseInt(Node.one('#skip').val());
+                var limit = parseInt(Node.one('#limit').val());
+                var cur = parseInt(skip/limit) + 1;
+                var table = new VsGridTable('#recharge', {});
+                var pageBar = new VsPagebar('#bar', {count:count, limit:limit, cur:cur, toPage:function(index){
+                    toPage(index);
+                }});
+
+                var toPage = function(index){
+                    var limit = parseInt(Node.one('#limit').val());
+                    var skip = (index - 1)*limit;
+                    var cond = encodeURIComponent(Json.stringify(getCondition()));
+                    CurSite.redirectTo(null, "recharge_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
+                };
+
+                //绑定事件
+                Node.all("input.detail").each(function(item){
+                    item.on("click", function(){
+                        var tId = Node.one(this).attr("tId");
+                        var url = "recharge_detail.html?id=" + tId;
+                        var win = new VsWindow("#tWin", {title:"充值详情", width:500, height:400, url:url, controlBt:[
+                            {name:'关闭', cb:function(err, data){
+                                return true;
+                            }}
+                        ]});
+                    });
+                });
+
+                Node.one("#search").on("click", function(){
+                    toPage(cur);
+                });
+
+
+            });
+    body
+        .bodyAdminDiv
+            input(type='hidden', id="count", value=count)
+            input(type='hidden', id="skip", value=skip)
+            input(type='hidden', id="limit", value=limit)
+            #tWin.container
+            .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 彩种:
+                .vs_grid_plain(style="padding-top:4px;")
+                    select(id="gameCode")
+                        option(value="" , selected="true") 所有彩种
+                        option(value="" ) 双色球
+                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 彩票期次:
+                     input
+                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 订单号:
+                    input
+                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 时间:
+                    input
+                    span 至
+                    input
+            .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:423px;")
+                    input(type="button", id="search", value="查询")
+            .clearfix(style="margin-top:8px")
+                #recharge.container(style="width:423px;")
+                    table
+                        thead
+                            tr
+                                td(w="200") 投注时间
+                                td(w="100") 订单号
+                                td(w="100") 出票状态
+                                td(w="100") 彩种
+                                td(w="100") 期次
+                                td(w="100") 方案
+                                td(w="100") 注数
+                                td(w="100") 倍数
+                                td(w="100") 金额
+                                td(w="100") 中奖金额
+                                td(w="100") 中奖注数
+
+                        tbody
+                                tr
+                                    td 2014-01-01 11:11:11
+                                    td 1111111
+                                    td 已出票
+                                    td 双色球
+                                    td 2014001
+                                    td
+                                    td 1
+                                    td 1
+                                    td 2
+                                    td 5
+                                    td 1
+
+            .clearfix(style="margin-top:8px")
+                #bar.vs_grid_plain(style="width:600px;")

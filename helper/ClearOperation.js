@@ -87,6 +87,22 @@ var addOperation = function()
                 });
             });
 
+            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_RECHARGE', name:'充值管理', url:'', hasChildren:1}, [], function(err, data){
+                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_MAIN_BANK', parent:'CHANNEL_RECHARGE', name:'银行汇款', url:'recharge_bank.html', hasChildren:0}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_RECHARGE', parent:'CHANNEL_RECHARGE', name:'充值查询', url:'recharge_list.html', hasChildren:0}, [], function(err, data){
+                });
+            });
+
+            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_SALE', name:'销售管理', url:'', hasChildren:1}, [], function(err, data){
+                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_PRINT', parent:'CHANNEL_SALE', name:'出票明细', url:'sale_print.html', hasChildren:0}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_DAY', parent:'CHANNEL_SALE', name:'日销量中奖', url:'sale_day.html', hasChildren:0}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_TERM', parent:'CHANNEL_SALE', name:'期次报表', url:'sale_term.html', hasChildren:0}, [], function(err, data){
+                });
+            });
+
 
 
             cb(null, "success");
