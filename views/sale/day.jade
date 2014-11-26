@@ -3,8 +3,18 @@ html(lang="en")
     head
         include ../includes/script.jade
         script(type='text/javascript').
-            KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window",
-                function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow){
+            KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window,calendar,calendar/assets/base.css",
+                function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow,Calendar){
+
+
+                var S_Date = S.Date;
+                new Calendar('#startDate', {popup:true,triggerType:['click'],closable:true}).on('select', function(e) {
+                      Node.one('#startDate').val(S_Date.format(e.date, 'yyyy-mm-dd'));
+                });
+                new Calendar('#endDate', {popup:true,triggerType:['click'],closable:true}).on('select', function(e) {
+                      Node.one('#endDate').val(S_Date.format(e.date, 'yyyy-mm-dd'));
+                });
+
                 var count = parseInt(Node.one('#count').val());
                 var skip = parseInt(Node.one('#skip').val());
                 var limit = parseInt(Node.one('#limit').val());
@@ -49,9 +59,9 @@ html(lang="en")
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 时间:
                 .vs_grid_plain(style="padding-top:4px;")
-                    input
+                    input(type="text" id="startDate")
                     span 至
-                    input
+                    input(type="text" id="endDate")
 
 
 
