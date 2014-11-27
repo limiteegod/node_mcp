@@ -102,7 +102,6 @@ Gateway.prototype.handle = function(message, cb)
         var bodyStr = msgNode.body;
         cmdFac.handle(headNode, bodyStr, function(err, bodyNode) {
             var key = headNode.key;
-            headNode.key = undefined;
             if(key == undefined)
             {
                 key = digestUtil.getEmptyKey();
@@ -110,6 +109,10 @@ Gateway.prototype.handle = function(message, cb)
                 {
                     headNode.digestType = "3des-empty";
                 }
+            }
+            else
+            {
+                delete headNode.key;
             }
             if (bodyNode == undefined) {
                 bodyNode = {};
