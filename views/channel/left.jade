@@ -1,40 +1,25 @@
 doctype html
 html(lang="en")
     head
+        link(rel='stylesheet', type='text/css', href='./css/index.css')
         include ../includes/script.jade
-        link(rel='stylesheet', type='text/css', href='./js/tree/assets/dpl-min.css')
         script(type='text/javascript').
-            KISSY.use("io,node,json,vs-data-tree", function(S, Io, Node, Json, VsDataTree){
-                var getChildren = function(id, cb)
-                {
-                    var bodyNode = {cond:{parent:id}};
-                    CurSite.sendDigest(Io, Json, "AD02", null, bodyNode, function(err, backBodyNode){
-                        cb(err, backBodyNode.rst);
-                    });
-                };
+            KISSY.use("io,node,json", function(S, Io, Node, Json){
 
-                var selectionChange = function(src, target)
-                {
-                    if(target.url.length > 0)
-                    {
-                        parent.document.getElementById("mainFrame").src = target.url + "?frameId=mainFrame";
-                    }
-                };
-
-                var bodyNode = {cond:{parent:''}};
-                CurSite.sendDigest(Io, Json, "AD02", null, bodyNode, function(err, backBodyNode){
-                    if(backBodyNode.repCode == '0000')
-                    {
-                        var tree = new VsDataTree("#ppList", {data:backBodyNode.rst, getChildren:getChildren,
-                        selectionChange:selectionChange
-                        });
-                    }
-                    else
-                    {
-                        alert(backBodyNode.description);
-                    }
+                Node.one("#bye").on("click", function(){
+                  CurSite.clear;
+                  window.parent.location.href="sys_channelLogin.html";
                 });
+
             });
+
     body
-        .bodyAdminDiv
-            #ppList.container(style="margin-left:10px;margin-top:10px;")
+         .sidebar
+             ul
+
+              for book in rst
+                 li
+                    a(href=book.url target='mainFrame')=book.name
+              end
+                 li
+                    a(href='javascript:void(0)' target='mainFrame' id='bye') 退出登录

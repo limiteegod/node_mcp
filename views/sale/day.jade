@@ -30,7 +30,6 @@ html(lang="en")
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
                     CurSite.redirectTo(null, "recharge_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
                 };
-
                 //绑定事件
                 Node.all("input.detail").each(function(item){
                     item.on("click", function(){
@@ -43,12 +42,9 @@ html(lang="en")
                         ]});
                     });
                 });
-
                 Node.one("#search").on("click", function(){
                     toPage(cur);
                 });
-
-
             });
     body
         .bodyAdminDiv
@@ -62,9 +58,6 @@ html(lang="en")
                     input(type="text" id="startDate")
                     span 至
                     input(type="text" id="endDate")
-
-
-
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
