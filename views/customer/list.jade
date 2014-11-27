@@ -68,7 +68,7 @@ html(lang="en")
                                 td(w="100") 名称
                                 td(w="100") 密码
                                 td(w="100") 类型
-                                td(w="176") 当前密钥
+                                td(w="176") 状态
                                 td(w="134") 操作
                         tbody
                             - each val in rst
@@ -77,7 +77,7 @@ html(lang="en")
                                     td=val.name
                                     td=val.password
                                     td=val.type.des
-                                    td=val.st
+                                    td=val.status.des
                                     td
                                         input(type="button", value="详情", class="detail", tId=val.id)
             .clearfix(style="margin-top:8px")
