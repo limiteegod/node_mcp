@@ -6,13 +6,6 @@ html(lang="en")
         script(type='text/javascript').
             KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window,button,calendar,calendar/assets/base.css",
                 function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow,Button,Calendar){
-                var selBtn=new Button({
-                      content: "查询",
-                      render: "#button_container",
-                      prefixCls: "goog-",
-                      tooltip: "点击进行查询"
-                });
-                selBtn.render();
 
                 var S_Date = S.Date;
                 new Calendar('#startDate', {popup:true,triggerType:['click'],closable:true}).on('select', function(e) {
@@ -51,9 +44,9 @@ html(lang="en")
                     });
                 });
 
-                selBtn.on("click", function() {
-                       toPage(cur);
-                       });
+             Node.one("#search").on("click", function(){
+                                           toPage(cur);
+                                       });
 
 
             });
@@ -79,7 +72,7 @@ html(lang="en")
                     input(type="text" id="endDate")
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
-                    #button_container
+                    input(type="button", id="search", value="查询")
             .clearfix(style="margin-top:8px")
                 #recharge.container(style="width:423px;")
                     table
