@@ -6,7 +6,9 @@ var digestUtil = esut.digestUtil;
 var QueryTest = function(){
     var self = this;
     self.userId = 'Q0001';
+    //self.userId = 'Test_Really_001';
     self.userType = "CHANNEL";
+    //self.key = '7601403d33c4443d938bbbb864c4ac05';
     self.key = 'cad6011f5f174a359d9a36e06aada07e';
     self.digestType = "3des";
 };
