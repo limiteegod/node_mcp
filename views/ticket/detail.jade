@@ -63,6 +63,12 @@ html(lang="en")
                 .vs_grid_plain(style="width:100px;text-align:right;") 投注方式:
                 .vs_grid_plain(style="margin-left:8px;")=entity.bTypeDetail.name
             .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:100px;text-align:right;") 倍数:
+                .vs_grid_plain(style="margin-left:8px;")=entity.multiple
+            .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:100px;text-align:right;") 金额:
+                .vs_grid_plain(style="margin-left:8px;")=entity.amount/100 + '(元)'
+            .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:100px;text-align:right;") 投注号码:
                 .vs_grid_plain(style="margin-left:8px;")=entity.number
             .clearfix(style="margin-top:8px")

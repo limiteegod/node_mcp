@@ -98,18 +98,36 @@ Filter.prototype.startWeb = function()
 Filter.prototype.handle = function(message, cb)
 {
     var self = this;
+    var headNode;
+    try {
+        var msgNode = JSON.parse(message);
+        headNode = msgNode.head;
+    }
+    catch (err)
+    {
+        log.info(err);
+        var backHeadNode = {cmd:'E01', digestType:"3des-empty"};
+        var backBodyStr = JSON.stringify(errCode.E0006);
+        var backEncodedBody = digestUtil.generate(backHeadNode, null, backBodyStr);
+        var backMsg = JSON.stringify({head:backHeadNode, body:backEncodedBody});
+        cb(null, backMsg);
+        return;
+    }
+    var start = new Date().getTime();
     gatewayInterUtil.get(message, function(err, backMsg){
         if(err)
         {
             console.log('problem with request: ', err);
-            var headNode = {digestType:"3des-empty"};
-            var bodyStr = JSON.stringify(errCode.E2059);
-            var encodedBody = digestUtil.generate(headNode, null, bodyStr);
-            backMsg = JSON.stringify({head:headNode, body:encodedBody});
-            cb(null, backMsg);
+            var errHeadNode = {digestType:"3des-empty"};
+            var errBodyStr = JSON.stringify(errCode.E2059);
+            var errEncodedBody = digestUtil.generate(errHeadNode, null, errBodyStr);
+            var errbackMsg = JSON.stringify({head:errHeadNode, body:errEncodedBody});
+            cb(null, errbackMsg);
         }
         else
         {
+            var end = new Date().getTime();
+            log.info(headNode.cmd + ":" + headNode.userId + ":" + headNode.id + ",用时:" + (end - start) + "ms");
             cb(null, backMsg);
         }
     });

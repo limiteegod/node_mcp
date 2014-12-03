@@ -72,7 +72,7 @@ PrintTest.prototype.printUtilEmpty = function()
         {
             printTest.printP01(function(err, backBodyNode){
                 log.info(backBodyNode);
-                if(backBodyNode)
+                if(backBodyNode && backBodyNode.repCode == '0000')
                 {
                     var tickets = backBodyNode.rst;
                     if(tickets.length == 0)

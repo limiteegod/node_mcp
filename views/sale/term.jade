@@ -1,0 +1,131 @@
+doctype html
+html(lang="en")
+    head
+        include ../includes/script.jade
+        script(type='text/javascript').
+            KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window,calendar,calendar/assets/base.css",
+                function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow,Calendar){
+
+
+                var S_Date = S.Date;
+                new Calendar('#startDate', {popup:true,triggerType:['click'],closable:true}).on('select', function(e) {
+                    Node.one('#startDate').val(S_Date.format(e.date, 'yyyy-mm-dd'));
+                 });
+                new Calendar('#endDate', {popup:true,triggerType:['click'],closable:true}).on('select', function(e) {
+                    Node.one('#endDate').val(S_Date.format(e.date, 'yyyy-mm-dd'));
+                });
+
+                var count = parseInt(Node.one('#count').val());
+                var skip = parseInt(Node.one('#skip').val());
+                var limit = parseInt(Node.one('#limit').val());
+                var cur = parseInt(skip/limit) + 1;
+                var table = new VsGridTable('#rst', {});
+                var pageBar = new VsPagebar('#bar', {count:count, limit:limit, cur:cur, toPage:function(index){
+                    toPage(index);
+                }});
+
+                var getCondition = function()
+                {
+                    var cond = {};
+                    var gameCode = Node.one('#gameCode').val();
+                     if(gameCode && gameCode.length > 0){
+                       cond.gameCode = gameCode;
+                     }
+                    return cond;
+                };
+
+
+                var getAddition = function(){
+                    var add = {};
+                    add.startDate = Node.one('#startDate').val();
+                    add.endDate = Node.one('#endDate').val();
+                    return add;
+                };
+
+
+                var getSort = function()
+                {
+                    return {id:-1};
+                };
+
+                var toPage = function(index){
+                    console.log(index);
+                    var limit = parseInt(Node.one('#limit').val());
+                    var skip = (index - 1)*limit;
+                    var cond = encodeURIComponent(Json.stringify(getCondition()));
+                    var sort = encodeURIComponent(Json.stringify(getSort()));
+                    var add = encodeURIComponent(Json.stringify(getAddition()));
+                    CurSite.redirectTo(null, "sale_term.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond + "&sort=" + sort + "&add=" + add);
+                };
+
+                //绑定事件
+                Node.all("input.detail").each(function(item){
+                    item.on("click", function(){
+                        var tId = Node.one(this).attr("tId");
+                        var url = "sale_termDetail.html?id=" + tId;
+                        CurSite.redirectTo(null, url);
+                    });
+                });
+
+                Node.one("#search").on("click", function(){
+                    toPage(cur);
+                });
+            });
+    body
+        .bodyAdminDiv
+            input(type='hidden', id="count", value=count)
+            input(type='hidden', id="skip", value=skip)
+            input(type='hidden', id="limit", value=limit)
+            #tWin.container
+            .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 彩种:
+                .vs_grid_plain(style="padding-top:4px;")
+                    select(id="gameCode")
+                        option(value="" , selected="true") 所有彩种
+                        option(value="F01" ) 双色球
+                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 时间:
+                    input(type="text" id="startDate")
+                    span 至
+                    input(type="text" id="endDate")
+            .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:423px;")
+                    input(type="button", id="search", value="查询")
+            .clearfix(style="margin-top:8px")
+                #rst.container
+                    table
+                        thead
+                            tr
+                                td(w="100") id
+                                td(w="76") 游戏
+                                td(w="76") 期次
+                                td(w="76") 用户
+                                td(w="76") 中奖数目
+                                td(w="126") 中奖购买金额
+                                td(w="126") 税后奖金
+                                td(w="126") 税前奖金
+                                td(w="100") 未中奖数目
+                                td(w="126") 未中奖购买金额
+                                td(w="76") 失败数目
+                                td(w="126") 失败金额
+                                td(w="126") 创建时间
+                                td(w="134") 操作
+                        tbody
+                            - each val in rst
+                                tr
+                                    td=val.id
+                                    td=val.gameCode
+                                    td=val.termCode
+                                    td=val.customerId
+                                    td=val.hitCount
+                                    td=val.hitAmount/100
+                                    td=val.bonus/100
+                                    td=val.bonusBeforeTax/100
+                                    td=val.notHitCount
+                                    td=val.notHitAmount/100
+                                    td=val.failCount
+                                    td=val.failAmount/100
+                                    td=val.createTime
+                                    td
+                                        input(type="button", value="详情", class="detail", tId=val.id)
+            .clearfix(style="margin-top:8px")
+                #bar.vs_grid_plain(style="width:600px;")
