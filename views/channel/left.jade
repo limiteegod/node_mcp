@@ -5,12 +5,12 @@ html(lang="en")
         include ../includes/script.jade
         script(type='text/javascript').
             KISSY.use("io,node,json", function(S, Io, Node, Json){
-
                 Node.one("#bye").on("click", function(){
-                  CurSite.clear;
+                  CurSite.setCookie("userId", "name", -1);
+                  CurSite.setCookie("userType", "CHANNEL", -1);
+                  CurSite.setCookie("st", "111111", -1);
                   window.parent.location.href="sys_channelLogin.html";
                 });
-
             });
 
     body
@@ -22,4 +22,4 @@ html(lang="en")
                     a(href=book.url target='mainFrame')=book.name
               end
                  li
-                    a(href='javascript:void(0)' target='mainFrame' id='bye') 退出登录
+                    a(href='javascript:void(0)'  id='bye') 退出登录
