@@ -19,7 +19,7 @@ html(lang="en")
                 var skip = parseInt(Node.one('#skip').val());
                 var limit = parseInt(Node.one('#limit').val());
                 var cur = parseInt(skip/limit) + 1;
-                var table = new VsGridTable('#recharge', {});
+                var table = new VsGridTable('#rst', {});
                 var pageBar = new VsPagebar('#bar', {count:count, limit:limit, cur:cur, toPage:function(index){
                     toPage(index);
                 }});
@@ -28,28 +28,42 @@ html(lang="en")
                     var limit = parseInt(Node.one('#limit').val());
                     var skip = (index - 1)*limit;
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
-                    CurSite.redirectTo(null, "recharge_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
+                    var add = encodeURIComponent(Json.stringify(getAddition()));
+                    CurSite.redirectTo(null, "sale_print.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond + "&add=" + add);
+                };
+                //绑定事件
+                Node.one("#search").on("click", function(){
+                     toPage(cur);
+                  });
+
+                var getAddition = function(){
+                    var add = {};
+                    add.startDate = Node.one('#startDate').val();
+                    add.endDate = Node.one('#endDate').val();
+                    return add;
                 };
 
-                //绑定事件
-                Node.all("input.detail").each(function(item){
-                    item.on("click", function(){
-                        var tId = Node.one(this).attr("tId");
-                        var url = "recharge_detail.html?id=" + tId;
-                        var win = new VsWindow("#tWin", {title:"充值详情", width:500, height:400, url:url, controlBt:[
-                            {name:'关闭', cb:function(err, data){
-                                return true;
-                            }}
-                        ]});
-                    });
-                });
 
-             Node.one("#search").on("click", function(){
-                                           toPage(cur);
-                                       });
+                var getCondition = function()
+                             {
+                                 var cond = {};
+                                 var gameCode = Node.one('#gameCode').val();
+                                 if(gameCode && gameCode.length > 0){
+                                    cond.gameCode = gameCode;
+                                 }
+                                 var termCode = Node.one('#termCode').val();
+                                 if(termCode && termCode.length > 0){
+                                    cond.termCode = termCode;
+                                 }
 
+                                 var outerId = Node.one('#outerId').val();
+                                 if(outerId && outerId.length > 0){
+                                    cond.outerId = outerId;
+                                 }
+                                 return cond;
+                             };
 
-            });
+                 });
     body
         .bodyAdminDiv
             input(type='hidden', id="count", value=count)
@@ -60,21 +74,25 @@ html(lang="en")
                 .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 彩种:
                 .vs_grid_plain(style="padding-top:4px;")
                     select(id="gameCode")
-                        option(value="" , selected="true") 所有彩种
-                        option(value="" ) 双色球
+                        option(value="") 所有
+                        - each val in game
+                            if(val.id == cond.gameCode)
+                                option(value=val.id, selected="true")=val.name
+                            else
+                                option(value=val.id)=val.name
                 .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 彩票期次:
-                     input
-                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 订单号:
-                    input
+                    input(id="termCode", type="text", value=cond.termCode)
+                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 彩票ID:
+                    input(id="outerId", type="text", value=cond.outerId)
                 .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 时间:
-                    input(type="text" id="startDate")
+                    input(type="text" id="startDate" value=add.startDate)
                     span 至
-                    input(type="text" id="endDate")
+                    input(type="text" id="endDate"   value=add.endDate)
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
             .clearfix(style="margin-top:8px")
-                #recharge.container(style="width:423px;")
+                #rst.container(style="width:423px;")
                     table
                         thead
                             tr
@@ -83,26 +101,21 @@ html(lang="en")
                                 td(w="100") 出票状态
                                 td(w="100") 彩种
                                 td(w="100") 期次
-                                td(w="100") 方案
-                                td(w="100") 注数
                                 td(w="100") 倍数
                                 td(w="100") 金额
                                 td(w="100") 中奖金额
-                                td(w="100") 中奖注数
 
                         tbody
+                            - each val in rst
                                 tr
-                                    td 2014-01-01 11:11:11
-                                    td 1111111
-                                    td 已出票
-                                    td 双色球
-                                    td 2014001
-                                    td
-                                    td 1
-                                    td 1
-                                    td 2
-                                    td 5
-                                    td 1
+                                    td=val.createTime
+                                    td=val.outerId
+                                    td=val.printStatus.des
+                                    td=val.game.name
+                                    td=val.termCode
+                                    td=val.multiple
+                                    td=val.amount
+                                    td=val.bonus
 
             .clearfix(style="margin-top:8px")
                 #bar.vs_grid_plain(style="width:600px;")

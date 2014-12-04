@@ -9,7 +9,7 @@ var gl = esf.gl(gameGrades.length);
 gl.setBonus(gameGrades);
 
 var check = esf.check();
-check.setDrawNum("01|02|03|04|05");
+check.setDrawNum("01,02,03,04,05");
 check.setGl(gl);
 
 /*
