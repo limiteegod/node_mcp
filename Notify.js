@@ -2,18 +2,21 @@ var CronJob = require("cron").CronJob;
 var async = require('async');
 var moment = require("moment");
 var dc = require('mcp_db').dc;
-var prop = require('mcp_config').prop;
 
+var config = require('mcp_config');
+var ec = config.ec;
+var prop = config.prop;
 
 var esut = require("easy_util");
 var log = esut.log;
 var dateUtil = esut.dateUtil;
+var digestUtil = esut.digestUtil;
 
 var mcpUtil = require("mcp_util");
 var notifyUtil = mcpUtil.notifyUtil;
 
-var config = require('mcp_config');
-var ec = config.ec;
+var cons = require('mcp_constants');
+var digestType = cons.digestType;
 
 var Notify = function(){};
 
@@ -86,6 +89,7 @@ Notify.prototype.sendUntilEmpty = function()
         function(data, cb)
         {
             var msg = {};
+            msg.uniqueId = digestUtil.createUUID();
             msg.content = data.content;
             msg.id = data._id;
             msg.type = data.type;
@@ -99,9 +103,17 @@ Notify.prototype.sendUntilEmpty = function()
             };
 
             var key = data.key;
-
+            var msgDigestType = data.digestType;
+            if(msgDigestType == undefined)
+            {
+                msgDigestType = digestType.getInfoById(digestType.trippleDes).headCode;
+            }
+            else
+            {
+                msgDigestType = digestType.getInfoById(msgDigestType).headCode;
+            }
             log.info(msg);
-            self.sendMsg(options, key, msg, 0, function(err, data){
+            self.sendMsg(options, msgDigestType, key, msg, 0, function(err, data){
                 cb(err, data);
             });
         }
@@ -124,7 +136,7 @@ Notify.prototype.sendUntilEmpty = function()
 /**
  * 发送单个消息
  */
-Notify.prototype.sendMsg = function(options, key, msg, tryCount, cb)
+Notify.prototype.sendMsg = function(options, msgDigestType, key, msg, tryCount, cb)
 {
     var self = this;
     if(!options.hostname || !key || key.length == 0)
@@ -132,7 +144,7 @@ Notify.prototype.sendMsg = function(options, key, msg, tryCount, cb)
         cb(ec.E4002);
         return;
     }
-    notifyUtil.send(options, "3des", key, "N01", msg, function(err, data){
+    notifyUtil.send(options, msgDigestType, key, "N01", msg, function(err, data){
         if(err)
         {
             tryCount++;
@@ -142,7 +154,7 @@ Notify.prototype.sendMsg = function(options, key, msg, tryCount, cb)
             }
             else
             {
-                self.sendMsg(options, key, msg, tryCount, cb);
+                self.sendMsg(options, msgDigestType, key, msg, tryCount, cb);
             }
         }
         else
