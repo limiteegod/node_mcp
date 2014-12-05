@@ -6,7 +6,6 @@ html(lang="en")
             KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window,calendar,calendar/assets/base.css",
                 function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow,Calendar){
 
-
                 var S_Date = S.Date;
                 new Calendar('#startDate', {popup:true,triggerType:['click'],closable:true}).on('select', function(e) {
                       Node.one('#startDate').val(S_Date.format(e.date, 'yyyy-mm-dd'));
@@ -62,12 +61,18 @@ html(lang="en")
                 Node.one("#search").on("click", function(){
                     toPage(cur);
                 });
+
+                var err = Node.one('#err').val();
+                if(err && err.length > 0){
+                  alert(err);
+                }
             });
     body
         .bodyAdminDiv
             input(type='hidden', id="count", value=count)
             input(type='hidden', id="skip", value=skip)
             input(type='hidden', id="limit", value=limit)
+            input(type='hidden', id="err", value=err)
             #tWin.container
                 .clearfix(style="margin-top:8px")
                     .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 彩种:
@@ -101,8 +106,8 @@ html(lang="en")
                                 tr
                                     td=val.gameCode
                                     td=val.salenum
-                                    td=val.saleamount
+                                    td=val.saleamount/100
                                     td=val.prizenum
-                                    td=val.prizeamount
+                                    td=val.prizeamount/100
             .clearfix(style="margin-top:8px")
                 #bar.vs_grid_plain(style="width:600px;")
