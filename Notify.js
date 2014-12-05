@@ -17,6 +17,7 @@ var notifyUtil = mcpUtil.notifyUtil;
 
 var cons = require('mcp_constants');
 var digestType = cons.digestType;
+var notifyType = cons.notifyType;
 
 var Notify = function(){};
 
@@ -144,7 +145,16 @@ Notify.prototype.sendMsg = function(options, msgDigestType, key, msg, tryCount, 
         cb(ec.E4002);
         return;
     }
-    notifyUtil.send(options, msgDigestType, key, "N01", msg, function(err, data){
+    var cmd = '';
+    if(msg.type == notifyType.TICKET)
+    {
+        cmd = "N02";
+    }
+    else
+    {
+        cmd = "N01";
+    }
+    notifyUtil.send(options, msgDigestType, key, cmd, msg, function(err, data){
         if(err)
         {
             tryCount++;
