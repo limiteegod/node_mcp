@@ -87,6 +87,9 @@ html(lang="en")
                             else
                                 option(value=val.id)=val.des
             .clearfix(style="margin-top:8px")
+                .vs_grid_plain(style="width:100px;text-align:right;margin-top:4px") 开奖号码:
+                .vs_grid_plain(style="margin-left:8px;")=term.wNum
+            .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:100px;text-align:right;") &nbsp;
                 .vs_grid_plain(style="margin-left:8px;")
                     input(type="button", value="修改", id="success")

@@ -63,6 +63,23 @@ PrintTest.prototype.printP02 = function(bodyNode, cb)
     });
 };
 
+PrintTest.prototype.printP03 = function(bodyNode, cb)
+{
+    var self = this;
+    self.print("P03", bodyNode, function(err, backMsgNode){
+        if(err)
+        {
+            cb(err, null);
+        }
+        else
+        {
+            var backBodyStr = digestUtil.check(backMsgNode.head, self.key, backMsgNode.body);
+            var backBodyNode = JSON.parse(backBodyStr);
+            cb(null, backBodyNode);
+        }
+    });
+};
+
 PrintTest.prototype.printUtilEmpty = function()
 {
     var self = this;
