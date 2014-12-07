@@ -119,21 +119,6 @@ var addOperation = function()
             });
 
 
-            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_MAIN_BANK', name:'充值', url:'recharge_bank.html', hasChildren:0 ,version:2, level:1}, [], function(err, data){
-            });
-            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_PRINT', name:'出票明细', url:'sale_printOld.html', hasChildren:0,version:2, level:2}, [], function(err, data){
-            });
-            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_DAY', name:'日销量中奖', url:'sale_day.html', hasChildren:0 ,version:2, level:3}, [], function(err, data){
-            });
-            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_TERM', name:'期销量中奖', url:'sale_term.html', hasChildren:0 ,version:2, level:4}, [], function(err, data){
-            });
-            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_MONEY', name:'账户流水查询', url:'sale_money.html', hasChildren:0 ,version:2, level:5}, [], function(err, data){
-            });
-            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_MAIN_ACCOUNT', name:'修改资料', url:'channel_myinfo.html', hasChildren:0 ,version:2, level:6}, [], function(err, data){
-            });
-            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_MAIN_RECHARGE', name:'修改密码', url:'channel_changepsw.html', hasChildren:0 ,version:2,level:7}, [], function(err, data){
-            });
-
             cb(null, "success");
         }
     ], function (err, result) {

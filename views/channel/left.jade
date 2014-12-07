@@ -14,11 +14,6 @@ html(lang="en")
     body
          .sidebar
              ul
-                 li
-                    a(href='channel_oldleft.html'  arget='leftFrame')
-                       font(color='red') 高频查询(点击切换)
-         .sidebar
-             ul
               for book in rst
                  li
                     a(href=book.url target='mainFrame')=book.name
