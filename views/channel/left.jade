@@ -6,17 +6,14 @@ html(lang="en")
         script(type='text/javascript').
             KISSY.use("io,node,json", function(S, Io, Node, Json){
                 Node.one("#bye").on("click", function(){
-                  CurSite.setCookie("userId", "name", -1);
-                  CurSite.setCookie("userType", "CHANNEL", -1);
-                  CurSite.setCookie("st", "111111", -1);
                   window.parent.location.href="sys_channelLogin.html";
+                  CurSite.setCookie("userId", "name", -1);
                 });
             });
 
     body
          .sidebar
              ul
-
               for book in rst
                  li
                     a(href=book.url target='mainFrame')=book.name

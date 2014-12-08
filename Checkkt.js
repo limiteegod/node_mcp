@@ -4,15 +4,20 @@ var util = require('mcp_util');
 var mathUtil = util.mathUtil;
 
 
-var gameGrades = [1300,600,1900,7800,54000,9000,2600,900,6500,13000,19500,117900];
+var gameGrades = [8000,4000,2500,1600,1200,1000,900,900,1000,1200,1600,2500,4000,8000,4000,24000,1500,8000,4000,800,1000];
 var gl = kt.gl(gameGrades.length);
 gl.setBonus(gameGrades);
 
 var check = kt.check();
-check.setDrawNum("01,02,03");
+check.setDrawNum("3,1,1");
 check.setGl(gl);
 
-console.log(check.count0100({number:"01,02,05"}));
-console.log(check.count0100({number:"01,02,05"}));
-console.log(check.count0100({number:"01,02,05"}));
-console.log(check.count0100({number:"01,02,05"}));
+console.log(check.count0100({number:"1,2,3"}));
+console.log(check.count0200({number:"1,1,3"}));
+
+console.log(check.count0300({number:"1,1,1"}));
+console.log(check.count0401({number:"6"}));
+console.log(check.count0501({number:"12;23"}));
+console.log(check.count0601({number:"11;22"}));
+console.log(check.count0700({number:"111,222,333,444,555,666"}));
+console.log(check.count0800({number:"123,234,345,456"}));
