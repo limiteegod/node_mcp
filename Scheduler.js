@@ -86,12 +86,16 @@ Scheduler.prototype.checkHandled = function()
             log.info(err);
             log.info(msg);
             if(msg) {
-                master.handle(msg, function(err, data){});
+                master.handle(msg, function(err, data){
+
+                });
             }
         });
     });
     self.checkHandledJob.start();
-}
+};
+
+
 
 var sch = new Scheduler();
 sch.start();
