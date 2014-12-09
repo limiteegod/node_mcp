@@ -1,6 +1,7 @@
 doctype html
 html(lang="en")
     head
+        link(rel='stylesheet', type='text/css', href='./css/table-list.css')
         link(rel='stylesheet', type='text/css', href='./css/custombutton.css')
         include ../includes/script.jade
         script(type='text/javascript').
@@ -92,18 +93,18 @@ html(lang="en")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
             .clearfix(style="margin-top:8px")
-                #rst.container(style="width:423px;")
-                    table
+                .tab-list
+                    table(width="100%" border="0" cellspacing="0" cellpadding="0" class="tab")
                         thead
                             tr
-                                td(w="200") 投注时间
-                                td(w="100") 订单号
-                                td(w="100") 出票状态
-                                td(w="100") 彩种
-                                td(w="100") 期次
-                                td(w="100") 倍数
-                                td(w="100") 金额
-                                td(w="100") 中奖金额
+                                td 投注时间
+                                td 订单号
+                                td 出票状态
+                                td 彩种
+                                td 期次
+                                td 倍数
+                                td 金额
+                                td 中奖金额
 
                         tbody
                             - each val in rst

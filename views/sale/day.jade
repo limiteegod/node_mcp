@@ -1,6 +1,7 @@
 doctype html
 html(lang="en")
     head
+        link(rel='stylesheet', type='text/css', href='./css/table-list.css')
         include ../includes/script.jade
         script(type='text/javascript').
             KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window,calendar,calendar/assets/base.css",
@@ -92,15 +93,15 @@ html(lang="en")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
             .clearfix(style="margin-top:8px")
-                #list.container(style="width:423px;")
-                    table
+                .tab-list
+                    table(width="100%" border="0" cellspacing="0" cellpadding="0" class="tab")
                         thead
                             tr
-                                td(w="100") 彩种
-                                td(w="100") 销量
-                                td(w="100") 销量金额
-                                td(w="100") 中奖
-                                td(w="100") 中奖金额
+                                td 彩种
+                                td 销量
+                                td 销量金额
+                                td 中奖
+                                td 中奖金额
                         tbody
                             - each val in rst
                                 tr
@@ -109,5 +110,6 @@ html(lang="en")
                                     td=val.saleamount/100
                                     td=val.prizenum
                                     td=val.prizeamount/100
+
             .clearfix(style="margin-top:8px")
                 #bar.vs_grid_plain(style="width:600px;")
