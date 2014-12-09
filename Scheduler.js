@@ -46,7 +46,7 @@ Scheduler.prototype.start = function()
         //start msg hanled
         function(cb)
         {
-            self.checkHandled();
+            self.startMsgConsumerJob();
             cb(null, "success");
         }
     ], function (err, result) {
@@ -76,25 +76,50 @@ Scheduler.prototype.issue = function()
 }
 
 /**
- * 处理已经处理的消息
+ * 启动处理已经完成的消息的任务类
  */
-Scheduler.prototype.checkHandled = function()
+Scheduler.prototype.startMsgConsumerJob = function()
 {
     var self = this;
     self.checkHandledJob = new CronJob('*/5 * * * * *', function () {
-        master.getFromPool(function(err, msg){
+        self.handleMsg(function(err, data){
+            log.info("处理已经完成的消息:")
             log.info(err);
-            log.info(msg);
-            if(msg) {
-                master.handle(msg, function(err, data){
-
-                });
-            }
+            log.info(data);
         });
     });
     self.checkHandledJob.start();
 };
 
+/**
+ * 处理消息
+ */
+Scheduler.prototype.handleMsg = function(cb)
+{
+    var self = this;
+    var hasNext = true;
+    async.whilst(
+        function() { return hasNext},
+        function(whileCb) {
+            master.getFromPool(function(err, msg){
+                if(msg)
+                {
+                    master.handle(msg, function(err, data){
+                        whileCb(err);
+                    });
+                }
+                else
+                {
+                    whileCb();
+                    hasNext = false;
+                }
+            });
+        },
+        function(err) {
+            cb(err, null);
+        }
+    );
+}
 
 
 var sch = new Scheduler();
