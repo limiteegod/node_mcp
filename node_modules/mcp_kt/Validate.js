@@ -119,7 +119,7 @@ Validate.prototype.validate0200 = function(order, ticket, cb)
                 break;
             }
         }
-        if(count < 0){
+        if(count < 1){
             cb(ec.E2066);
             return;
         }
@@ -227,7 +227,7 @@ Validate.prototype.validate0501 = function(order, ticket, cb)
                 break;
             }
         }
-        if(count < 0){
+        if(count < 1){
             cb(ec.E2066);
             return;
         }
@@ -266,7 +266,7 @@ Validate.prototype.validate0601 = function(order, ticket, cb)
                 break;
             }
         }
-        if(count < 0){
+        if(count < 1){
             cb(ec.E2066);
             return;
         }
