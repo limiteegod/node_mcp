@@ -21,7 +21,7 @@ html(lang="en")
                 var cur = parseInt(skip/limit) + 1;
                 var table = new VsGridTable('#rst', {});
                 var pageBar = new VsOnePagebar('#manu', {count:count, limit:limit, cur:cur, toPage:function(index){
-                    toPage(index);
+                    toPage(index,false);
                 }});
 
                 var getCondition = function()
@@ -48,9 +48,13 @@ html(lang="en")
                     return {id:-1};
                 };
 
-                var toPage = function(index){
+                var toPage = function(index,control){
                     var limit = parseInt(Node.one('#limit').val());
                     var skip = (index - 1)*limit;
+                    if(control){
+                      limit=20;
+                      skip=0;
+                    }
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
                     var sort = encodeURIComponent(Json.stringify(getSort()));
                     var add = encodeURIComponent(Json.stringify(getAddition()));
@@ -67,7 +71,7 @@ html(lang="en")
                 });
 
                 Node.one("#search").on("click", function(){
-                    toPage(cur);
+                    toPage(cur,true);
                 });
             });
     body

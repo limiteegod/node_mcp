@@ -22,19 +22,23 @@ html(lang="en")
                 var cur = parseInt(skip/limit) + 1;
                 var table = new VsGridTable('#rst', {});
                 var pageBar = new VsOnePagebar('#manu', {count:count, limit:limit, cur:cur, toPage:function(index){
-                    toPage(index);
+                    toPage(index,false);
                 }});
 
-                var toPage = function(index){
+                var toPage = function(index,control){
                     var limit = parseInt(Node.one('#limit').val());
                     var skip = (index - 1)*limit;
+                    if(control){
+                      limit=20;
+                      skip=0;
+                    }
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
                     var add = encodeURIComponent(Json.stringify(getAddition()));
                     CurSite.redirectTo(null, "sale_print.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond + "&add=" + add);
                 };
                 //绑定事件
                 Node.one("#search").on("click", function(){
-                     toPage(cur);
+                     toPage(cur,true);
                   });
 
                 var getAddition = function(){
@@ -46,23 +50,25 @@ html(lang="en")
 
 
                 var getCondition = function()
-                             {
-                                 var cond = {};
-                                 var gameCode = Node.one('#gameCode').val();
-                                 if(gameCode && gameCode.length > 0){
-                                    cond.gameCode = gameCode;
-                                 }
-                                 var termCode = Node.one('#termCode').val();
-                                 if(termCode && termCode.length > 0){
-                                    cond.termCode = termCode;
-                                 }
-
-                                 var outerId = Node.one('#outerId').val();
-                                 if(outerId && outerId.length > 0){
-                                    cond.outerId = outerId;
-                                 }
-                                 return cond;
-                             };
+                   {
+                      skip = 0;
+                      limit = 20;
+                      cur = parseInt(skip/limit) + 1;
+                      var cond = {};
+                      var gameCode = Node.one('#gameCode').val();
+                      if(gameCode && gameCode.length > 0){
+                          cond.gameCode = gameCode;
+                      }
+                      var termCode = Node.one('#termCode').val();
+                      if(termCode && termCode.length > 0){
+                          cond.termCode = termCode;
+                      }
+                      var outerId = Node.one('#outerId').val();
+                      if(outerId && outerId.length > 0){
+                          cond.outerId = outerId;
+                      }
+                         return cond;
+                   };
 
                  });
     body
@@ -98,7 +104,8 @@ html(lang="en")
                         thead
                             tr
                                 td 投注时间
-                                td 订单号
+                                td 彩票ID
+                                td 所属订单
                                 td 出票状态
                                 td 彩种
                                 td 期次
@@ -111,6 +118,7 @@ html(lang="en")
                                 tr
                                     td=val.createTime
                                     td=val.outerId
+                                    td=val.orderId
                                     td=val.printStatus.des
                                     td=val.game.name
                                     td=val.termCode
