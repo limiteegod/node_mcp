@@ -2,16 +2,18 @@ doctype html
 html(lang="en")
     head
         link(rel='stylesheet', type='text/css', href='./css/table-list.css')
+        link(rel='stylesheet', type='text/css', href='./js/css/dpl/base-min.css')
+        link(rel='stylesheet', type='text/css', href='./css/index-min.css')
+        link(rel='stylesheet', type='text/css', href='./css/select.css')
         include ../includes/script.jade
         script(type='text/javascript').
-            KISSY.use("io,node,json,vs-grid-table,vs-onepagebar,vs-round-input,vs-window",
-                function(S, Io, Node, Json, VsGridTable, VsOnePagebar, VsRoundInput, VsWindow){
+            KISSY.use("io,node,json,vs-onepagebar,kg/droplist/2.0.1/index",
+                function(S, Io, Node, Json, VsOnePagebar,DropList){
                 DOM = S.DOM;
                 var count = parseInt(Node.one('#count').val());
                 var skip = parseInt(Node.one('#skip').val());
                 var limit = parseInt(Node.one('#limit').val());
                 var cur = parseInt(skip/limit) + 1;
-                var table = new VsGridTable('#moneylogs', {});
                 var pageBar = new VsOnePagebar('#manu', {count:count, limit:limit, cur:cur, toPage:function(index){
                     toPage(index,false);
                 }});
@@ -21,22 +23,12 @@ html(lang="en")
                     var typeId = Node.one('#typeId').val();
                     if(typeId && typeId.length > 0){
                         cond.typeId = typeId;
-                    }else{
-                        return cond;
                     }
-
-                    var expenseDisplay = DOM.css(Node.one("#expense"),'display');
-
-                    var subjectId="";
-                    if(expenseDisplay=="none"){
-                      subjectId = Node.one('#incomeId').val();
-                    }else{
-                      subjectId = Node.one('#expenseId').val();
-                    }
+                    var subjectId = Node.one('#subjectId').val();
                     if(subjectId && subjectId.length > 0){
                         cond.subjectId = subjectId;
                     }
-                   return cond;
+                    return cond;
                 };
                 var toPage = function(index,control){
                     var limit = parseInt(Node.one('#limit').val());
@@ -48,68 +40,72 @@ html(lang="en")
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
                     CurSite.redirectTo(null, "sale_money.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
                 };
+                var dealCatList = function dealCatList(catList,arg1,arg2){
+                    if(arg1 && arg1.length > 0){
+                        for(var i = 0;i < catList.length;i++){
+                            var arg1Obj = catList[i];
+                            if(arg1Obj.catId.length > 0&&arg1Obj.catId == arg1){
+                                arg1Obj.isDefault = true;
+                                dealCatList(arg1Obj.subCat,arg2,null);
+                            }
+                        }
+                    }
+                    return catList;
+                };
                                                   //绑定事件
                 Node.one("#search").on("click", function(){
                     toPage(cur,true);
                 });
 
-                Node.one("#typeId").on("change", function(){
-                    var typeId = parseInt(Node.one('#typeId').val());
-                    if(typeId==0){
-                      Node.one("#expense").hide();
-                      Node.one("#income").show();
-                      return;
-                    }else if(typeId==1){
-                      Node.one("#income").hide();
-                      Node.one("#expense").show();
-                      return;
-                    }
-                    Node.one("#income").hide();
-                    Node.one("#expense").hide();
-                });
+                var selectDate=Node.one("#selectdate").val();
+                var catList = JSON.parse(selectDate);
 
-                var typeId = parseInt(Node.one('#typeId').val());
-                if(typeId==0){
-                     Node.one("#expense").hide();
-                     Node.one("#income").show();
-                }else if(typeId==1){
-                     Node.one("#income").hide();
-                     Node.one("#expense").show();
-                }
-            });
+
+
+                var typeId = Node.one('#typeId').val();
+                var subjectId = Node.one('#subjectId').val();
+                catList = dealCatList(catList,typeId,subjectId);
+
+                var arrayDate = DropList.multiple({
+                    dropListCls: "style-1",              // 样式风格
+                    insertion: "#mul1",                  // 显示节点
+                    dataSource: catList,                 // 数据源 Array -> Json
+                    paramSubcat: "subCat",               // 子选项的属性名 Array -> Json
+                    paramText: "catName",                // 作为选项显示内容的属性名 String
+                    paramValue: "catId",                 // 作为值的属性名  String OR Number
+                    isDefault: "isDefault",              // 默认值参数 boolean
+                    mulSelect: false,                    // 单选(默认) OR 多选
+                    subConfig: [{
+                        placeholder: "请选择一级科目..."
+                    },{
+                        placeholder: "请选择二级科目..."
+                    }]
+                });
+                arrayDate.on("change", function(ev){
+                    var data = ev.data;
+                        for (var i = 0; i < data.length; i++) {
+                            if(i==0){
+                                Node.one("#typeId").val(data[i].value);
+                            }else{
+                                Node.one("#subjectId").val(data[i].value);
+                            }
+                        };
+                 });
+
+                });
     body
         .bodyAdminDiv
             input(type='hidden', id="count", value=count)
             input(type='hidden', id="skip", value=skip)
             input(type='hidden', id="limit", value=limit)
+            input(type='hidden', id="typeId", value=cond.typeId)
+            input(type='hidden', id="subjectId", value=cond.subjectId)
+            input(type='hidden', id="selectdate", value=selectValues)
             #tWin.container
-            .clearfix(style="margin-top:8px;")
-                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 资金走向:
-                .vs_grid_plain(style="padding-top:4px;")
-                    select(id="typeId")
-                        option(value="") 所有
-                        -  each val in accountType
-                            if(val.id == cond.typeId)
-                                option(value=val.id, selected="true")=val.name
-                            else
-                                option(value=val.id)=val.name
-                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 科目:
-                .vs_grid_plain(style="padding-top:4px;display:none" id="income")
-                    select(id="incomeId")
-                        option(value="") 所有
-                        -  each val in accountIncome
-                            if(val.id == cond.subjectId)
-                                option(value=val.id, selected="true")=val.name
-                            else
-                                option(value=val.id)=val.name
-                .vs_grid_plain(style="padding-top:4px;display:none" id="expense")
-                    select(id="expenseId")
-                        option(value="") 所有
-                        -  each _val0 in accountExpense
-                            if(_val0.id == cond.subjectId)
-                                option(value=_val0.id, selected="true")=_val0.name
-                            else
-                                option(value=_val0.id)=_val0.name
+            .clearfix(style="margin-top:8px")
+                fieldset(id="selected")
+                    .control(id="mul1")
+                        span(class="log")
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
