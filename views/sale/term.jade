@@ -4,8 +4,8 @@ html(lang="en")
         link(rel='stylesheet', type='text/css', href='./css/table-list.css')
         include ../includes/script.jade
         script(type='text/javascript').
-            KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window,calendar,calendar/assets/base.css",
-                function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow,Calendar){
+            KISSY.use("io,node,json,vs-grid-table,vs-onepagebar,vs-round-input,vs-window,calendar,calendar/assets/base.css",
+                function(S, Io, Node, Json, VsGridTable, VsOnePagebar, VsRoundInput, VsWindow,Calendar){
 
                 var S_Date = S.Date;
                 new Calendar('#startDate', {popup:true,triggerType:['click'],closable:true}).on('select', function(e) {
@@ -20,7 +20,7 @@ html(lang="en")
                 var limit = parseInt(Node.one('#limit').val());
                 var cur = parseInt(skip/limit) + 1;
                 var table = new VsGridTable('#rst', {});
-                var pageBar = new VsPagebar('#bar', {count:count, limit:limit, cur:cur, toPage:function(index){
+                var pageBar = new VsOnePagebar('#manu', {count:count, limit:limit, cur:cur, toPage:function(index){
                     toPage(index);
                 }});
 
@@ -126,4 +126,4 @@ html(lang="en")
                                     td=val.failAmount/100
                                     td=val.createTime
             .clearfix(style="margin-top:8px")
-                #bar.vs_grid_plain(style="width:600px;")
+                #manu

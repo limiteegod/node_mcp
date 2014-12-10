@@ -4,15 +4,15 @@ html(lang="en")
         link(rel='stylesheet', type='text/css', href='./css/table-list.css')
         include ../includes/script.jade
         script(type='text/javascript').
-            KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window",
-                function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow){
+            KISSY.use("io,node,json,vs-grid-table,vs-onepagebar,vs-round-input,vs-window",
+                function(S, Io, Node, Json, VsGridTable, VsOnePagebar, VsRoundInput, VsWindow){
                 DOM = S.DOM;
                 var count = parseInt(Node.one('#count').val());
                 var skip = parseInt(Node.one('#skip').val());
                 var limit = parseInt(Node.one('#limit').val());
                 var cur = parseInt(skip/limit) + 1;
                 var table = new VsGridTable('#moneylogs', {});
-                var pageBar = new VsPagebar('#bar', {count:count, limit:limit, cur:cur, toPage:function(index){
+                var pageBar = new VsOnePagebar('#manu', {count:count, limit:limit, cur:cur, toPage:function(index){
                     toPage(index);
                 }});
                 var getCondition = function()
@@ -132,5 +132,5 @@ html(lang="en")
                                     td=val.orderId
                                     td=val.createTime
             .clearfix(style="margin-top:8px")
-                #bar.vs_grid_plain(style="width:600px;")
+                #manu
                                   
