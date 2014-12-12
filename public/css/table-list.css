@@ -10,3 +10,6 @@
 #manu a:active{border:#999 1px solid;color:#666;}
 #manu .current{border:#036cb4 1px solid;padding:2px 5px;font-weight:bold;margin:2px;color:#fff;background-color:#036cb4;}
 #manu .disabled{border:#AFAFAF 1px solid;padding:2px 5px;margin:2px;color:#919191;}
+
+
+#select_table td{padding:5px;}

@@ -40,7 +40,7 @@ html(lang="en")
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
                     CurSite.redirectTo(null, "sale_money.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
                 };
-                var dealCatList = function dealCatList(catList,arg1,arg2){
+                var dealCatList = function (catList,arg1,arg2){
                     if(arg1 && arg1.length > 0){
                         for(var i = 0;i < catList.length;i++){
                             var arg1Obj = catList[i];
@@ -59,14 +59,11 @@ html(lang="en")
 
                 var selectDate=Node.one("#selectdate").val();
                 var catList = JSON.parse(selectDate);
-
-
-
                 var typeId = Node.one('#typeId').val();
                 var subjectId = Node.one('#subjectId').val();
                 catList = dealCatList(catList,typeId,subjectId);
 
-                var arrayDate = DropList.multiple({
+                var arrayData = DropList.multiple({
                     dropListCls: "style-1",              // 样式风格
                     insertion: "#mul1",                  // 显示节点
                     dataSource: catList,                 // 数据源 Array -> Json
@@ -81,17 +78,20 @@ html(lang="en")
                         placeholder: "请选择二级科目..."
                     }]
                 });
-                arrayDate.on("change", function(ev){
+                arrayData.on("change", function(ev){
                     var data = ev.data;
                         for (var i = 0; i < data.length; i++) {
                             if(i==0){
                                 Node.one("#typeId").val(data[i].value);
+                                if(data.length==1){
+                                   Node.one("#subjectId").val("");
+                                   break;
+                                }
                             }else{
                                 Node.one("#subjectId").val(data[i].value);
                             }
                         };
                  });
-
                 });
     body
         .bodyAdminDiv
