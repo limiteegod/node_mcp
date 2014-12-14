@@ -2,6 +2,8 @@ doctype html
 html(lang="en")
     head
         link(rel='stylesheet', type='text/css', href='./css/table-list.css')
+        link(rel='stylesheet', type='text/css', href='./js/css/dpl/base-min.css')
+        link(rel='stylesheet', type='text/css', href='./css/select.css')
         include ../includes/script.jade
         script(type='text/javascript').
             KISSY.use("io,node,json,vs-grid-table,vs-onepagebar,vs-round-input,vs-window,calendar,calendar/assets/base.css",
@@ -77,20 +79,25 @@ html(lang="en")
             input(type='hidden', id="limit", value=limit)
             input(type='hidden', id="err", value=err)
             #tWin.container
-                .clearfix(style="margin-top:8px")
-                    .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 彩种:
-                    .vs_grid_plain(style="padding-top:4px;")
-                        select(id="gameCode")
-                            option(value="") 所有
-                            -  each val in game
-                                if(val.id == cond.gameCode)
-                                    option(value=val.id, selected="true")=val.name
-                                else
-                                    option(value=val.id)=val.name
-                    .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 时间:
-                        input(type="text" id="startDate" value=add.startDate)
-                        span 至
-                        input(type="text" id="endDate"   value=add.endDate)
+            .clearfix(style="margin-top:8px")
+            fieldset(id="selected")
+                table(id="select_table")
+                    tr
+                        td 彩种:
+                        td
+                            select(id="gameCode")
+                                option(value="") 所有
+                                - each val in game
+                                    if(val.id == cond.gameCode)
+                                        option(value=val.id, selected="true")=val.name
+                                    else
+                                        option(value=val.id)=val.name
+                    tr
+                        td 时间:
+                        td(colspan=3)
+                            input(type="text" id="startDate" value=add.startDate)
+                            span 至
+                            input(type="text" id="endDate"   value=add.endDate)
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
