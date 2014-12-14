@@ -16,7 +16,18 @@ var QueryTest = function(){
 QueryTest.prototype.query = function(cmd, bodyNode, cb)
 {
     var self = this;
-    platInterUtil.get(self.userId, self.userType, self.digestType, self.key, cmd, bodyNode, cb);
+    platInterUtil.get(self.userId, self.userType, self.digestType, self.key, cmd, bodyNode, function(err, backMsgNode){
+        if(err)
+        {
+            cb(err, backMsgNode);
+        }
+        else
+        {
+            var backBodyStr = digestUtil.check(backMsgNode.head, self.key, backMsgNode.body);
+            var backBodyNode = JSON.parse(backBodyStr);
+            cb(null, backBodyNode);
+        }
+    });
 };
 
 /**
@@ -100,5 +111,25 @@ QueryTest.prototype.queryCQ04 = function()
     });
 }
 
+/**
+ * 奖级查询
+ */
+QueryTest.prototype.queryCQ05 = function()
+{
+    var self = this;
+    var bodyNode = {cond:{gameCode:'T06', termCode:'2014001'}, sort:{}, skip:0, limit:20};
+    self.query("CQ05", bodyNode, function(err, backMsgNode){
+        if(err)
+        {
+            log.info('err:' + err);
+        }
+        else
+        {
+            log.info('back:');
+            log.info(backMsgNode);
+        }
+    });
+}
+
 var queryTest = new QueryTest();
-queryTest.queryCQ01();
+queryTest.queryCQ05();
