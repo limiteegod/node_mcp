@@ -77,7 +77,8 @@ html(lang="en")
                                 td(w="76") 状态
                                 td(w="76") 玩法
                                 td(w="76") 投注方式
-                                td(w="76") 号码
+                                td(w="276") 号码
+                                td(w="176") 投注时间
                                 td(w="134") 操作
                         tbody
                             - each val in rst
@@ -90,6 +91,7 @@ html(lang="en")
                                     td=val.pType
                                     td=val.bType
                                     td=val.number
+                                    td=val.createTime
                                     td
                                         input(type="button", value="详情", class="detail", tId=val.id)
             .clearfix(style="margin-top:8px")
