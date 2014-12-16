@@ -43,11 +43,6 @@ html(lang="en")
                 Node.one("#search").on("click", function(){
                     toPage(cur);
                 });
-
-                Node.one("#add").on("click", function(){
-                    var url = "notify_add.html?time=" + new Date().getTime();
-                    CurSite.redirectTo(null, url);
-                });
             });
     body
         .bodyAdminDiv
@@ -58,7 +53,6 @@ html(lang="en")
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
-                    input(type="button", id="add", value="新增")
             .clearfix(style="margin-top:8px")
                 #rst.container
                     table

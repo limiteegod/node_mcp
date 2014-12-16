@@ -51,18 +51,6 @@ html(lang="en")
                     var add = encodeURIComponent(Json.stringify(getAddition()));
                     CurSite.redirectTo(null, "sale_day.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond + "&add=" + add);
                 };
-                //绑定事件
-                Node.all("input.detail").each(function(item){
-                    item.on("click", function(){
-                        var tId = Node.one(this).attr("tId");
-                        var url = "sale_day.html?id=" + tId;
-                        var win = new VsWindow("#tWin", {title:"充值详情", width:500, height:400, url:url, controlBt:[
-                            {name:'关闭', cb:function(err, data){
-                                return true;
-                            }}
-                        ]});
-                    });
-                });
                 Node.one("#search").on("click", function(){
                     toPage(cur,true);
                 });
