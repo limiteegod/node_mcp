@@ -12,6 +12,7 @@ var msgStatus = cons.msgStatus;
 var msgType = cons.msgType;
 var ticketPrintQueenStatus = cons.ticketPrintQueenStatus;
 var ticketPrintStatus = cons.ticketPrintStatus;
+var termStatus = cons.termStatus;
 
 
 var PrintTest = function(){
@@ -133,12 +134,16 @@ PrintTest.prototype.printUtilEmpty = function()
 
 
 var printTest = new PrintTest();
+var bodyNode = {term:{gameCode:'T06', code:'2014001', wNum:'2,2,3,4', status:termStatus.DRAW}};
+printTest.printP03(bodyNode, function(err, data){
+    log.info(err);
+    log.info(data);
+});
 
-
-var printJob = new CronJob('*/10 * * * * *', function () {
+/*var printJob = new CronJob('*//*10 * * * * *', function () {
     printTest.printUtilEmpty();
 });
-printJob.start();
+printJob.start();*/
 
 
 
