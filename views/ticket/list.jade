@@ -59,19 +59,13 @@ html(lang="en")
                     item.on("click", function(){
                         var tId = Node.one(this).attr("tId");
                         var url = "ticket_detail.html?id=" + tId;
-                        var win = new VsWindow("#tWin", {title:"期次详情", width:500, height:400, url:url, controlBt:[
+                        var win = new VsWindow("#tWin", {title:"票据详情", width:500, height:400, url:url, controlBt:[
                             {name:'关闭', cb:null}
                         ]});
                     });
                 });
-
                 Node.one("#search").on("click", function(){
                     toPage(cur);
-                });
-
-                Node.one("#add").on("click", function(){
-                    var url = "ticket_add.html?time=" + new Date().getTime();
-                    CurSite.redirectTo(null, url);
                 });
             });
     body
@@ -115,7 +109,6 @@ html(lang="en")
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
-                    input(type="button", id="add", value="新增")
             .clearfix(style="margin-top:8px")
                 #rst.container
                     table
