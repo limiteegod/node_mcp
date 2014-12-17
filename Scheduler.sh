@@ -10,18 +10,18 @@ usage()
 OPT=$1
 PROCESSID=$2
 pidValue=`ps -ef|grep Scheduler.js|grep -v grep|awk '{print $2}'`
+notifyValue=`ps -ef|grep Notify.js|grep -v grep|awk '{print $2}'`
 if [ $# -eq 0 ]; then
         usage
         exit 1
 fi      
 case $OPT in
         start|Start) echo "Starting.....$PROCESSID"
-         if [ ${#pidValue} -eq 0 ]; then
              nohup node Scheduler.js target=$PROCESSID  > /data/mcplog/scheduler.log 2>&1 &
+             nohup node Scheduler.js target=$PROCESSID  > /data/mcplog/scheduler1.log 2>&1 &
              echo "Start Scheduler.js success"
-          else
-             echo "Please, Do not repeat the start"
-          fi
+             nohup node Notify.js target=$PROCESSID  > /data/mcplog/notify.log 2>&1 &
+             echo "Start Notify.js success"
         ;;
         stop|Stop) echo "Stopping.....$PROCESSID"
                if [ ${#pidValue} -ne 0 ];  then
@@ -30,6 +30,12 @@ case $OPT in
                else
                  echo "You cannot repeat stop"
                fi
+               if [ ${#notifyValue} -ne 0 ]; then
+                 kill -9  `ps -ef|grep Notify.js|grep -v grep|awk '{print $2}'`
+                 echo "Start Notify.js success"
+              else
+                 echo "You cannot repeat stop"
+              fi
         ;;
         *)usage
         ;;
