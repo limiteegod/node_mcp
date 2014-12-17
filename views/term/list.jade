@@ -1,16 +1,17 @@
 doctype html
 html(lang="en")
     head
+        link(rel='stylesheet', type='text/css', href='./css/table-list.css')
+        link(rel='stylesheet', type='text/css', href='./js/css/dpl/base-min.css')
         include ../includes/script.jade
         script(type='text/javascript').
-            KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window",
-                function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow){
+            KISSY.use("io,node,json,vs-grid-table,vs-onepagebar,vs-round-input,vs-window",
+                function(S, Io, Node, Json, VsGridTable, VsOnePagebar, VsRoundInput, VsWindow){
                 var count = parseInt(Node.one('#count').val());
                 var skip = parseInt(Node.one('#skip').val());
                 var limit = parseInt(Node.one('#limit').val());
                 var cur = parseInt(skip/limit) + 1;
-                var table = new VsGridTable('#terms', {});
-                var pageBar = new VsPagebar('#bar', {count:count, limit:limit, cur:cur, toPage:function(index){
+                var pageBar = new VsOnePagebar('#manu', {count:count, limit:limit, cur:cur, toPage:function(index){
                     toPage(index);
                 }});
 
@@ -91,44 +92,48 @@ html(lang="en")
             input(type='hidden', id="limit", value=limit)
             #tWin.container
             .clearfix(style="margin-top:8px")
-                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 游戏:
-                .vs_grid_plain(style="padding-top:4px;")
-                    select(id="gameCode")
-                        option(value="") 所有
-                        - each val in game
-                            if(val.id == cond.gameCode)
-                                option(value=val.id, selected="true")=val.name
-                            else
-                                option(value=val.id)=val.name
-                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 期次:
-                .vs_grid_plain(style="padding-top:4px;")
-                    input(id="termCode", type="text", value=cond.code)
-            .clearfix(style="margin-top:8px")
-                .vs_grid_plain(style="padding-top:6px;margin-left:12px;") 状态范围:
-                .vs_grid_plain(style="padding-top:4px;")
-                    select(id="startTermStatus")
-                        option(value="-1") 未选择
-                        - each val in termStatus
-                            if(val.id == add.startTermStatus)
-                                option(value=val.id, selected="true")=val.des
-                            else
-                                option(value=val.id)=val.des
-                .vs_grid_plain(style="padding-top:6px;margin-left:6px;") ~
-                .vs_grid_plain(style="padding-top:4px;margin-left:4px;")
-                    select(id="endTermStatus")
-                        option(value="-1") 未选择
-                        - each val in termStatus
-                            if(val.id == add.endTermStatus)
-                                option(value=val.id, selected="true")=val.des
-                            else
-                                option(value=val.id)=val.des
+            fieldset(id="selected")
+                table(id="select_table")
+                    tr
+                        td 彩种:
+                        td
+                            select(id="gameCode")
+                                option(value="") 所有
+                                - each val in game
+                                    if(val.id == cond.gameCode)
+                                        option(value=val.id, selected="true")=val.name
+                                    else
+                                        option(value=val.id)=val.name
+                        td 期次:
+                        td
+                            input(id="termCode", type="text", value=cond.code)
+
+                    tr
+                        td 状态范围:
+                        td
+                            select(id="startTermStatus")
+                                  option(value="-1") 未选择
+                                  - each val in termStatus
+                                      if(val.id == add.startTermStatus)
+                                          option(value=val.id, selected="true")=val.des
+                                      else
+                                          option(value=val.id)=val.des
+                        td(align="center") ~
+                        td
+                            select(id="endTermStatus")
+                                option(value="-1") 未选择
+                                - each val in termStatus
+                                    if(val.id == add.endTermStatus)
+                                        option(value=val.id, selected="true")=val.des
+                                    else
+                                        option(value=val.id)=val.des
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
                     input(type="button", id="add", value="新增")
             .clearfix(style="margin-top:8px")
-                #terms.container
-                    table
+                .tab-list
+                    table(width="100%" border="0" cellspacing="0" cellpadding="0" class="tab")
                         thead
                             tr
                                 td(w="100") 游戏
@@ -152,4 +157,4 @@ html(lang="en")
                                         if val.status.id == termStatusObj.WAITING_DRAW_NUMBER
                                             input(type="button", value="开奖", class="draw", tId=val.id)
             .clearfix(style="margin-top:8px")
-                #bar.vs_grid_plain(style="width:600px;")
+                #manu

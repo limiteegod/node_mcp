@@ -1,22 +1,28 @@
 doctype html
 html(lang="en")
     head
+        link(rel='stylesheet', type='text/css', href='./css/table-list.css')
+        link(rel='stylesheet', type='text/css', href='./js/css/dpl/base-min.css')
         include ../includes/script.jade
         script(type='text/javascript').
-            KISSY.use("io,node,json,vs-grid-table,vs-pagebar,vs-round-input,vs-window",
-                function(S, Io, Node, Json, VsGridTable, VsPagebar, VsRoundInput, VsWindow){
+            KISSY.use("io,node,json,vs-grid-table,vs-onepagebar,vs-round-input,vs-window",
+                function(S, Io, Node, Json, VsGridTable, VsOnePagebar, VsRoundInput, VsWindow){
                 var count = parseInt(Node.one('#count').val());
                 var skip = parseInt(Node.one('#skip').val());
                 var limit = parseInt(Node.one('#limit').val());
                 var cur = parseInt(skip/limit) + 1;
                 var table = new VsGridTable('#msgs', {});
-                var pageBar = new VsPagebar('#bar', {count:count, limit:limit, cur:cur, toPage:function(index){
+                var pageBar = new VsOnePagebar('#manu', {count:count, limit:limit, cur:cur, toPage:function(index){
                     toPage(index);
                 }});
 
                 var getCondition = function()
                 {
                     var cond = {};
+                    var id = Node.one('#id').val();
+                    if(id && id.length > 0){
+                        cond._id = id;
+                    }
                     return cond;
                 };
 
@@ -56,21 +62,28 @@ html(lang="en")
             input(type='hidden', id="limit", value=limit)
             #tWin.container
             .clearfix(style="margin-top:8px")
+                fieldset(id="selected")
+                    table(id="select_table")
+                        tr
+                            td 消息ID:
+                            td
+                                input(id="id", type="text", value=cond._id)
+
+            .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")
-                    input(type="button", id="add", value="新增")
             .clearfix(style="margin-top:8px")
-                #msgs.container
-                    table
+                .tab-list
+                    table(width="100%" border="0" cellspacing="0" cellpadding="0" class="tab")
                         thead
                             tr
-                                td(w="176") id
-                                td(w="76") 子消息数
-                                td(w="76") 已经完成数
-                                td(w="76") 状态
-                                td(w="176") 创建时间
-                                td(w="176") 完成时间
-                                td(w="134") 操作
+                                td id
+                                td 子消息数
+                                td 已经完成数
+                                td 状态
+                                td 创建时间
+                                td 完成时间
+                                td 操作
                         tbody
                             - each val in rst
                                 tr
@@ -83,4 +96,4 @@ html(lang="en")
                                     td
                                         input(type="button", value="详情", class="detail", tId=val._id)
             .clearfix(style="margin-top:8px")
-                #bar.vs_grid_plain(style="width:600px;")
+                #manu

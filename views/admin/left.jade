@@ -7,6 +7,7 @@ html(lang="en")
             KISSY.use("io,node,json,vs-data-tree", function(S, Io, Node, Json, VsDataTree){
                 var getChildren = function(id, cb)
                 {
+
                     var bodyNode = {cond:{parent:id}};
                     CurSite.sendDigest(Io, Json, "AD02", null, bodyNode, function(err, backBodyNode){
                         cb(err, backBodyNode.rst);
@@ -37,4 +38,4 @@ html(lang="en")
             });
     body
         .bodyAdminDiv
-            #ppList.container(style="margin-left:10px;margin-top:10px;")
+            #ppList.container(style="margin-left:5px;margin-top:10px;width:190px;border-top: 1px solid #CDC8CF")
