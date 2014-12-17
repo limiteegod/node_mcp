@@ -4,28 +4,13 @@ html(lang="en")
         include ../includes/script.jade
         link(rel='stylesheet', type='text/css', href='./css/index.css')
         script(type='text/javascript').
-            /*
                 KISSY.use("io,node,json", function(S, Io, Node, Json){
-                var cookies = CurSite.getCookie();
-                var key = cookies["st"];
-                var headNode = {cmd:"A02", digestType:"3des", userId:cookies["userId"], userType:cookies["userType"]};
-                var body = {uniqueId:CurSite.createUUID()};
-                var msgNode = CurSite.encrypt(headNode, key, Json.stringify(body));
-                Io({type:"post", url:CurSite.interPath, data:{message:Json.stringify(msgNode)}, success:function(data){
-                        var backBodyStr = data.body;
-                        var decodedBodyStr = CurSite.decrypt(data.head, key, backBodyStr);
-                        var backBodyNode = Json.parse(decodedBodyStr);
-                        if(backBodyNode.code == '0000')
-                        {
-                            alert(backBodyNode.description);
-                        }
-                        else
-                        {
-                            alert(backBodyNode.description);
-                        }
-                }});
-            });*/
-                                         body
+                    Node.one("#bye").on("click", function(){
+                        CurSite.setCookie("userId", "name", -1);
+                        window.parent.location.href="sys_adminLogin.html";
+                    });
+                });
+    body
         .header
             .logo
                 img(src='img/logo.png')
@@ -37,6 +22,5 @@ html(lang="en")
         .TopIfo
             p
                 img(src='img/user.png')
-                span admin,账户余额：100000元,信用账户余额：0元
-                a(href='#') &nbsp;&nbsp;安全退出
+                a(href='javascript:void(0)' id='bye') &nbsp;&nbsp;安全退出
                                                                                                                                                                          

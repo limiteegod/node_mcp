@@ -1,6 +1,9 @@
 doctype html
 html(lang="en")
     head
+        <link rel="stylesheet" href="js/css/dpl/base-min.css" />
+        <link rel="stylesheet" href="js/css/dpl/forms-min.css"  />
+        <link rel="stylesheet" href="js/button/assets/dpl-min.css">
         include ../includes/script.jade
         script(type='text/javascript').
             KISSY.use("io,node,json", function(S, Io, Node, Json){
@@ -22,11 +25,6 @@ html(lang="en")
                             alert(backBodyNode.description);
                       }
                   });
-
-
-
-
-
                })
             });
     body
