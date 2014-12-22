@@ -149,6 +149,9 @@ Notify.prototype.sendMsg = function(options, msgDigestType, key, msg, tryCount, 
     if(msg.type == notifyType.TICKET)
     {
         cmd = "N02";
+    }else if(msg.type == notifyType.GAME)
+    {
+        cmd = "N03"
     }
     else
     {
