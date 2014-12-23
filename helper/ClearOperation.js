@@ -42,6 +42,8 @@ var addOperation = function()
                 });
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_DRAW_QUEEN', parent:'ADMIN_GAME', name:'算奖队列', url:'ticket_drawList.html', hasChildren:0}, [], function(err, data){
                 });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_PERMISSION', parent:'ADMIN_GAME', name:'游戏控制', url:'game_control.html', hasChildren:0}, [], function(err, data){
+                });
             });
             operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_MSG', name:'消息管理', url:'', hasChildren:1}, [], function(err, data){
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_MSG', parent:'ADMIN_MSG', name:'消息列表', url:'msg_list.html', hasChildren:0}, [], function(err, data){
