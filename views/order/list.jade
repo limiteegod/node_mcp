@@ -2,6 +2,7 @@ doctype html
 html(lang="en")
     head
         link(rel='stylesheet', type='text/css', href='./css/table-list.css')
+        link(rel='stylesheet', type='text/css', href='./js/css/dpl/base-min.css')
         include ../includes/script.jade
         script(type='text/javascript').
             KISSY.use("io,node,json,vs-grid-table,vs-onepagebar,vs-round-input,vs-window",
@@ -11,16 +12,28 @@ html(lang="en")
                 var limit = parseInt(Node.one('#limit').val());
                 var cur = parseInt(skip/limit) + 1;
                 var pageBar = new VsOnePagebar('#manu', {count:count, limit:limit, cur:cur, toPage:function(index){
-                    toPage(index);
+                    toPage(index,false);
                 }});
                 var getCondition = function()
                 {
                     var cond = {};
+                    var customerId = Node.one('#customerId').val();
+                    if(customerId && customerId.length > 0){
+                         cond.customerId = customerId;
+                    }
+                    var outerId = Node.one('#outerId').val();
+                    if(outerId && outerId.length > 0){
+                         cond.outerId = outerId;
+                    }
                     return cond;
                 };
-                var toPage = function(index){
+                var toPage = function(index,control){
                     var limit = parseInt(Node.one('#limit').val());
                     var skip = (index - 1)*limit;
+                    if(control){
+                        limit=20;
+                        skip=0;
+                    }
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
                     CurSite.redirectTo(null, "order_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
                 };
@@ -36,7 +49,7 @@ html(lang="en")
                 });
 
                 Node.one("#search").on("click", function(){
-                    toPage(cur);
+                    toPage(cur,true);
                 });
             });
     body
@@ -45,6 +58,16 @@ html(lang="en")
             input(type='hidden', id="skip", value=skip)
             input(type='hidden', id="limit", value=limit)
             #tWin.container
+            .clearfix(style="margin-top:8px")
+            fieldset(id="selected")
+                table(id="select_table")
+                    tr
+                        td 用户名:
+                        td
+                            input(type="text" id="customerId" value=cond.customerId)
+                        td 订单外部ID:
+                        td
+                            input(type="text" id="outerId"   value=cond.outerId)
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="查询")

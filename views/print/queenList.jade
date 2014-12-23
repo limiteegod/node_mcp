@@ -2,7 +2,7 @@ doctype html
 html(lang="en")
     head
         link(rel='stylesheet', type='text/css', href='./css/table-list.css')
-
+        link(rel='stylesheet', type='text/css', href='./js/css/dpl/base-min.css')
         include ../includes/script.jade
         script(type='text/javascript').
             KISSY.use("io,node,json,vs-grid-table,vs-onepagebar,vs-round-input,vs-window",
@@ -25,34 +25,18 @@ html(lang="en")
                     return {_id:-1};
                 }
                 var toPage = function(index){
-                    console.log(index);
                     var limit = parseInt(Node.one('#limit').val());
                     var skip = (index - 1)*limit;
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
                     var sort = encodeURIComponent(Json.stringify(getSort()));
-                    console.log(cond);
                     CurSite.redirectTo(null, "print_queenList.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond + "&sort=" + sort);
                 };
 
-                //绑定事件
-                Node.all("input.detail").each(function(item){
-                    item.on("click", function(){
-                        var tId = Node.one(this).attr("tId");
-                        var url = "print_detail.html?id=" + tId;
-                        var win = new VsWindow("#tWin", {title:"出票详情", width:500, height:400, url:url, controlBt:[
-                            {name:'关闭', cb:null}
-                        ]});
-                    });
-                });
 
                 Node.one("#search").on("click", function(){
                     toPage(cur);
                 });
 
-                Node.one("#add").on("click", function(){
-                    var url = "print_add.html?time=" + new Date().getTime();
-                    CurSite.redirectTo(null, url);
-                });
             });
     body
         .bodyAdminDiv
@@ -60,6 +44,16 @@ html(lang="en")
             input(type='hidden', id="skip", value=skip)
             input(type='hidden', id="limit", value=limit)
             #tWin.container
+            clearfix(style="margin-top:8px")
+            fieldset(id="selected")
+                table(id="info_table" border="1")
+                      tr
+                         td 票据ID
+                         td 距当前时间
+                      -each val in msg
+                         tr
+                            td=val._id
+                            td=val.info
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="刷新")
@@ -74,11 +68,11 @@ html(lang="en")
                                 td 销售机构
                                 td 出票机构
                                 td 状态
+                                td 创建时间
                                 td 金额
                                 td 玩法
                                 td 投注方式
                                 td 号码
-                                td 创建时间
                         tbody
                             - each val in rst
                                 tr
@@ -88,11 +82,12 @@ html(lang="en")
                                     td=val.customerId
                                     td=val.printId
                                     td=val.status.des
+                                    td=val.createTime
                                     td=val.amount/100
                                     td=val.playType.name
                                     td=val.betType.name
                                     td=val.number
-                                    td=val.createTime
+
 
             .clearfix(style="margin-top:8px")
                 #manu
