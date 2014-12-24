@@ -9,14 +9,14 @@ var gl = kt.gl(gameGrades.length);
 gl.setBonus(gameGrades);
 
 var check = kt.check();
-check.setDrawNum("3,1,1");
+check.setDrawNum("1,5,6");
 check.setGl(gl);
 
 console.log(check.count0100({number:"1,2,3"}));
 console.log(check.count0200({number:"1,1,3"}));
 
 console.log(check.count0300({number:"1,1,1"}));
-console.log(check.count0401({number:"6"}));
+console.log(check.count0401({number:"6;12"}));
 console.log(check.count0501({number:"12;23"}));
 console.log(check.count0601({number:"11;22"}));
 console.log(check.count0700({number:"111,222,333,444,555,666"}));
