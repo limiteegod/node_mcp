@@ -80,6 +80,18 @@ html(lang="en")
                     toPage(cur);
                 });
 
+               Node.all("a.processes").each(function(item){
+                    item.on("click", function(){
+                         var code = Node.one(this).attr("tid");
+                         var gameCode = Node.one(this).attr("tgame");
+                         var cond = {code:code,gameCode:gameCode};
+                         cond = encodeURIComponent(Json.stringify(cond));
+                         var url = "term_msgList.html?cond=" + cond;
+                         CurSite.redirectTo(null, url);
+
+                    });
+               });
+
                 Node.one("#add").on("click", function(){
                     var url = "term_add.html?time=" + new Date().getTime();
                     CurSite.redirectTo(null, url);
@@ -107,7 +119,6 @@ html(lang="en")
                         td 期次:
                         td
                             input(id="termCode", type="text", value=cond.code)
-
                     tr
                         td 状态范围:
                         td
@@ -136,20 +147,21 @@ html(lang="en")
                     table(width="100%" border="0" cellspacing="0" cellpadding="0" class="tab")
                         thead
                             tr
-                                td(w="100") 游戏
-                                td(w="126") 期次
-                                td(w="126") 下一期
-                                td(w="100") 状态
-                                td(w="200") 开售时间
-                                td(w="200") 停售时间
-                                td(w="164") 操作
+                                td 游戏
+                                td 期次
+                                td 下一期
+                                td 状态
+                                td 开售时间
+                                td 停售时间
+                                td 操作
                         tbody
                             - each val in rst
                                 tr
                                     td=val.game.name
                                     td=val.code
                                     td=val.nextCode
-                                    td=val.status.des
+                                    td
+                                        a(tid=val.code tgame=val.gameCode href='javascript:void(0)' class='processes')=val.status.des
                                     td=val.openTime
                                     td=val.closeTime
                                     td

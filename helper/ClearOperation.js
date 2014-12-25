@@ -29,6 +29,40 @@ var addOperation = function()
         function(cb)
         {
             var operationTable = dc.main.get("operation");
+
+            operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_PRINT', name:'出票管理', url:'', hasChildren:1, level:1}, [], function(err, data){
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_PRINT_QUEEN', parent:'ADMIN_PRINT', name:'出票队列', url:'print_queenList.html', hasChildren:0, level:6}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_PERMISSION', parent:'ADMIN_PRINT', name:'游戏管理', url:'game_control.html', hasChildren:0, level:5}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_CUSTOMER', parent:'ADMIN_PRINT', name:'帐号管理', url:'customer_list.html', hasChildren:0, level:4}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_TERM', parent:'ADMIN_PRINT', name:'期次查询', url:'term_list.html', hasChildren:0, level:3}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_TICKET', parent:'ADMIN_PRINT', name:'彩票查询', url:'ticket_list.html', hasChildren:0, level:2}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_ORDER', parent:'ADMIN_PRINT', name:'订单查询', url:'order_list.html', hasChildren:0, level:1}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_TERMREPORT', parent:'ADMIN_PRINT', name:'期次报表', url:'report_list.html', hasChildren:0}, [], function(err, data){
+                });
+            });
+
+            operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_MANAGE', name:'内部管理', url:'', hasChildren:1, level:2}, [], function(err, data){
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_DRAW_QUEEN', parent:'ADMIN_MANAGE', name:'算奖队列', url:'ticket_drawList.html', hasChildren:0, level:5}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_MSG', parent:'ADMIN_MANAGE', name:'消息列表', url:'msg_list.html', hasChildren:0, level:4}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'CHANNEL_LIST_NOTIFY', parent:'ADMIN_MANAGE', name:'通知列表', url:'notify_list.html', hasChildren:0, level:3}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'CHANNEL_LIST_MONGO', parent:'ADMIN_MANAGE', name:'mongodb', url:'mongo_index.html', hasChildren:0, level:2}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'CHANNEL_LIST_MYSQL', parent:'ADMIN_MANAGE', name:'mysql', url:'mysql_index.html', hasChildren:0, level:1}, [], function(err, data){
+                });
+                operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_GAME', parent:'ADMIN_MANAGE', name:'游戏列表', url:'game_list.html', hasChildren:0, level:6}, [], function(err, data){
+                });
+            });
+
+/**
             operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_GAME', name:'游戏管理', url:'', hasChildren:1}, [], function(err, data){
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'ADMIN_LIST_GAME', parent:'ADMIN_GAME', name:'游戏列表', url:'game_list.html', hasChildren:0}, [], function(err, data){
                 });
@@ -81,29 +115,7 @@ var addOperation = function()
                 operationTable.save({userType:userType.ADMINISTRATOR, id:'CHANNEL_LIST_MYSQL', parent:'CHANNEL_ENTITY', name:'mysql', url:'mysql_index.html', hasChildren:0}, [], function(err, data){
                 });
             });
-
-//            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT', name:'账户管理', url:'', hasChildren:1}, [], function(err, data){
-//                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT_MYINFO', parent:'CHANNEL_ACCOUNT', name:'账户详情', url:'channel_myinfo.html', hasChildren:0}, [], function(err, data){
-//                });
-//                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_ACCOUNT_CHANGEPSW', parent:'CHANNEL_ACCOUNT', name:'修改密码', url:'channel_changepsw.html', hasChildren:0}, [], function(err, data){
-//                });
-//            });
-//
-//            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_RECHARGE', name:'充值管理', url:'', hasChildren:1}, [], function(err, data){
-//                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_MAIN_BANK', parent:'CHANNEL_RECHARGE', name:'银行汇款', url:'recharge_bank.html', hasChildren:0}, [], function(err, data){
-//                });
-//                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_RECHARGE', parent:'CHANNEL_RECHARGE', name:'充值查询', url:'recharge_list.html', hasChildren:0}, [], function(err, data){
-//                });
-//            });
-
-//            operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_SALE', name:'销售管理', url:'', hasChildren:1}, [], function(err, data){
-//                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_PRINT', parent:'CHANNEL_SALE', name:'出票明细', url:'sale_print.html', hasChildren:0}, [], function(err, data){
-//                });
-//                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_DAY', parent:'CHANNEL_SALE', name:'日销量中奖', url:'sale_day.html', hasChildren:0}, [], function(err, data){
-//                });
-//                operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_LIST_TERM', parent:'CHANNEL_SALE', name:'期次报表', url:'sale_term.html', hasChildren:0}, [], function(err, data){
-//                });
-//            });
+            */
 
             operationTable.save({userType:userType.CHANNEL, id:'CHANNEL_MAIN_BANK', name:'充值', url:'recharge_bank.html', hasChildren:0 ,version:1, level:1}, [], function(err, data){
             });

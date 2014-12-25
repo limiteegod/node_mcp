@@ -86,7 +86,8 @@ html(lang="en")
                 });
 
                 Node.one("#backToList").on("click", function(){
-                    var url = "relation_list.html?time=" + new Date().getTime();
+                    var customerId = Node.one("#customerId").val();
+                    var url = "relation_list.html?time=" + new Date().getTime()+"&customerId="+customerId;
                     CurSite.redirectTo(null, url);
                 });
 
