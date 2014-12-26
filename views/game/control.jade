@@ -39,7 +39,12 @@ html(lang="en")
                           var cond = {gameCode:tId};
                           cond = encodeURIComponent(Json.stringify(cond));
                           var url = "gamegrade_list.html?cond=" + cond;
-                          CurSite.redirectTo(null, url);
+                          var win = new VsWindow("#tWin", {title:"奖级查询", width:500, height:400, url:url, controlBt:[
+                                 {name:'关闭', cb:function(err, data){
+                                        return true;
+                                }}
+                           ]});
+                        //  CurSite.redirectTo(null, url);
                      });
                 });
 
