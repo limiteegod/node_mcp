@@ -1,6 +1,7 @@
 doctype html
 html(lang="en")
     head
+        link(rel='stylesheet', type='text/css', href='./css/login.css')
         include ../includes/script.jade
         script(type='text/javascript').
             KISSY.use("io,node,json", function(S, Io, Node, Json){
@@ -25,18 +26,17 @@ html(lang="en")
                 });
             });
     body
-        .bodyDiv
-            #container.container
-                table
+        .loginwrap
+            .loginbox
+                table(  class="tab" width="85%" border="0" cellspacing="0" cellpadding="0" )
                     tr
-                        td.
-                           name:
-                        td
-                            input(type='text', id='name')
+                        td(width="25%" align="left") 用户名:
+                        td(colspan="3")
+                            input(type="text" class="Textbox" id='name')
                     tr
-                        td.
-                           password:
-                        td
-                            input(type='password', id='pwd')
-            #controlButton.container
-                input(id='submit', type="button", value='submit')
+                        td(align="left") 密   码:
+                        td(colspan="3")
+                            input(type='password'  class="Textbox" id='pwd')
+                    tr
+                        td(colspan="4" align="center")
+                            input(id='submit' type="button" class="btn" )

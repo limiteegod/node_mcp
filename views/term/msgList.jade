@@ -10,7 +10,7 @@ html(lang="en")
                 var limit = parseInt(Node.one('#limit').val());
                 var cur = parseInt(skip/limit) + 1;
                 var table = new VsGridTable('#terms', {});
-                var pageBar = new VsPagebar('#manu', {count:count, limit:limit, cur:cur, toPage:function(index){
+                var pageBar = new VsPagebar('#bar', {count:count, limit:limit, cur:cur, toPage:function(index){
                     toPage(index);
                 }});
 

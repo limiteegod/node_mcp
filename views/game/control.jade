@@ -33,6 +33,21 @@ html(lang="en")
                     CurSite.redirectTo(null, "game_control.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
                 };
 
+                Node.all("input.grade").each(function(item){
+                     item.on("click", function(){
+                          var tId = Node.one(this).attr("tId");
+                          var cond = {gameCode:tId};
+                          cond = encodeURIComponent(Json.stringify(cond));
+                          var url = "gamegrade_list.html?cond=" + cond;
+                          var win = new VsWindow("#tWin", {title:"奖级查询", width:500, height:400, url:url, controlBt:[
+                                 {name:'关闭', cb:function(err, data){
+                                        return true;
+                                }}
+                           ]});
+                        //  CurSite.redirectTo(null, url);
+                     });
+                });
+
 
                 //绑定事件
                 Node.all("input.detail").each(function(item){
@@ -52,7 +67,7 @@ html(lang="en")
                                   alert("操作失败！");
                                 }else{
                                   alert(backBodyNode.description);
-                                  history.go(0);
+                                  CurSite.redirectTo(null, "game_control.html");
                                 }
                         });
                     });
@@ -84,5 +99,6 @@ html(lang="en")
                                             input(type="button", value="关闭", class="detail", tId=val._id , tValue=val.gamePermission , gameName=val.game.name)
                                         -else
                                             input(type="button", value="开启", class="detail", tId=val._id , tValue=val.gamePermission , gameName=val.game.name)
+                                        input(type="button", value="奖级查询", class="grade", tId=val._id)
             .clearfix(style="margin-top:8px")
                 #manu
