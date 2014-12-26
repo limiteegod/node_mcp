@@ -105,8 +105,8 @@ Filter.prototype.handle = function(message, cb)
     }
     catch (err)
     {
-        log.info(err);
-        var backHeadNode = {cmd:'E01', digestType:"3des-empty"};
+        log.error(err);
+        var backHeadNode = {cmd:'E01', digestType:"MD5"};
         var backBodyStr = JSON.stringify(errCode.E0006);
         var backEncodedBody = digestUtil.generate(backHeadNode, null, backBodyStr);
         var backMsg = JSON.stringify({head:backHeadNode, body:backEncodedBody});
@@ -117,8 +117,8 @@ Filter.prototype.handle = function(message, cb)
     gatewayInterUtil.get(message, function(err, backMsg){
         if(err)
         {
-            console.log('problem with request: ', err);
-            var errHeadNode = {digestType:"3des-empty"};
+            log.error('problem with request: ', err);
+            var errHeadNode = {digestType:"MD5"};
             var errBodyStr = JSON.stringify(errCode.E2059);
             var errEncodedBody = digestUtil.generate(errHeadNode, null, errBodyStr);
             var errbackMsg = JSON.stringify({head:errHeadNode, body:errEncodedBody});

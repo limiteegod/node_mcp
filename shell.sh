@@ -1,3 +1,4 @@
+#!/bin/sh
 # shell.sh
 #启动和停止项目用
 #启动方式 sh shell.sh start [参数 dev test run] 分别表示启动开发模式，测试模式，和生产模式
@@ -28,10 +29,10 @@ case $OPT in
          fi
          if [ ${#gatewayValue} -eq 0 ]; then
              nohup node Gateway.js target=$PROCESSID gtPort=9090 > /data/mcplog/gateway9090.log 2>&1 &
-             nohup node Gateway.js target=$PROCESSID gtPort=9091 > /data/mcplog/gateway9090.log 2>&1 &
-             nohup node Gateway.js target=$PROCESSID gtPort=9092 > /data/mcplog/gateway9090.log 2>&1 &
-             nohup node Gateway.js target=$PROCESSID gtPort=9093 > /data/mcplog/gateway9090.log 2>&1 &
-             nohup node Gateway.js target=$PROCESSID gtPort=9094 > /data/mcplog/gateway9090.log 2>&1 &
+             nohup node Gateway.js target=$PROCESSID gtPort=9091 > /data/mcplog/gateway9091.log 2>&1 &
+             nohup node Gateway.js target=$PROCESSID gtPort=9092 > /data/mcplog/gateway9092.log 2>&1 &
+             nohup node Gateway.js target=$PROCESSID gtPort=9093 > /data/mcplog/gateway9093.log 2>&1 &
+             nohup node Gateway.js target=$PROCESSID gtPort=9094 > /data/mcplog/gateway9094.log 2>&1 &
              echo "Start Gateway.js success"
          fi
          if [ ${#filterValue} -ne 0 -a ${#adminValue} -ne 0 -a ${#gatewayValue} -ne 0 ]; then
