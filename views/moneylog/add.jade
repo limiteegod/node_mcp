@@ -56,6 +56,8 @@ html(lang="en")
                         ]});
                     }
                 }});
+                var customerId = Node.one("#customerId").val();
+                entity.setData({id:customerId, name:customerId});
 
                 var getData = function(){
                     var data = {};
@@ -82,13 +84,16 @@ html(lang="en")
                 });
 
                 Node.one("#backToList").on("click", function(){
-                    var url = "moneylog_list.html?time=" + new Date().getTime();
+                    var cond = {customerId:customerId};
+                    cond = encodeURIComponent(Json.stringify(cond));
+                    var url = "moneylog_list.html?cond=" + cond;
                     CurSite.redirectTo(null, url);
                 });
 
             });
     body
         .bodyAdminDiv
+            input(id="customerId", type="hidden", value=customerId)
             #tWin.container
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:100px;text-align:right;margin-top:4px") 科目*:

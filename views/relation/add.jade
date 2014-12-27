@@ -30,7 +30,6 @@ html(lang="en")
 
                 var customerId = Node.one("#customerId").val();
                 fromC.setData({id:customerId, name:customerId});
-
                 var toC = new VsDataSelect("#to", {width:200, click:function(self){
                     var url, title;
                     var data = self.getData();
@@ -87,7 +86,7 @@ html(lang="en")
         input(id="customerId", type="hidden", value=customerId)
         .bodyAdminDiv
             #tWin.container
-            .clearfix(style="margin-top:8px")
+            .clearfix(style="margin-top:8px;")
                 .vs_grid_plain(style="width:100px;text-align:right;margin-top:4px") 销售*:
                 .vs_grid_plain(style="margin-left:8px;")
                     #from.container

@@ -61,7 +61,8 @@ html(lang="en")
                     toPage(cur,true);
                 });
                 Node.one("#add").on("click", function(){
-                    var url = "moneylog_add.html?time=" + new Date().getTime();
+                    var customerId = Node.one("#customerId").val();
+                    var url = "moneylog_add.html?time=" + new Date().getTime()+"&customerId="+customerId;
                     CurSite.redirectTo(null, url);
                 });
 
@@ -127,6 +128,7 @@ html(lang="en")
             input(type='hidden', id="typeId", value=cond.typeId)
             input(type='hidden', id="subjectId", value=cond.subjectId)
             input(type='hidden', id="selectdate", value=selectValues)
+
             #tWin.container
             .clearfix(style="margin-top:8px")
                 fieldset(id="selected")

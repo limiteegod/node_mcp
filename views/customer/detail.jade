@@ -3,20 +3,7 @@ html(lang="en")
     head
         include ../includes/script.jade
         script(type='text/javascript').
-            KISSY.use("io,node,json,vs-data-select,vs-window", function(S, Io, Node, Json, VsDataSelect, VsWindow){
-
-
-                var getData = function(){
-                    var data = {};
-                    return data;
-                };
-
-                var getCond = function()
-                {
-                    var customerId = Node.one("#customerId").val();
-                    return {id:customerId};
-                };
-
+            KISSY.use("io,node,json", function(S, Io, Node, Json){
                 var checkParam = function(data){
                     return true;
                 };
@@ -49,7 +36,7 @@ html(lang="en")
                 });
 
             });
-    body
+    body(style="overflow-y: auto;")
         input(id="customerId", type="hidden", value=customer.id)
         #tWin.container
         .bodyAdminDiv

@@ -40,7 +40,6 @@ html(lang="en")
                         skip=0;
                     }
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
-                    console.log(cond);
                     CurSite.redirectTo(null, "gamegrade_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
                 };
 

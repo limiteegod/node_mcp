@@ -52,6 +52,7 @@ html(lang="en")
 
                 Node.one("#add").on("click", function(){
                     var customerId = Node.one("#customerId").val();
+
                     var url = "relation_add.html?time=" + new Date().getTime()+"&customerId="+customerId;
                     CurSite.redirectTo(null, url);
                 });
