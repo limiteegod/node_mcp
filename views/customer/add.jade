@@ -15,6 +15,20 @@ html(lang="en")
                 };
 
                 var checkParam = function(data){
+                   if(data.id==null||data.id==""){
+                     alert("用户名不能为空");
+                     return false;
+                   }
+                   if(data.name==null||data.name==""){
+                     alert("名称不能为空");
+                     return false;
+                   }
+                   if(data.password==null||data.password==""){
+                     alert("密码不能为空");
+                     return false;
+                   }
+
+
                     return true;
                 };
 

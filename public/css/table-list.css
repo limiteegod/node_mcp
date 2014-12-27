@@ -14,6 +14,7 @@
 
 #select_table td{padding:5px;}
 
-#info_table {width:50%;}
-#info_table tr{ padding:2px;}
-#info_table tbody tr td{padding:2px;}
+#info_table {width:100%;font-size:13px}
+#info_table thead tr td{text-align:center;}
+#info_table tbody tr td{padding:2px;text-align:center;}
+#info_table  tbody tr:hover{ background:#eee; color:#036cb4;}
