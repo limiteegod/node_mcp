@@ -5,6 +5,7 @@ html(lang="en")
         include ../includes/script.jade
         script(type='text/javascript').
             KISSY.use("io,node,json", function(S, Io, Node, Json){
+                CurSite.setCookie("userType", "ADMINISTRATOR", CurSite.cookieExpireTime);
                 Node.one("#submit").on("click", function(){
                     var name = Node.one("#name").val();
                     var pwd = Node.one("#pwd").val();

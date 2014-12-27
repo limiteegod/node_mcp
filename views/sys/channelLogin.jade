@@ -1,15 +1,16 @@
 doctype html
 html(lang="en")
     head
-        link(rel='stylesheet', type='text/css', href='./css/login.css')
+        link(rel='stylesheet', type='text/css', href='./css/channellogin.css')
         include ../includes/script.jade
         script(type='text/javascript').
             KISSY.use("io,node,json", function(S, Io, Node, Json){
+                CurSite.setCookie("userType", "CHANNEL", CurSite.cookieExpireTime);
                 Node.one("#submit").on("click", function(){
                     var name = Node.one("#name").val();
                     var pwd = Node.one("#pwd").val();
                     var key = hex_md5(pwd);
-                           CurSite.setCookie("userId", name, CurSite.cookieExpireTime);
+                    CurSite.setCookie("userId", name, CurSite.cookieExpireTime);
                     CurSite.setCookie("userType", "CHANNEL", CurSite.cookieExpireTime);
                     var body = {name:name, password:pwd, uniqueId:CurSite.createUUID()};
                            CurSite.sendDigest(Io, Json, "AD01", key, body, function(err, backBodyNode){
