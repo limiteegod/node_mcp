@@ -6,8 +6,8 @@ html(lang="en")
         link(rel='stylesheet', type='text/css', href='./js/css/dpl/base-min.css')
         include ../includes/script.jade
         script(type='text/javascript').
-            KISSY.use("io,node,json,vs-grid-table,vs-onepagebar,vs-round-input,vs-window",
-                function(S, Io, Node, Json, VsGridTable, VsOnePagebar, VsRoundInput, VsWindow){
+            KISSY.use("io,node,json,vs-grid-table,vs-onepagebar",
+                function(S, Io, Node, Json, VsGridTable, VsOnePagebar){
                 var count = parseInt(Node.one('#count').val());
                 var skip = parseInt(Node.one('#skip').val());
                 var limit = parseInt(Node.one('#limit').val());
@@ -32,8 +32,6 @@ html(lang="en")
                     var sort = encodeURIComponent(Json.stringify(getSort()));
                     CurSite.redirectTo(null, "print_queenList.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond + "&sort=" + sort);
                 };
-
-
                 Node.one("#search").on("click", function(){
                     toPage(cur);
                 });
@@ -44,17 +42,36 @@ html(lang="en")
             input(type='hidden', id="count", value=count)
             input(type='hidden', id="skip", value=skip)
             input(type='hidden', id="limit", value=limit)
-            #tWin.container
+            clearfix(style="margin-top:8px")
+                span(style="font-weight:bold;font-size:15px") 目前还有:&nbsp&nbsp
+                span(style="font-weight:bold;color:#ff9955;font-size:15px")=count
+                span(style="font-weight:bold;font-size:15px") &nbsp&nbsp张彩票等待打印 ,最迟&nbsp&nbsp
+                span(style="font-weight:bold;color:#ff9955;font-size:15px") 5
+                span(style="font-weight:bold;font-size:15px") &nbsp&nbsp张彩票信息如下：
             clearfix(style="margin-top:8px")
             fieldset(id="selected")
                 table(id="info_table" border="1")
-                      tr
-                         td 票据ID
-                         td 距当前时间
-                      -each val in msg
-                         tr
-                            td=val._id
-                            td=val.info
+                    thead
+                        tr
+                            td 票据ID
+                            td 已等待时间
+                            td 销售机构
+                            td 出票机构
+                            td 游戏
+                            td 期次
+                            td 金额
+                            td 创建时间
+                    tbody
+                          - each val in msg
+                                tr
+                                    td=val._id
+                                    td(style="color: red;")=val.info
+                                    td=val.customerId
+                                    td=val.printId
+                                    td=val.game.name
+                                    td=val.termCode
+                                    td=val.amount/100
+                                    td=val.createTime
             .clearfix(style="margin-top:8px")
                 .vs_grid_plain(style="width:423px;")
                     input(type="button", id="search", value="刷新")
@@ -88,7 +105,5 @@ html(lang="en")
                                     td=val.playType.name
                                     td=val.betType.name
                                     td=val.number
-
-
             .clearfix(style="margin-top:8px")
                 #manu
