@@ -113,14 +113,15 @@ html(lang="en")
                                 td 游戏
                                 td 期次
                                 td 用户
+                                td 成功数目
+                                td 成功金额
+                                td 失败数目
+                                td 失败金额
                                 td 中奖数目
                                 td 中奖购买金额
                                 td 税后奖金
                                 td 税前奖金
-                                td 未中奖数目
-                                td 未中奖购买金额
-                                td 失败数目
-                                td 失败金额
+
                                 td 创建时间
                         tbody
                             - each val in rst
@@ -129,14 +130,15 @@ html(lang="en")
                                     td=val.gameCode
                                     td=val.termCode
                                     td=val.customerId
+                                    td=val.sealCount
+                                    td=val.sealAmount/100
+                                    td=val.failCount
+                                    td=val.failAmount/100
                                     td=val.hitCount
                                     td=val.hitAmount/100
                                     td=val.bonus/100
                                     td=val.bonusBeforeTax/100
-                                    td=val.notHitCount
-                                    td=val.notHitAmount/100
-                                    td=val.failCount
-                                    td=val.failAmount/100
+
                                     td=val.createTime
             .clearfix(style="margin-top:8px")
                 #manu
