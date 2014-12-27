@@ -90,7 +90,7 @@ Notify.prototype.sendUntilEmpty = function()
         function(data, cb)
         {
             var msg = {};
-            //msg.uniqueId = digestUtil.createUUID();
+            msg.uniqueId = digestUtil.createUUID();
             msg.content = data.content;
             msg.id = data._id;
             msg.type = data.type;
@@ -157,6 +157,9 @@ Notify.prototype.sendMsg = function(options, msgDigestType, key, msg, tryCount, 
     {
         cmd = "N01";
     }
+    //不给商户发送的字段
+    delete msg.type;
+    delete msg.uniqueId;
     notifyUtil.send(options, msgDigestType, key, cmd, msg, function(err, data){
         if(err)
         {
