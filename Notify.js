@@ -90,7 +90,7 @@ Notify.prototype.sendUntilEmpty = function()
         function(data, cb)
         {
             var msg = {};
-            msg.uniqueId = digestUtil.createUUID();
+            //msg.uniqueId = digestUtil.createUUID();
             msg.content = data.content;
             msg.id = data._id;
             msg.type = data.type;
