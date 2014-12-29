@@ -121,7 +121,6 @@ html(lang="en")
                                 td 中奖购买金额
                                 td 税后奖金
                                 td 税前奖金
-
                                 td 创建时间
                         tbody
                             - each val in rst
@@ -130,15 +129,14 @@ html(lang="en")
                                     td=val.gameCode
                                     td=val.termCode
                                     td=val.customerId
-                                    td=val.sealCount
-                                    td=val.sealAmount/100
+                                    td=val.saleCount
+                                    td=val.saleAmount/100
                                     td=val.failCount
                                     td=val.failAmount/100
                                     td=val.hitCount
                                     td=val.hitAmount/100
                                     td=val.bonus/100
                                     td=val.bonusBeforeTax/100
-
                                     td=val.createTime
             .clearfix(style="margin-top:8px")
                 #manu
