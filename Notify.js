@@ -55,7 +55,7 @@ Notify.prototype.start = function()
 Notify.prototype.sendNotify = function()
 {
     var self = this;
-    self.sendJob = new CronJob('*/10 * * * * *', function () {
+    self.sendJob = new CronJob('*/5 * * * * *', function () {
         self.sendUntilEmpty();
     });
     self.sendJob.start();

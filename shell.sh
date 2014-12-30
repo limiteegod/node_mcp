@@ -13,6 +13,7 @@ PROCESSID=$2
 filterValue=`ps -ef|grep Filter.js|grep -v grep|awk '{print $2}'`
 adminValue=`ps -ef|grep Admin.js|grep -v grep|awk '{print $2}'`
 gatewayValue=`ps -ef|grep Gateway.js|grep -v grep|awk '{print $2}'`
+notifyValue=`ps -ef|grep Notify.js|grep -v grep|awk '{print $2}'`
 if [ $# -eq 0 ]; then
         usage
         exit 1
@@ -22,6 +23,10 @@ case $OPT in
          if [ ${#filterValue} -eq 0 ]; then
              nohup node Filter.js target=$PROCESSID > /data/mcplog/filter.log 2>&1 &
              echo "Start filter.js success"
+         fi
+         if [ ${#notifyValue} -eq 0 ]; then
+             nohup node Notify.js target=$PROCESSID > /data/mcplog/notify.log 2>&1 &
+             echo "Start Notify.js success"
          fi
          if [ ${#adminValue} -eq 0 ]; then
              nohup node Admin.js  target=$PROCESSID > /data/mcplog/admin.log 2>&1 &
@@ -38,6 +43,7 @@ case $OPT in
          if [ ${#filterValue} -ne 0 -a ${#adminValue} -ne 0 -a ${#gatewayValue} -ne 0 ]; then
             echo "No bootable projects"
          fi
+
         ;;
         stop|Stop) echo "Stopping.....$PROCESSID"
                if [ ${#filterValue} -ne 0 ];  then
@@ -48,11 +54,37 @@ case $OPT in
                  kill -9  `ps -ef|grep Admin.js|grep -v grep|awk '{print $2}'`
                  echo "Stop Admin.js success"
                fi
+               if [ ${#notifyValue} -ne 0 ];  then
+                 kill -9  `ps -ef|grep Notify.js|grep -v grep|awk '{print $2}'`
+                 echo "Stop Notify.js success"
+               fi
                if [ ${#gatewayValue} -ne 0 ];  then
                   kill -9  `ps -ef|grep Gateway.js|grep -v grep|awk '{print $2}'`
                   echo "Stop Gateway.js success"
                fi
-
+        ;;
+        restart|ReStart) echo "ReStarting.....$PROCESSID"
+               if [ ${#filterValue} -ne 0 ];  then
+                 kill -9  `ps -ef|grep Filter.js|grep -v grep|awk '{print $2}'`
+               fi
+               nohup node Filter.js target=$PROCESSID > /data/mcplog/filter.log 2>&1 &
+                if [ ${#notifyValue} -ne 0 ];  then
+                 kill -9  `ps -ef|grep Notify.js|grep -v grep|awk '{print $2}'`
+               fi
+               nohup node Notify.js target=$PROCESSID > /data/mcplog/notify.log 2>&1 &
+               if [ ${#adminValue} -ne 0 ];  then
+                 kill -9  `ps -ef|grep Admin.js|grep -v grep|awk '{print $2}'`
+               fi
+               nohup node Admin.js  target=$PROCESSID > /data/mcplog/admin.log 2>&1 &
+               if [ ${#gatewayValue} -ne 0 ];  then
+                  kill -9  `ps -ef|grep Gateway.js|grep -v grep|awk '{print $2}'`
+               fi
+               nohup node Gateway.js target=$PROCESSID gtPort=9090 > /data/mcplog/gateway9090.log 2>&1 &
+               nohup node Gateway.js target=$PROCESSID gtPort=9091 > /data/mcplog/gateway9091.log 2>&1 &
+               nohup node Gateway.js target=$PROCESSID gtPort=9092 > /data/mcplog/gateway9092.log 2>&1 &
+               nohup node Gateway.js target=$PROCESSID gtPort=9093 > /data/mcplog/gateway9093.log 2>&1 &
+               nohup node Gateway.js target=$PROCESSID gtPort=9094 > /data/mcplog/gateway9094.log 2>&1 &
+               echo "ReStart success........"
         ;;
         *)usage
         ;;
