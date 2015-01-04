@@ -29,6 +29,14 @@ case $OPT in
                  echo "You cannot repeat stop"
                fi
         ;;
+        restart|reStart) echo "ReStarting.....$PROCESSID"
+               if [ ${#pidValue} -ne 0 ];  then
+                 kill -9  `ps -ef|grep Scheduler.js|grep -v grep|awk '{print $2}'`
+               fi
+             nohup node Scheduler.js target=$PROCESSID  > /data/mcplog/scheduler.log 2>&1 &
+             nohup node Scheduler.js target=$PROCESSID  > /data/mcplog/scheduler1.log 2>&1 &
+             echo "ReStart success"
+        ;;
         *)usage
         ;;
 esac    

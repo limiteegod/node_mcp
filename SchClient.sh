@@ -36,6 +36,18 @@ case $OPT in
                  echo "You cannot repeat stop"
                fi
         ;;
+        restart|ReStart) echo "ReStarting.....$PROCESSID"
+               if [ ${#pidValue} -ne 0 ];  then
+                 kill -9  `ps -ef|grep SchClient.js|grep -v grep|awk '{print $2}'`
+               fi
+             nohup node SchClient.js target=$PROCESSID  > /data/mcplog/schclient0.log 2>&1 &
+             nohup node SchClient.js target=$PROCESSID  > /data/mcplog/schclient1.log 2>&1 &
+             nohup node SchClient.js target=$PROCESSID  > /data/mcplog/schclient2.log 2>&1 &
+             nohup node SchClient.js target=$PROCESSID  > /data/mcplog/schclient3.log 2>&1 &
+             nohup node SchClient.js target=$PROCESSID  > /data/mcplog/schclient4.log 2>&1 &
+             nohup node SchClient.js target=$PROCESSID  > /data/mcplog/schclient5.log 2>&1 &
+             echo "ReStart success......."
+        ;;
         *)usage
         ;;
 esac    
