@@ -9,9 +9,9 @@ html(lang="en")
                     alert(des);
                     var url = Node.one('#url').val();
                     if(url && url.length > 0){
-                       window.parent.location.href = url;
+                       window.parent.parent.location.href = url;
                     }else{
-                       window.parent.location.href = "sys_channelLogin.html";
+                       window.parent.parent.location.href = "sys_channelLogin.html";
                     }
 
                 });
