@@ -5,6 +5,7 @@ var platInterUtil = require('mcp_util').platInterUtil;
 var esut = require("easy_util");
 var log = esut.log;
 var digestUtil = esut.digestUtil;
+var dateUtil = esut.dateUtil;
 
 var cons = require('mcp_constants');
 var userType = cons.userType;
@@ -134,13 +135,19 @@ PrintTest.prototype.printUtilEmpty = function()
 
 
 var printTest = new PrintTest();
-/*var bodyNode = {term:{gameCode:'T06', code:'2014001', wNum:'2,2,3,4', status:termStatus.DRAW}};
+
+/*var bodyNode = {term:{
+    gameCode:'F04', code:'2014001', status:termStatus.NOT_ON_SALE,
+    openTime:'2015-01-09 15:49:59', closeTime:'2015-01-09 15:29:59'
+}};
 printTest.printP03(bodyNode, function(err, data){
     log.info(err);
     log.info(data);
 });*/
 
-var printJob = new CronJob('*/10 * * * * *', function () {
+//console.log(dateUtil.toDate("2020-01-01 00:00:00").getTime());
+
+var printJob = new CronJob('*//*10 * * * * *', function () {
     printTest.printUtilEmpty();
 });
 printJob.start();

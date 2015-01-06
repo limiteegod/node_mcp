@@ -112,7 +112,7 @@ QueryTest.prototype.queryCQ04 = function()
 }
 
 /**
- *
+ * 期次报表查询
  */
 QueryTest.prototype.queryCQ05 = function()
 {
