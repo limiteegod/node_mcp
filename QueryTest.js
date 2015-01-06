@@ -97,7 +97,7 @@ QueryTest.prototype.queryCQ03 = function()
 QueryTest.prototype.queryCQ04 = function()
 {
     var self = this;
-    var bodyNode = {cond:{gameCode:'T06', termCode:'2014001'}, sort:{}, skip:0, limit:20};
+    var bodyNode = {cond:{gameCode:'F04', termCode:'2014002'}, sort:{}, skip:0, limit:20};
     self.query("CQ04", bodyNode, function(err, backMsgNode){
         if(err)
         {
@@ -112,7 +112,7 @@ QueryTest.prototype.queryCQ04 = function()
 }
 
 /**
- * 奖级查询
+ *
  */
 QueryTest.prototype.queryCQ05 = function()
 {
@@ -132,4 +132,4 @@ QueryTest.prototype.queryCQ05 = function()
 }
 
 var queryTest = new QueryTest();
-queryTest.queryCQ05();
+queryTest.queryCQ04();
