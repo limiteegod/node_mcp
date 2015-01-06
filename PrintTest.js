@@ -147,7 +147,7 @@ printTest.printP03(bodyNode, function(err, data){
 
 //console.log(dateUtil.toDate("2020-01-01 00:00:00").getTime());
 
-var printJob = new CronJob('*//*10 * * * * *', function () {
+var printJob = new CronJob('*/10 * * * * *', function () {
     printTest.printUtilEmpty();
 });
 printJob.start();
