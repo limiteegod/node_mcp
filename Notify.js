@@ -19,7 +19,12 @@ var cons = require('mcp_constants');
 var digestType = cons.digestType;
 var notifyType = cons.notifyType;
 
-var Notify = function(){};
+var Notify = function(){
+    var self = this;
+    self.ec = {
+        E0001:{code:"0001", description:'没有可发送的消息'}
+    };
+};
 
 /**
  *
@@ -80,7 +85,7 @@ Notify.prototype.sendUntilEmpty = function()
                 }
                 if(!data)
                 {
-                    cb("no msg to send...");
+                    cb(self.ec.E0001);
                     return;
                 }
                 cb(null, data);
@@ -113,22 +118,22 @@ Notify.prototype.sendUntilEmpty = function()
             {
                 msgDigestType = digestType.getInfoById(msgDigestType).headCode;
             }
-            log.info(msg);
-            self.sendMsg(options, msgDigestType, key, msg, 0, function(err, data){
+            self.sendMsg(options, msgDigestType, key, msg, 1, function(err, data){
                 cb(err, data);
             });
         }
     ], function (err, result) {
-        if(err)
+        //无消息可发送
+        if(err == self.ec.E0001)
         {
             log.info(err);
-            if(err == ec.E4002)
-            {
-                self.sendUntilEmpty();
-            }
         }
         else
         {
+            if(err)
+            {
+                log.error(err);
+            }
             self.sendUntilEmpty();
         }
     });
@@ -149,9 +154,10 @@ Notify.prototype.sendMsg = function(options, msgDigestType, key, msg, tryCount, 
     if(msg.type == notifyType.TICKET)
     {
         cmd = "N02";
-    }else if(msg.type == notifyType.GAME)
+    }
+    else if(msg.type == notifyType.GAME)
     {
-        cmd = "N03"
+        cmd = "N03";
     }
     else
     {
@@ -163,8 +169,13 @@ Notify.prototype.sendMsg = function(options, msgDigestType, key, msg, tryCount, 
     notifyUtil.send(options, msgDigestType, key, cmd, msg, function(err, data){
         if(err)
         {
+            log.error("配置:");
+            log.error(options);
+            log.error("第" + tryCount + "次发送通知失败!");
+            log.error("消息内容:");
+            log.error(msg);
             tryCount++;
-            if(tryCount >= 3)
+            if(tryCount > 3)
             {
                 cb(err, data);
             }
@@ -175,7 +186,12 @@ Notify.prototype.sendMsg = function(options, msgDigestType, key, msg, tryCount, 
         }
         else
         {
-            cb(err, data);
+            log.info("配置:");
+            log.info(options);
+            log.info("第" + tryCount + "次发送通知成功!");
+            log.info("消息内容:");
+            log.info(msg);
+            cb(null, data);
         }
     });
 }
