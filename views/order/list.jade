@@ -28,6 +28,12 @@ html(lang="en")
                     }
                     return cond;
                 };
+
+                var getSort = function()
+                {
+                    return {id:-1};
+                }
+
                 var toPage = function(index,control){
                     var limit = parseInt(Node.one('#limit').val());
                     var skip = (index - 1)*limit;
@@ -36,7 +42,8 @@ html(lang="en")
                         skip=0;
                     }
                     var cond = encodeURIComponent(Json.stringify(getCondition()));
-                    CurSite.redirectTo(null, "order_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond);
+                    var sort = encodeURIComponent(Json.stringify(getSort()));
+                    CurSite.redirectTo(null, "order_list.html?" + 'skip=' + skip + "&limit=" + limit + "&cond=" + cond + "&sort=" + sort);
                 };
                 //绑定事件
                 Node.all("input.detail").each(function(item){
