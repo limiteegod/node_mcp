@@ -17,8 +17,7 @@ var initTerm = function()
         function(cb)
         {
             var table = dc.main.get("term");
-
-            var startDate = 20150115;
+            var startDate = 20150101;
             var endDate = 20150119;
             var gameCode = 'T05';
             var rst = [];
@@ -80,15 +79,16 @@ var initTermF04 = function()
             var table = dc.main.get("term");
             var gameCode = 'F04';
             var rst = [];
-            var startDate = 150115;
-            var endDate = 150119;
-            for(var currDate = startDate; currDate <= endDate; currDate++){
+
+            var now = moment();
+            for(var currDate = now; currDate <= moment().add(1, 'year'); currDate.add(1,'day')){
+                var currDay = now.format("YYMMDD");
                 for(var i = 1; i <= 73; i ++)
                 {
-                    var code = (currDate*1000)+i;
+                    var code = (currDay*1000)+i;
                     var nextCode = code + 1;
                     if(code%100 == 73){
-                        nextCode = ((currDate+1)*1000)+1;
+                        nextCode = ((currDay+1)*1000)+1;
                     }
                     var startTimeStamp = moment("2020-01-01 00:00:00 ","YYYY-MM-DD HH:mm:ss").valueOf();
                     var term = {gameCode:gameCode, code:code, nextCode:nextCode,
@@ -119,3 +119,4 @@ var initTermF04 = function()
 };
 
 initTermF04();
+
