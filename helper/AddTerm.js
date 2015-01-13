@@ -18,8 +18,8 @@ var initTerm = function()
         {
             var table = dc.main.get("term");
 
-            var startDate = 20141110;
-            var endDate = 20141129;
+            var startDate = 20150115;
+            var endDate = 20150119;
             var gameCode = 'T05';
             var rst = [];
             for(var curDate = startDate; curDate <= endDate; curDate++)
@@ -67,4 +67,55 @@ var initTerm = function()
     });
 };
 
-initTerm();
+var initTermF04 = function()
+{
+    async.waterfall([
+        function(cb){
+            dc.init(function(err){
+                cb(err);
+            });
+        },
+        function(cb)
+        {
+            var table = dc.main.get("term");
+            var gameCode = 'F04';
+            var rst = [];
+            var startDate = 150115;
+            var endDate = 150119;
+            for(var currDate = startDate; currDate <= endDate; currDate++){
+                for(var i = 1; i <= 73; i ++)
+                {
+                    var code = (currDate*1000)+i;
+                    var nextCode = code + 1;
+                    if(code%100 == 73){
+                        nextCode = ((currDate+1)*1000)+1;
+                    }
+                    var startTimeStamp = moment("2020-01-01 00:00:00 ","YYYY-MM-DD HH:mm:ss").valueOf();
+                    var term = {gameCode:gameCode, code:code, nextCode:nextCode,
+                        openTime:startTimeStamp, closeTime:startTimeStamp,
+                        status:constants.termStatus.NOT_ON_SALE, wNum:""};
+                    term.id = term.gameCode + "_" + term.code;
+                    //log.info(term);
+                    rst[rst.length] = term;
+                }
+            }
+
+            async.eachSeries(rst, function(term, callback) {
+                table.save(term, {}, function(err, data){
+                    callback(err);
+                });
+            }, function(err){
+                cb(null);
+            });
+        },
+        function(cb)
+        {
+            cb(null, "success");
+        }
+    ], function (err, result) {
+        log.info(err);
+        log.info("end...........");
+    });
+};
+
+initTermF04();
