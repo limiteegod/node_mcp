@@ -87,6 +87,7 @@ html(lang="en")
                                 td 出票机构
                                 td 状态
                                 td 创建时间
+                                td 取走时间
                                 td 金额
                                 td 玩法
                                 td 投注方式
@@ -99,8 +100,9 @@ html(lang="en")
                                     td=val.termCode
                                     td=val.customerId
                                     td=val.printId
-                                    td=val.status.des
+                                    td=val.printQueenStatus.des
                                     td=val.createTime
+                                    td=val.takeTime
                                     td=val.amount/100
                                     td=val.playType.name
                                     td=val.betType.name

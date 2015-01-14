@@ -114,12 +114,13 @@ PrintTest.prototype.printUtilEmpty = function()
         //返回出票结果
         function(rst, cb)
         {
-            var bodyNode = {};
+            /*var bodyNode = {};
             bodyNode.rst = rst;
             printTest.printP02(bodyNode, function(err, backBodyNode){
                 log.info(backBodyNode);
                 cb(err);
-            });
+            });*/
+            cb(null);
         }
     ], function (err, rst) {
         if(err)
