@@ -57,7 +57,7 @@ SchClient.prototype.handle = function()
     var self = this;
     self.handleJob = new CronJob('*/5 * * * * *', function () {
         log.info("get mst to consumer..................");
-        clientHandle.getFromPool(function(err, msg){
+        clientHandle.getTermMsgFromPool(function(err, msg){
             if(msg) {
                 clientHandle.handle(msg, function(err, data){});
             }
