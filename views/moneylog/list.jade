@@ -173,4 +173,10 @@ html(lang="en")
                                     td=val.orderId
                                     td=val.createTime
             .clearfix(style="margin-top:8px")
+                #audit 收入总计:&nbsp;
+                    font(color="red")=inAmount/100
+                    |(元)&nbsp;,&nbsp;&nbsp;&nbsp;&nbsp;支出总计:&nbsp;
+                    font(color="red")=outAmount/100
+                    |(元)&nbsp;.
+            .clearfix(style="margin-top:8px")
                 #manu
