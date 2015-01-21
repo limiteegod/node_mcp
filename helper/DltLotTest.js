@@ -26,7 +26,7 @@ LotTest.prototype.lotT01 = function(cb){
 
     var self = this;
     var bodyNode = {};
-    var orderNode = {outerId:digestUtil.createUUID(), amount:15400};
+    var orderNode = {outerId:digestUtil.createUUID(), amount:19400};
     var termCode = '2014001';
     var ticketsNode = [
         {gameCode:'T01', termCode:termCode, bType:'00', amount:200, pType:'00',
@@ -34,7 +34,9 @@ LotTest.prototype.lotT01 = function(cb){
         {gameCode:'T01', termCode:termCode, bType:'01', amount:11200, pType:'00',
             multiple:1, number:'01,02,03,04,05,06,07,08|01,02', outerId:digestUtil.createUUID()},
         {gameCode:'T01', termCode:termCode, bType:'02', amount:4000, pType:'00',
-            multiple:1, number:'01,02,03$04,05,06,07,08|01$02,03', outerId:digestUtil.createUUID()}]
+            multiple:1, number:'01,02,03$04,05,06,07,08|01$02,03', outerId:digestUtil.createUUID()},
+        {gameCode:'T01', termCode:termCode, bType:'02', amount:4000, pType:'00',
+            multiple:1, number:'11,12,13$14,15,16,17,18|11$12,13', outerId:digestUtil.createUUID()}]
     orderNode.tickets = ticketsNode;
     bodyNode.order = orderNode;
     self.lot(bodyNode, function(err, backMsgNode){
@@ -52,7 +54,7 @@ LotTest.prototype.lotT01 = function(cb){
 var lotTest = new LotTest();
 var count = 0;
 async.whilst(
-    function() { return count < 100},
+    function() { return count < 1000},
     function(whileCb) {
         lotTest.lotT01(function(){
             count++;
