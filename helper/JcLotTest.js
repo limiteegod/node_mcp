@@ -22,21 +22,18 @@ LotTest.prototype.lot = function(bodyNode, cb)
     platInterUtil.get(self.userId, self.userType, self.digestType, self.key, self.cmd, bodyNode, cb);
 };
 
-LotTest.prototype.lotT01 = function(cb){
+LotTest.prototype.lotT51 = function(cb){
 
     var self = this;
     var bodyNode = {};
-    var orderNode = {outerId:digestUtil.createUUID(), amount:19400};
-    var termCode = '2014001';
+    var orderNode = {outerId:digestUtil.createUUID(), amount:200};
     var ticketsNode = [
-        {gameCode:'T01', termCode:termCode, bType:'00', amount:200, pType:'00',
-            multiple:1, number:'01,02,03,04,05|01,02', outerId:digestUtil.createUUID()},
-        {gameCode:'T01', termCode:termCode, bType:'01', amount:11200, pType:'00',
-            multiple:1, number:'01,02,03,04,05,06,07,08|01,02', outerId:digestUtil.createUUID()},
-        {gameCode:'T01', termCode:termCode, bType:'02', amount:4000, pType:'00',
-            multiple:1, number:'01,02,03$04,05,06,07,08|01$02,03', outerId:digestUtil.createUUID()},
-        {gameCode:'T01', termCode:termCode, bType:'02', amount:4000, pType:'00',
-            multiple:1, number:'11,12,13$14,15,16,17,18|11$12,13', outerId:digestUtil.createUUID()}]
+        {
+            gameCode:'T51', pType:'06', bType:'21', amount:200,
+            multiple:1, outerId:digestUtil.createUUID(),
+            number:'02|201401011001|1@2.00;01|201401011002|1@3.150'
+        }
+    ]
     orderNode.tickets = ticketsNode;
     bodyNode.order = orderNode;
     self.lot(bodyNode, function(err, backMsgNode){
@@ -54,9 +51,9 @@ LotTest.prototype.lotT01 = function(cb){
 var lotTest = new LotTest();
 var count = 0;
 async.whilst(
-    function() { return count < 100},
+    function() { return count < 1},
     function(whileCb) {
-        lotTest.lotT01(function(){
+        lotTest.lotT51(function(){
             count++;
             whileCb();
         });
